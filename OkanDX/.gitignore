@@ -1,0 +1,18 @@
+/[Ll]ibrary/
+/[Temp]/
+/[Obj]/
+/[Logs]/
+/[UserSettings]/
+/[Build]/
+/[Builds]/
+/Assets/AssetStoreTools*
+
+# 各自のエディタの一時ファイル
+.vs/
+.gradle/
+ExportedObj/
+.mono/
+.idea/
+*.csproj
+*.sln
+*.suo
