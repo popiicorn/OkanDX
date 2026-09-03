@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PixelRect:
     serializedVersion: 2
-    x: 528
-    y: 178
+    x: 411
+    y: 505
     width: 2616
     height: 1254
   m_ShowMode: 4
-  m_Title: Console
+  m_Title: Hierarchy
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 350}
   m_MaxSize: {x: 10000, y: 10000}
@@ -142,8 +142,8 @@ MonoBehaviour:
     y: 0
     width: 447
     height: 1198
-  m_MinSize: {x: 276, y: 126}
-  m_MaxSize: {x: 4001, y: 4026}
+  m_MinSize: {x: 275, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 15}
@@ -272,8 +272,8 @@ MonoBehaviour:
     y: 0
     width: 1437
     height: 528
-  m_MinSize: {x: 201, y: 226}
-  m_MaxSize: {x: 4001, y: 4026}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 14}
@@ -324,8 +324,8 @@ MonoBehaviour:
     y: 843
     width: 1437
     height: 355
-  m_MinSize: {x: 101, y: 126}
-  m_MaxSize: {x: 4001, y: 4026}
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 21}
   m_Panes:
   - {fileID: 19}
@@ -524,7 +524,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 0afbffff
+      m_ExpandedIDs: bee8ffff48eafffff4eaffff22f0ffff40f1ffff8ef3ffffccf4ffff0afbffff56c000001ec30000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -541,7 +541,7 @@ MonoBehaviour:
         m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_TrimLeadingAndTrailingWhitespace: 0
-        m_ClientGUIView: {fileID: 7}
+        m_ClientGUIView: {fileID: 6}
       m_SearchString: 
     m_ExpandedScenes: []
     m_CurrenRootInstanceID: 0
@@ -596,7 +596,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Fonts
+    - Assets/Scenes
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
@@ -606,15 +606,15 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Fonts
+  - Assets/Scenes
   m_LastFoldersGridSize: 16
   m_LastProjectPath: D:\Unity\OkanDX\OkanDX
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: fabf0000
-    m_LastClickedID: 49146
+    m_SelectedIDs: 02c00000
+    m_LastClickedID: 49154
     m_ExpandedIDs: 000000008cbf00008ebf0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -672,7 +672,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c62300009c7e0000086d00009a760000b05b0000d6460000ea460000fe4600001247000078470000a8470000d8470000f8460000d04700006e900000e86500009c720000407f0000dc7f000078800000148100001a870000108d0000069300001cc70000b24b00004c4c00001cfe0000362f01005e2c010030d20000fa8c0000928d0000f4970000e477000088a800001ea90000fe5c00009e4b0000a043010090520000c8870000ec980000b01b010064be0000765700000000000040520000cee40000f4b1ffff207400000a860000b66700008467000088670000586500004a680000de6800001eb10000daad000026b60000862a0100f6040100b2020000a8b6000042d70000b0d700002e67010084f8000034bc00001cbd0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -1379,9 +1379,9 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_DebugDrawModesUseInteractiveLightBakingData: 0
   m_Position:
-    m_Target: {x: 960, y: 540, z: 0}
+    m_Target: {x: 949.4241, y: 531.20294, z: -0.010800538}
     speed: 2
-    m_Value: {x: 960, y: 540, z: 0}
+    m_Value: {x: 949.4241, y: 531.20294, z: -0.010800538}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1431,9 +1431,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 103.077644
+    m_Target: 146.58679
     speed: 2
-    m_Value: 103.077644
+    m_Value: 146.58679
   m_Ortho:
     m_Target: 1
     speed: 2
