@@ -21,9 +21,17 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
     [SerializeField] private string examineMessage = "特に変わったところはないようだ。";
 
     [Header("【ドア】タイプ用の設定")]
-    [SerializeField] private Sprite openDoorSprite; // 開いたドアの画像
-    [SerializeField] private SpriteRenderer targetSpriteRenderer; // Spriteの場合
-    [SerializeField] private Image targetUIImage;                 // UI Imageの場合
+    [Tooltip("画像差し替えで表現する場合（従来通り）")]
+    [SerializeField] private Sprite openDoorSprite;
+    [SerializeField] private Image targetUIImage;
+
+    [Header("【ドア】オブジェクト切り替え用の設定")]
+    [Tooltip("閉じたドアのオブジェクト（自分自身、または非表示にしたいオブジェクト）")]
+    [SerializeField] private GameObject closedDoorObject;
+
+    [Tooltip("開いたドアのオブジェクト（表示させたいオブジェクト）")]
+    [SerializeField] private GameObject openDoorObject;
+
     private bool isDoorOpen = false;
 
     [Header("【おかん】タイプ用の設定")]
@@ -95,13 +103,16 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
 
         isDoorOpen = true;
 
-        if (targetUIImage != null && openDoorSprite != null)
+        // --- パターンA: オブジェクトの表示・非表示切り替え ---
+        if (closedDoorObject != null && openDoorObject != null)
+        {
+            closedDoorObject.SetActive(false); // 閉じた扉を非表示
+            openDoorObject.SetActive(true);    // 開いた扉を表示
+        }
+        // --- パターンB: 画像の差し替え（従来の方法） ---
+        else if (targetUIImage != null && openDoorSprite != null)
         {
             targetUIImage.sprite = openDoorSprite;
-        }
-        else if (targetSpriteRenderer != null && openDoorSprite != null)
-        {
-            targetSpriteRenderer.sprite = openDoorSprite;
         }
 
         Debug.Log("ドアが開いた！");
