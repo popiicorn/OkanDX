@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
@@ -6,24 +6,24 @@ using System.Collections.Generic;
 
 public class EpisodeSelectManager : MonoBehaviour
 {
-    [Header("UIQÆ")]
+    [Header("UIå‚ç…§")]
     [SerializeField] private RectTransform panelA;
     [SerializeField] private RectTransform panelB;
     [SerializeField] private Button prevButton;
     [SerializeField] private Button nextButton;
     [SerializeField] private TMP_Text pageText;
 
-    [Header("ƒy[ƒWƒCƒ“ƒWƒP[ƒ^[İ’è")]
-    [Tooltip("ƒhƒbƒg‚ğ•À‚×‚éeƒIƒuƒWƒFƒNƒg")]
+    [Header("ãƒšãƒ¼ã‚¸ã‚¤ãƒ³ã‚¸ã‚±ãƒ¼ã‚¿ãƒ¼è¨­å®š")]
+    [Tooltip("ãƒ‰ãƒƒãƒˆã‚’ä¸¦ã¹ã‚‹è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ")]
     [SerializeField] private Transform pageIndicatorContainer;
-    [Tooltip("ƒhƒbƒg‚ÌPrefab")]
+    [Tooltip("ãƒ‰ãƒƒãƒˆã®Prefab")]
     [SerializeField] private GameObject pageDotPrefab;
-    [Tooltip("‘I‘ğ’†‚Ìƒhƒbƒg‚ÌF")]
+    [Tooltip("é¸æŠä¸­ã®ãƒ‰ãƒƒãƒˆã®è‰²")]
     [SerializeField] private Color activeDotColor = Color.yellow;
-    [Tooltip("”ñ‘I‘ğ‚Ìƒhƒbƒg‚ÌF")]
+    [Tooltip("éé¸æŠã®ãƒ‰ãƒƒãƒˆã®è‰²")]
     [SerializeField] private Color inactiveDotColor = Color.white;
 
-    [Header("İ’è")]
+    [Header("è¨­å®š")]
     [SerializeField] private int totalEpisodes = 30;
     [SerializeField] private float slideDuration = 0.35f;
     [SerializeField] private Ease slideEase = Ease.OutCubic;
@@ -34,7 +34,7 @@ public class EpisodeSelectManager : MonoBehaviour
 
     private RectTransform activePanel;
     private RectTransform inactivePanel;
-    private List<Image> dotImages = new List<Image>(); // ¶¬‚µ‚½ƒhƒbƒg‚ÌImageŒQ
+    private List<Image> dotImages = new List<Image>(); // ç”Ÿæˆã—ãŸãƒ‰ãƒƒãƒˆã®Imageç¾¤
 
     private void Start()
     {
@@ -44,26 +44,26 @@ public class EpisodeSelectManager : MonoBehaviour
         activePanel.anchoredPosition = Vector2.zero;
         inactivePanel.anchoredPosition = new Vector2(1920, 0);
 
-        GenerateDots(); // ƒhƒbƒg‚Ì©“®¶¬
+        GenerateDots(); // ãƒ‰ãƒƒãƒˆã®è‡ªå‹•ç”Ÿæˆ
         SetupPanelData(activePanel, currentPage);
         UpdateUIState();
     }
 
     /// <summary>
-    /// ‘ƒy[ƒW”‚É‡‚í‚¹‚ÄƒhƒbƒgiZj‚ğ¶¬‚·‚é
+    /// ç·ãƒšãƒ¼ã‚¸æ•°ã«åˆã‚ã›ã¦ãƒ‰ãƒƒãƒˆï¼ˆã€‡ï¼‰ã‚’ç”Ÿæˆã™ã‚‹
     /// </summary>
     private void GenerateDots()
     {
         int maxPage = Mathf.CeilToInt((float)totalEpisodes / ITEMS_PER_PAGE);
 
-        // Šù‘¶‚Ìƒhƒbƒg‚ğƒNƒŠƒA
+        // æ—¢å­˜ã®ãƒ‰ãƒƒãƒˆã‚’ã‚¯ãƒªã‚¢
         foreach (Transform child in pageIndicatorContainer)
         {
             Destroy(child.gameObject);
         }
         dotImages.Clear();
 
-        // ƒy[ƒW”•ª‚¾‚¯ƒhƒbƒg‚ğ¶¬
+        // ãƒšãƒ¼ã‚¸æ•°åˆ†ã ã‘ãƒ‰ãƒƒãƒˆã‚’ç”Ÿæˆ
         for (int i = 0; i < maxPage; i++)
         {
             GameObject dot = Instantiate(pageDotPrefab, pageIndicatorContainer);
@@ -76,7 +76,7 @@ public class EpisodeSelectManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒhƒbƒg‚ÌF‚ğŒ»İ‚Ìƒy[ƒW‚É‡‚í‚¹‚ÄXV‚·‚é
+    /// ãƒ‰ãƒƒãƒˆã®è‰²ã‚’ç¾åœ¨ã®ãƒšãƒ¼ã‚¸ã«åˆã‚ã›ã¦æ›´æ–°ã™ã‚‹
     /// </summary>
     private void UpdateDots()
     {
@@ -85,13 +85,13 @@ public class EpisodeSelectManager : MonoBehaviour
             if (i == currentPage)
             {
                 dotImages[i].color = activeDotColor;
-                // 0.2•b‚©‚¯‚Ä100%‚ÌƒTƒCƒY‚É‚È‚ß‚ç‚©‚ÉŠg‘å
+                // 0.2ç§’ã‹ã‘ã¦100%ã®ã‚µã‚¤ã‚ºã«ãªã‚ã‚‰ã‹ã«æ‹¡å¤§
                 dotImages[i].transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutBack);
             }
             else
             {
                 dotImages[i].color = inactiveDotColor;
-                // 0.2•b‚©‚¯‚Ä90%‚ÌƒTƒCƒY‚É‚È‚ß‚ç‚©‚Ék¬
+                // 0.2ç§’ã‹ã‘ã¦90%ã®ã‚µã‚¤ã‚ºã«ãªã‚ã‚‰ã‹ã«ç¸®å°
                 dotImages[i].transform.DOScale(new Vector3(0.9f, 0.9f, 1f), 0.2f);
             }
         }
@@ -128,7 +128,7 @@ public class EpisodeSelectManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ‰Eƒ{ƒ^ƒ“iŸ‚Öj‚ğ‰Ÿ‚µ‚½
+    /// å³ãƒœã‚¿ãƒ³ï¼ˆæ¬¡ã¸ï¼‰ã‚’æŠ¼ã—ãŸæ™‚
     /// </summary>
     public void OnClickNextPage()
     {
@@ -138,7 +138,7 @@ public class EpisodeSelectManager : MonoBehaviour
 
         AnimateButton(nextButton.transform);
 
-        // ÅŒã‚Ìƒy[ƒW‚È‚çÅ‰‚Ìƒy[ƒW(0)‚ÖA‚»‚êˆÈŠO‚ÍŸ‚Ìƒy[ƒW‚Ö
+        // æœ€å¾Œã®ãƒšãƒ¼ã‚¸ãªã‚‰æœ€åˆã®ãƒšãƒ¼ã‚¸(0)ã¸ã€ãã‚Œä»¥å¤–ã¯æ¬¡ã®ãƒšãƒ¼ã‚¸ã¸
         if (currentPage >= maxPage)
         {
             currentPage = 0;
@@ -152,7 +152,7 @@ public class EpisodeSelectManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ¶ƒ{ƒ^ƒ“i‘O‚Öj‚ğ‰Ÿ‚µ‚½
+    /// å·¦ãƒœã‚¿ãƒ³ï¼ˆå‰ã¸ï¼‰ã‚’æŠ¼ã—ãŸæ™‚
     /// </summary>
     public void OnClickPrevPage()
     {
@@ -162,7 +162,7 @@ public class EpisodeSelectManager : MonoBehaviour
 
         AnimateButton(prevButton.transform);
 
-        // Å‰‚Ìƒy[ƒW(0)‚È‚çÅŒã‚Ìƒy[ƒW‚ÖA‚»‚êˆÈŠO‚Í‘O‚Ìƒy[ƒW‚Ö
+        // æœ€åˆã®ãƒšãƒ¼ã‚¸(0)ãªã‚‰æœ€å¾Œã®ãƒšãƒ¼ã‚¸ã¸ã€ãã‚Œä»¥å¤–ã¯å‰ã®ãƒšãƒ¼ã‚¸ã¸
         if (currentPage <= 0)
         {
             currentPage = maxPage;
@@ -176,15 +176,15 @@ public class EpisodeSelectManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒ{ƒ^ƒ“‚ğƒNƒŠƒbƒN‚µ‚½‚Ìƒ|ƒˆƒ“‚Æ‚µ‚½ŠgkƒAƒjƒ[ƒVƒ‡ƒ“
+    /// ãƒœã‚¿ãƒ³ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ãŸæ™‚ã®ãƒãƒ¨ãƒ³ã¨ã—ãŸæ‹¡ç¸®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
     /// </summary>
     private void AnimateButton(Transform buttonTransform)
     {
-        // ˜A‘Å‚ÌƒTƒCƒY•ö‚ê‚ğ–h‚®‚½‚ßˆê’UƒXƒP[ƒ‹‚ğƒŠƒZƒbƒg‚µ‚ÄTween‚ğƒLƒ‹
+        // é€£æ‰“æ™‚ã®ã‚µã‚¤ã‚ºå´©ã‚Œã‚’é˜²ããŸã‚ä¸€æ—¦ã‚¹ã‚±ãƒ¼ãƒ«ã‚’ãƒªã‚»ãƒƒãƒˆã—ã¦Tweenã‚’ã‚­ãƒ«
         buttonTransform.DOKill();
         buttonTransform.localScale = Vector3.one;
 
-        // ˆêu 0.85”{ ‚Ék‚ñ‚Å‚©‚çA­‚µ”½“®‚ğ‚Â‚¯‚Ä 1.0”{ ‚É–ß‚é
+        // ä¸€ç¬ 0.85å€ ã«ç¸®ã‚“ã§ã‹ã‚‰ã€å°‘ã—åå‹•ã‚’ã¤ã‘ã¦ 1.0å€ ã«æˆ»ã‚‹
         buttonTransform.DOScale(0.85f, 0.08f)
             .OnComplete(() =>
             {
@@ -221,7 +221,7 @@ public class EpisodeSelectManager : MonoBehaviour
     }
 
     /// <summary>
-    /// UIó‘Ô‚ÌXVi–îˆó‚Íí‚É•\¦j
+    /// UIçŠ¶æ…‹ã®æ›´æ–°ï¼ˆçŸ¢å°ã¯å¸¸ã«è¡¨ç¤ºï¼‰
     /// </summary>
     private void UpdateUIState()
     {
@@ -229,11 +229,11 @@ public class EpisodeSelectManager : MonoBehaviour
 
         if (pageText != null) pageText.text = $"{currentPage + 1} / {maxPage + 1}";
 
-        // šƒ‹[ƒvd—l‚Ì‚½‚ßA¶‰E‚Ì–îˆóƒ{ƒ^ƒ“‚Íí‚É•\¦iTruej‚É‚·‚é
+        // â˜…ãƒ«ãƒ¼ãƒ—ä»•æ§˜ã®ãŸã‚ã€å·¦å³ã®çŸ¢å°ãƒœã‚¿ãƒ³ã¯å¸¸ã«è¡¨ç¤ºï¼ˆTrueï¼‰ã«ã™ã‚‹
         if (prevButton != null) prevButton.gameObject.SetActive(true);
         if (nextButton != null) nextButton.gameObject.SetActive(true);
 
-        // ƒhƒbƒg•\¦‚ÌXV
+        // ãƒ‰ãƒƒãƒˆè¡¨ç¤ºã®æ›´æ–°
         UpdateDots();
     }
 

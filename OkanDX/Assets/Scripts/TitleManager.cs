@@ -1,20 +1,20 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class TitleManager : MonoBehaviour
 {
     /// <summary>
-    /// ƒXƒ^[ƒgƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚ÉÀs‚·‚éƒƒ\ƒbƒh
+    /// ã‚¹ã‚¿ãƒ¼ãƒˆãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸæ™‚ã«å®Ÿè¡Œã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     /// </summary>
     public void OnClickStart()
     {
-        // GameManager‚Ìw¦‚ğo‚µ‚ÄƒGƒsƒ\[ƒh‘I‘ğ‰æ–Ê‚ÖˆÚ“®‚·‚é
+        // GameManagerã®æŒ‡ç¤ºã‚’å‡ºã—ã¦ã‚¨ãƒ”ã‚½ãƒ¼ãƒ‰é¸æŠç”»é¢ã¸ç§»å‹•ã™ã‚‹
         if (GameManager.Instance != null)
         {
             GameManager.Instance.GoToEpisodeSelect();
         }
         else
         {
-            Debug.LogError("GameManager‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñIBootƒV[ƒ“‚©‚ç‹N“®‚µ‚Ä‚¢‚é‚©Šm”F‚µ‚Ä‚­‚¾‚³‚¢B");
+            Debug.LogError("GameManagerãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ï¼Bootã‚·ãƒ¼ãƒ³ã‹ã‚‰èµ·å‹•ã—ã¦ã„ã‚‹ã‹ç¢ºèªã—ã¦ãã ã•ã„ã€‚");
         }
     }
 }

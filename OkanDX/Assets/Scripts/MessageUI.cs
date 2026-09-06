@@ -1,23 +1,23 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using TMPro;
-using DG.Tweening; // DOTween‚ğg—p
+using DG.Tweening; // DOTweenã‚’ä½¿ç”¨
 
 public class MessageUI : MonoBehaviour
 {
     public static MessageUI Instance { get; private set; }
 
-    [Header("UIQÆ")]
-    [Tooltip("‰æ–Ê‘S‘Ì‚ğ•¢‚¤ƒŒƒCƒ„[ (MessageLayer)")]
+    [Header("UIå‚ç…§")]
+    [Tooltip("ç”»é¢å…¨ä½“ã‚’è¦†ã†ãƒ¬ã‚¤ãƒ¤ãƒ¼ (MessageLayer)")]
     [SerializeField] private GameObject messageLayer;
 
-    [Tooltip("‚«o‚µ–{‘Ì‚ÌTransform (MessagePanel)")]
+    [Tooltip("å¹ãå‡ºã—æœ¬ä½“ã®Transform (MessagePanel)")]
     [SerializeField] private Transform messagePanelTransform;
 
-    [Tooltip("ƒƒbƒZ[ƒW•\¦ƒeƒLƒXƒg")]
+    [Tooltip("ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤ºãƒ†ã‚­ã‚¹ãƒˆ")]
     [SerializeField] private TMP_Text messageText;
 
-    [Header("ƒAƒjƒ[ƒVƒ‡ƒ“İ’è")]
-    [SerializeField] private float popupDuration = 0.25f; // ƒ|ƒˆƒ“‚É‚©‚©‚éŠÔ
+    [Header("ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³è¨­å®š")]
+    [SerializeField] private float popupDuration = 0.25f; // ãƒãƒ¨ãƒ³ã«ã‹ã‹ã‚‹æ™‚é–“
 
     private void Awake()
     {
@@ -31,7 +31,7 @@ public class MessageUI : MonoBehaviour
             return;
         }
 
-        // •ÒW‚É•\¦ƒIƒ“‚É‚È‚Á‚Ä‚¢‚Ä‚àA‹N“®‚É©“®‚Å”ñ•\¦•ƒXƒP[ƒ‹ƒ[ƒ‚É‚·‚é
+        // ç·¨é›†æ™‚ã«è¡¨ç¤ºã‚ªãƒ³ã«ãªã£ã¦ã„ã¦ã‚‚ã€èµ·å‹•æ™‚ã«è‡ªå‹•ã§éè¡¨ç¤ºï¼†ã‚¹ã‚±ãƒ¼ãƒ«ã‚¼ãƒ­ã«ã™ã‚‹
         if (messagePanelTransform != null)
         {
             messagePanelTransform.localScale = Vector3.zero;
@@ -45,12 +45,12 @@ public class MessageUI : MonoBehaviour
 
     private void Start()
     {
-        // ‹N“®‚Í”ñ•\¦
+        // èµ·å‹•æ™‚ã¯éè¡¨ç¤º
         if (messageLayer != null) messageLayer.SetActive(false);
     }
 
     /// <summary>
-    /// ƒƒbƒZ[ƒW‚ğƒ|ƒˆƒ“‚Æ•\¦‚·‚é
+    /// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ãƒãƒ¨ãƒ³ã¨è¡¨ç¤ºã™ã‚‹
     /// </summary>
     public void ShowMessage(string text)
     {
@@ -66,26 +66,26 @@ public class MessageUI : MonoBehaviour
 
         if (messagePanelTransform != null)
         {
-            // is’†‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ğƒLƒƒƒ“ƒZƒ‹‚µ‚ÄƒXƒP[ƒ‹‚ğ0‚É‚·‚é
+            // é€²è¡Œä¸­ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã—ã¦ã‚¹ã‚±ãƒ¼ãƒ«ã‚’0ã«ã™ã‚‹
             messagePanelTransform.DOKill();
             messagePanelTransform.localScale = Vector3.zero;
 
-            // 0 ‚©‚ç 1.0 ‚ÖŒü‚©‚Á‚Ä”½“®‚ğ‚Â‚¯‚ÄŠg‘åiEase.OutBackj
+            // 0 ã‹ã‚‰ 1.0 ã¸å‘ã‹ã£ã¦åå‹•ã‚’ã¤ã‘ã¦æ‹¡å¤§ï¼ˆEase.OutBackï¼‰
             messagePanelTransform.DOScale(Vector3.one, popupDuration)
      .SetEase(Ease.OutBack)
-     .SetUpdate(true); // © SetUpdate(true) ‚É•ÏX
+     .SetUpdate(true); // â† SetUpdate(true) ã«å¤‰æ›´
         }
     }
 
     /// <summary>
-    /// ‚«o‚µ‚ğ•Â‚¶‚é
+    /// å¹ãå‡ºã—ã‚’é–‰ã˜ã‚‹
     /// </summary>
     public void HideMessage()
     {
         if (messagePanelTransform != null)
         {
             messagePanelTransform.DOKill();
-            // ƒVƒ…ƒb‚Æk‚ñ‚Å‚©‚ç”ñ•\¦‚É‚·‚é
+            // ã‚·ãƒ¥ãƒƒã¨ç¸®ã‚“ã§ã‹ã‚‰éè¡¨ç¤ºã«ã™ã‚‹
             messagePanelTransform.DOScale(Vector3.zero, 0.15f)
                 .SetEase(Ease.InBack)
                 .OnComplete(() =>

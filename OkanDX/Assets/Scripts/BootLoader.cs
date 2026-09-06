@@ -1,10 +1,10 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class BootLoader : MonoBehaviour
 {
     private void Start()
     {
-        // ‹N“®‚µ‚½‚ç‘¦À‚Éƒ^ƒCƒgƒ‹ƒV[ƒ“‚Ö
+        // èµ·å‹•ã—ãŸã‚‰å³åº§ã«ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³ã¸
         if (GameManager.Instance != null)
         {
             GameManager.Instance.GoToTitle();

@@ -1,63 +1,63 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems; // UI‚ÌƒCƒxƒ“ƒgŒŸ’m‚É•K—v
+using UnityEngine.EventSystems; // UIã®ã‚¤ãƒ™ãƒ³ãƒˆæ¤œçŸ¥ã«å¿…è¦
 using DG.Tweening;
 
-// IPointerClickHandler ‚ğŒp³‚·‚é‚±‚Æ‚Å UI ‚ÌƒNƒŠƒbƒN‚ğ’¼Úó‚¯æ‚é
+// IPointerClickHandler ã‚’ç¶™æ‰¿ã™ã‚‹ã“ã¨ã§ UI ã®ã‚¯ãƒªãƒƒã‚¯ã‚’ç›´æ¥å—ã‘å–ã‚‹
 public class ClickableObject : MonoBehaviour, IPointerClickHandler
 {
     public enum ObjectType
     {
-        Examine, // ’²‚×‚é‚¾‚¯iƒƒbƒZ[ƒW•\¦j
-        Door,    // ƒhƒAiƒNƒŠƒbƒN‚ÅŠJ‚­‰æ‘œ‚Ö•ÏXj
-        Okan     // ‚¨‚©‚ñiƒNƒŠƒbƒN‚ÅƒNƒŠƒAj
+        Examine, // èª¿ã¹ã‚‹ã ã‘ï¼ˆãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤ºï¼‰
+        Door,    // ãƒ‰ã‚¢ï¼ˆã‚¯ãƒªãƒƒã‚¯ã§é–‹ãç”»åƒã¸å¤‰æ›´ï¼‰
+        Okan     // ãŠã‹ã‚“ï¼ˆã‚¯ãƒªãƒƒã‚¯ã§ã‚¯ãƒªã‚¢ï¼‰
     }
 
-    [Header("ƒIƒuƒWƒFƒNƒg‚Ìí—Ş")]
+    [Header("ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç¨®é¡")]
     [SerializeField] private ObjectType objectType = ObjectType.Examine;
 
-    [Header("y’²‚×‚ézƒ^ƒCƒv—p‚Ìİ’è")]
+    [Header("ã€èª¿ã¹ã‚‹ã€‘ã‚¿ã‚¤ãƒ—ç”¨ã®è¨­å®š")]
     [TextArea(2, 5)]
-    [SerializeField] private string examineMessage = "“Á‚É•Ï‚í‚Á‚½‚Æ‚±‚ë‚Í‚È‚¢‚æ‚¤‚¾B";
+    [SerializeField] private string examineMessage = "ç‰¹ã«å¤‰ã‚ã£ãŸã¨ã“ã‚ã¯ãªã„ã‚ˆã†ã ã€‚";
 
-    [Header("yƒhƒAzƒ^ƒCƒv—p‚Ìİ’è")]
-    [Tooltip("‰æ‘œ·‚µ‘Ö‚¦‚Å•\Œ»‚·‚éê‡i]—ˆ’Ê‚èj")]
+    [Header("ã€ãƒ‰ã‚¢ã€‘ã‚¿ã‚¤ãƒ—ç”¨ã®è¨­å®š")]
+    [Tooltip("ç”»åƒå·®ã—æ›¿ãˆã§è¡¨ç¾ã™ã‚‹å ´åˆï¼ˆå¾“æ¥é€šã‚Šï¼‰")]
     [SerializeField] private Sprite openDoorSprite;
     [SerializeField] private Image targetUIImage;
 
-    [Header("yƒhƒAzƒIƒuƒWƒFƒNƒgØ‚è‘Ö‚¦—p‚Ìİ’è")]
-    [Tooltip("•Â‚¶‚½ƒhƒA‚ÌƒIƒuƒWƒFƒNƒgi©•ª©gA‚Ü‚½‚Í”ñ•\¦‚É‚µ‚½‚¢ƒIƒuƒWƒFƒNƒgj")]
+    [Header("ã€ãƒ‰ã‚¢ã€‘ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåˆ‡ã‚Šæ›¿ãˆç”¨ã®è¨­å®š")]
+    [Tooltip("é–‰ã˜ãŸãƒ‰ã‚¢ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆï¼ˆè‡ªåˆ†è‡ªèº«ã€ã¾ãŸã¯éè¡¨ç¤ºã«ã—ãŸã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆï¼‰")]
     [SerializeField] private GameObject closedDoorObject;
 
-    [Tooltip("ŠJ‚¢‚½ƒhƒA‚ÌƒIƒuƒWƒFƒNƒgi•\¦‚³‚¹‚½‚¢ƒIƒuƒWƒFƒNƒgj")]
+    [Tooltip("é–‹ã„ãŸãƒ‰ã‚¢ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆï¼ˆè¡¨ç¤ºã•ã›ãŸã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆï¼‰")]
     [SerializeField] private GameObject openDoorObject;
 
     private bool isDoorOpen = false;
 
-    [Header("y‚¨‚©‚ñzƒ^ƒCƒv—p‚Ìİ’è")]
+    [Header("ã€ãŠã‹ã‚“ã€‘ã‚¿ã‚¤ãƒ—ç”¨ã®è¨­å®š")]
     [SerializeField] private EpisodeManager episodeManager;
 
-    // --- UIiCanvasjã‚ÅƒNƒŠƒbƒN‚³‚ê‚½‚É©“®‚ÅŒÄ‚Î‚ê‚éŠÖ” ---
+    // --- UIï¼ˆCanvasï¼‰ä¸Šã§ã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸæ™‚ã«è‡ªå‹•ã§å‘¼ã°ã‚Œã‚‹é–¢æ•° ---
     public void OnPointerClick(PointerEventData eventData)
     {
         ExecuteClickAction();
     }
 
-    // --- 2D CollideriSpritejã‚ÅƒNƒŠƒbƒN‚³‚ê‚½‚ÉŒÄ‚Î‚ê‚éŠÖ” ---
+    // --- 2D Colliderï¼ˆSpriteï¼‰ä¸Šã§ã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸæ™‚ã«å‘¼ã°ã‚Œã‚‹é–¢æ•° ---
     private void OnMouseDown()
     {
         ExecuteClickAction();
     }
 
     /// <summary>
-    /// ƒNƒŠƒbƒN‚Ì‹¤’Êˆ—
+    /// ã‚¯ãƒªãƒƒã‚¯æ™‚ã®å…±é€šå‡¦ç†
     /// </summary>
     private void ExecuteClickAction()
     {
-        // 1. ŠgkƒAƒjƒ[ƒVƒ‡ƒ“
+        // 1. æ‹¡ç¸®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
         AnimateClick();
 
-        // 2. í—Ş‚²‚Æ‚Ìˆ—
+        // 2. ç¨®é¡ã”ã¨ã®å‡¦ç†
         switch (objectType)
         {
             case ObjectType.Examine:
@@ -93,7 +93,7 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
         }
         else
         {
-            Debug.LogWarning("MessageUI‚ÌInstance‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñB");
+            Debug.LogWarning("MessageUIã®InstanceãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã€‚");
         }
     }
 
@@ -103,24 +103,24 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
 
         isDoorOpen = true;
 
-        // --- ƒpƒ^[ƒ“A: ƒIƒuƒWƒFƒNƒg‚Ì•\¦E”ñ•\¦Ø‚è‘Ö‚¦ ---
+        // --- ãƒ‘ã‚¿ãƒ¼ãƒ³A: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è¡¨ç¤ºãƒ»éè¡¨ç¤ºåˆ‡ã‚Šæ›¿ãˆ ---
         if (closedDoorObject != null && openDoorObject != null)
         {
-            closedDoorObject.SetActive(false); // •Â‚¶‚½”à‚ğ”ñ•\¦
-            openDoorObject.SetActive(true);    // ŠJ‚¢‚½”à‚ğ•\¦
+            closedDoorObject.SetActive(false); // é–‰ã˜ãŸæ‰‰ã‚’éè¡¨ç¤º
+            openDoorObject.SetActive(true);    // é–‹ã„ãŸæ‰‰ã‚’è¡¨ç¤º
         }
-        // --- ƒpƒ^[ƒ“B: ‰æ‘œ‚Ì·‚µ‘Ö‚¦i]—ˆ‚Ì•û–@j ---
+        // --- ãƒ‘ã‚¿ãƒ¼ãƒ³B: ç”»åƒã®å·®ã—æ›¿ãˆï¼ˆå¾“æ¥ã®æ–¹æ³•ï¼‰ ---
         else if (targetUIImage != null && openDoorSprite != null)
         {
             targetUIImage.sprite = openDoorSprite;
         }
 
-        Debug.Log("ƒhƒA‚ªŠJ‚¢‚½I");
+        Debug.Log("ãƒ‰ã‚¢ãŒé–‹ã„ãŸï¼");
     }
 
     private void OnOkanClick()
     {
-        Debug.Log("‚¨‚©‚ñ‚ğ”­Œ©IƒNƒŠƒAI");
+        Debug.Log("ãŠã‹ã‚“ã‚’ç™ºè¦‹ï¼ã‚¯ãƒªã‚¢ï¼");
 
         if (episodeManager != null)
         {

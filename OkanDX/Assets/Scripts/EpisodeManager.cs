@@ -1,30 +1,30 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class EpisodeManager : MonoBehaviour
 {
     /// <summary>
-    /// ’Eo¬Œ÷iƒMƒ~ƒbƒNƒNƒŠƒAj‚µ‚½‚ÉŒÄ‚Ño‚·ˆ—
+    /// è„±å‡ºæˆåŠŸï¼ˆã‚®ãƒŸãƒƒã‚¯ã‚¯ãƒªã‚¢ï¼‰ã—ãŸæ™‚ã«å‘¼ã³å‡ºã™å‡¦ç†
     /// </summary>
     public void OnClearEpisode()
     {
         if (GameManager.Instance != null)
         {
-            Debug.Log($"ƒGƒsƒ\[ƒh {GameManager.Instance.CurrentEpisodeNumber} ƒNƒŠƒAI");
+            Debug.Log($"ã‚¨ãƒ”ã‚½ãƒ¼ãƒ‰ {GameManager.Instance.CurrentEpisodeNumber} ã‚¯ãƒªã‚¢ï¼");
 
-            // 1. Easy Save‚ÅƒNƒŠƒAó‹µ‚ğ©“®•Û‘¶
+            // 1. Easy Saveã§ã‚¯ãƒªã‚¢çŠ¶æ³ã‚’è‡ªå‹•ä¿å­˜
             GameManager.Instance.CompleteCurrentEpisode();
 
-            // 2. ƒGƒsƒ\[ƒh‘I‘ğ‰æ–Ê‚Ö–ß‚éi‚Ü‚½‚ÍƒŠƒUƒ‹ƒgUI‚ğ•\¦j
+            // 2. ã‚¨ãƒ”ã‚½ãƒ¼ãƒ‰é¸æŠç”»é¢ã¸æˆ»ã‚‹ï¼ˆã¾ãŸã¯ãƒªã‚¶ãƒ«ãƒˆUIã‚’è¡¨ç¤ºï¼‰
             GameManager.Instance.GoToEpisodeSelect();
         }
         else
         {
-            Debug.LogError("GameManager‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñBBootƒV[ƒ“‚©‚çŠJn‚µ‚Ä‚­‚¾‚³‚¢B");
+            Debug.LogError("GameManagerãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã€‚Bootã‚·ãƒ¼ãƒ³ã‹ã‚‰é–‹å§‹ã—ã¦ãã ã•ã„ã€‚");
         }
     }
 
     /// <summary>
-    /// ƒAƒvƒŠ‚ğ’ú‚ß‚ÄƒGƒsƒ\[ƒh‘I‘ğ‚É–ß‚éƒ{ƒ^ƒ“—p
+    /// ã‚¢ãƒ—ãƒªã‚’è«¦ã‚ã¦ã‚¨ãƒ”ã‚½ãƒ¼ãƒ‰é¸æŠã«æˆ»ã‚‹ãƒœã‚¿ãƒ³ç”¨
     /// </summary>
     public void OnClickGiveUp()
     {
