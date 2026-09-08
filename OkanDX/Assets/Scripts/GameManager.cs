@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
     // 現在プレイ中のエピソード番号
     public int CurrentEpisodeNumber { get; private set; } = 1;
 
+    // ★リザルト画面に渡す現在のクリアデータ
+    public EpisodeData CurrentEpisodeData { get; set; }
+
     // Easy Save用のキー名
     private const string SAVE_KEY_CLEARED_EP = "ClearedEpisodeIndex";
 
@@ -66,15 +69,21 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 現在のエピソードをクリアした時に呼ぶ処理
+    /// 現在のエピソードをクリアした時に呼ぶ処理（自動セーブ＆リザルト用データ保存）
     /// </summary>
-    public void CompleteCurrentEpisode()
+    public void CompleteCurrentEpisode(EpisodeData episodeData = null)
     {
+        if (episodeData != null)
+        {
+            CurrentEpisodeData = episodeData;
+            CurrentEpisodeNumber = episodeData.episodeIndex;
+        }
+
         // 初めてクリアしたエピソードの場合のみ記録を更新
         if (CurrentEpisodeNumber > ClearedEpisodeIndex)
         {
             ClearedEpisodeIndex = CurrentEpisodeNumber;
-            SaveProgress();
+            SaveProgress(); // ★自動セーブを実行
         }
     }
 

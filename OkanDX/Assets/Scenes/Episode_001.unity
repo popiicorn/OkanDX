@@ -3644,8 +3644,8 @@ GameObject:
   - component: {fileID: 1535491265}
   - component: {fileID: 1535491268}
   - component: {fileID: 1535491267}
-  - component: {fileID: 1535491266}
   - component: {fileID: 1535491269}
+  - component: {fileID: 1535491270}
   m_Layer: 5
   m_Name: Button_Goal
   m_TagString: Untagged
@@ -3672,25 +3672,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 195}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1535491266
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1535491264}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14e909cf0d4003646beae8da27b2dcb7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectType: 2
-  examineMessage: "\u7279\u306B\u5909\u308F\u3063\u305F\u3068\u3053\u308D\u306F\u306A\u3044\u3088\u3046\u3060\u3002"
-  openDoorSprite: {fileID: 0}
-  targetUIImage: {fileID: 0}
-  closedDoorObject: {fileID: 0}
-  openDoorObject: {fileID: 0}
-  episodeManager: {fileID: 1202200798}
 --- !u!114 &1535491267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3837,6 +3818,20 @@ MonoBehaviour:
   optionalScrambleMode: 0
   optionalShakeRandomnessMode: 0
   optionalString: 
+--- !u!114 &1535491270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1535491264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a9a3228a30d6c04bb363dc876da21ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  episodeData: {fileID: 11400000, guid: 75ca00dcc73cc304c8173482ccf25526, type: 2}
+  resultSceneName: ResultScene
 --- !u!1 &1535781232
 GameObject:
   m_ObjectHideFlags: 0

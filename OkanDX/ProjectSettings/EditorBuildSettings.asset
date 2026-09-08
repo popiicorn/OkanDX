@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/EpisodeSelect.unity
     guid: db6c4368e320fa7478b00043118f72be
   - enabled: 1
+    path: Assets/Scenes/ResultScene.unity
+    guid: 69b5ff773e023b74a9cdd34d70e9f2c3
+  - enabled: 1
     path: Assets/Scenes/Episode_001.unity
     guid: 5647e901717053a4e81c6f74a58972da
   - enabled: 1
