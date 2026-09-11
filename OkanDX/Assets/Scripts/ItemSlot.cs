@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using DG.Tweening;
+using DG.Tweening; // DOTweenを使うために必要
 
 public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
@@ -44,14 +44,28 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     }
 
     /// <summary>
-    /// 選択枠の表示切り替え（アニメーションなし）
+    /// 選択状態の切り替え（外枠の切り替え ＋ 1.1倍拡大アニメーション）
     /// </summary>
     public void SetSelectState(bool isSelected)
     {
+        // 1. 外枠の表示/非表示
         if (selectOutlineImage != null)
         {
-            // アニメーションは行わず、非表示/表示の切り替えのみを行う
             selectOutlineImage.enabled = isSelected;
+        }
+
+        // 2. スロット全体の拡大/縮小アニメーション
+        transform.DOKill(); // 連打時の誤作動防止
+
+        if (isSelected)
+        {
+            // 選択時: 0.1秒かけて1.1倍に拡大
+            transform.DOScale(1.1f, 0.1f).SetEase(Ease.OutQuad);
+        }
+        else
+        {
+            // 解除時: 0.1秒かけて元のサイズ(1.0)に戻す
+            transform.DOScale(1.0f, 0.1f).SetEase(Ease.OutQuad);
         }
     }
 
