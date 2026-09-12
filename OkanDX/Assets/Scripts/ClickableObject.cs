@@ -1,79 +1,129 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems; // UIのイベント検知に必要
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using DG.Tweening;
 
-// IPointerClickHandler を継承することで UI のクリックを直接受け取る
 public class ClickableObject : MonoBehaviour, IPointerClickHandler
 {
     public enum ObjectType
     {
-        Examine, // 調べるだけ（メッセージ表示）
-        Door,    // ドア（クリックで開く画像へ変更）
-        Okan     // おかん（クリックでクリア）
+        Examine,    // ① 調べるだけ（メッセージ表示）
+        Item,       // ② アイテム取得（4つの後処理対応）
+        StateChange,// ③ 状態変化（ドア開閉・箱開け・スイッチ・画像差し替えなど）
+        Okan        // ④ おかん（クリックでクリア＆自動セーブ）
     }
 
-    [Header("オブジェクトの種類")]
+    public enum ItemPostAction
+    {
+        Hide,                   // 消える
+        RemainAndShowText,      // 残って2回目以降テキスト
+        ChangeSpriteAndShowText,// 画像切り替わって2回目以降テキスト
+        SwapObject              // 消えて別オブジェクト表示
+    }
+
+    [Header("■ 基本設定")]
     [SerializeField] private ObjectType objectType = ObjectType.Examine;
 
-    [Header("【調べる】タイプ用の設定")]
+    // -------------------------------------------------------------
+    // 【調べる】タイプ用の設定
+    // -------------------------------------------------------------
+    [Header("■ 【調べる】用の設定")]
     [TextArea(2, 5)]
     [SerializeField] private string examineMessage = "特に変わったところはないようだ。";
 
-    [Header("【ドア】タイプ用の設定")]
-    [Tooltip("画像差し替えで表現する場合（従来通り）")]
-    [SerializeField] private Sprite openDoorSprite;
+    // -------------------------------------------------------------
+    // 【アイテム】タイプ用の設定
+    // -------------------------------------------------------------
+    [Header("■ 【アイテム】用の設定")]
+    [SerializeField] private Item itemData;
+    [SerializeField] private ItemPostAction itemPostAction = ItemPostAction.Hide;
+
+    [Header(" └ 画像切り替え用 (ChangeSprite)")]
+    [SerializeField] private Sprite changedSprite;
+
+    [Header(" └ 別オブジェクト出現用 (SwapObject)")]
+    [SerializeField] private GameObject newObject;
+
+    [Header(" └ 2回目以降のメッセージ (Remain / ChangeSprite)")]
+    [TextArea(2, 5)]
+    [SerializeField] private string inspectAfterGetMessage;
+
+    private bool hasGottenItem = false;
+
+    // -------------------------------------------------------------
+    // 【状態変化】タイプ用の設定（ドア、箱、スイッチ、ギミック等）
+    // -------------------------------------------------------------
+    [Header("■ 【状態変化】用の設定")]
+    [Tooltip("変化後の画像（画像差し替えで表現する場合）")]
+    [SerializeField] private Sprite changedStateSprite;
     [SerializeField] private Image targetUIImage;
 
-    [Header("【ドア】オブジェクト切り替え用の設定")]
-    [Tooltip("閉じたドアのオブジェクト（自分自身、または非表示にしたいオブジェクト）")]
-    [SerializeField] private GameObject closedDoorObject;
+    [Tooltip("変化前のオブジェクト（非表示にするオブジェクト）")]
+    [SerializeField] private GameObject beforeStateObject;
 
-    [Tooltip("開いたドアのオブジェクト（表示させたいオブジェクト）")]
-    [SerializeField] private GameObject openDoorObject;
+    [Tooltip("変化後のオブジェクト（表示するオブジェクト）")]
+    [SerializeField] private GameObject afterStateObject;
 
-    private bool isDoorOpen = false;
+    private bool isStateChanged = false;
 
-    [Header("【おかん】タイプ用の設定")]
-    [SerializeField] private EpisodeManager episodeManager;
+    // -------------------------------------------------------------
+    // 【おかん】タイプ用の設定
+    // -------------------------------------------------------------
+    [Header("■ 【おかん】用の設定")]
+    [SerializeField] private EpisodeData episodeData;
+    [SerializeField] private string resultSceneName = "ResultScene";
 
-    // --- UI（Canvas）上でクリックされた時に自動で呼ばれる関数 ---
+    private Image imageComponent;
+
+    private void Awake()
+    {
+        imageComponent = GetComponent<Image>();
+    }
+
+    // Canvas UI 用クリック検知
     public void OnPointerClick(PointerEventData eventData)
     {
         ExecuteClickAction();
     }
 
-    // --- 2D Collider（Sprite）上でクリックされた時に呼ばれる関数 ---
+    // 2D Collider (Sprite) 用クリック検知
     private void OnMouseDown()
     {
         ExecuteClickAction();
     }
 
     /// <summary>
-    /// クリック時の共通処理
+    /// クリック時のメイン分岐処理
     /// </summary>
     private void ExecuteClickAction()
     {
-        // 1. 拡縮アニメーション
-        AnimateClick();
-
-        // 2. 種類ごとの処理
         switch (objectType)
         {
             case ObjectType.Examine:
-                OnExamine();
+                AnimateClick();
+                ShowMessage(examineMessage);
                 break;
 
-            case ObjectType.Door:
-                OnDoorClick();
+            case ObjectType.Item:
+                OnItemClick();
+                break;
+
+            case ObjectType.StateChange:
+                AnimateClick();
+                OnStateChangeClick();
                 break;
 
             case ObjectType.Okan:
+                AnimateClick();
                 OnOkanClick();
                 break;
         }
     }
 
+    // -------------------------------------------------------------
+    //  アニメーション
+    // -------------------------------------------------------------
     private void AnimateClick()
     {
         transform.DOKill();
@@ -85,54 +135,123 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
         });
     }
 
-    private void OnExamine()
+    // -------------------------------------------------------------
+    //  ObjectType.Item（アイテム取得）
+    // -------------------------------------------------------------
+    private void OnItemClick()
     {
+        if (hasGottenItem)
+        {
+            AnimateClick();
+            ShowMessage(inspectAfterGetMessage);
+            return;
+        }
+
+        if (InventoryManager.Instance == null || itemData == null) return;
+
+        transform.DOKill();
+        transform.localScale = Vector3.one;
+
+        Sequence getSequence = DOTween.Sequence();
+        getSequence
+            .Append(transform.DOScale(0.85f, 0.06f).SetEase(Ease.OutQuad))
+            .Append(transform.DOScale(0f, 0.0f).SetEase(Ease.InQuad))
+            .OnComplete(() =>
+            {
+                bool isAdded = InventoryManager.Instance.AddItem(itemData);
+
+                if (isAdded)
+                {
+                    hasGottenItem = true;
+                    ApplyItemPostAction();
+                }
+                else
+                {
+                    transform.localScale = Vector3.one;
+                }
+            });
+    }
+
+    private void ApplyItemPostAction()
+    {
+        switch (itemPostAction)
+        {
+            case ItemPostAction.Hide:
+                gameObject.SetActive(false);
+                break;
+
+            case ItemPostAction.RemainAndShowText:
+                transform.localScale = Vector3.one;
+                break;
+
+            case ItemPostAction.ChangeSpriteAndShowText:
+                if (imageComponent != null && changedSprite != null)
+                {
+                    imageComponent.sprite = changedSprite;
+                }
+                transform.localScale = Vector3.one;
+                break;
+
+            case ItemPostAction.SwapObject:
+                if (newObject != null)
+                {
+                    newObject.SetActive(true);
+                }
+                gameObject.SetActive(false);
+                break;
+        }
+    }
+
+    // -------------------------------------------------------------
+    //  ObjectType.StateChange（状態変化：ドア、箱、スイッチ等）
+    // -------------------------------------------------------------
+    private void OnStateChangeClick()
+    {
+        if (isStateChanged) return;
+        isStateChanged = true;
+
+        // パターン1: オブジェクト自体の切り替え
+        if (beforeStateObject != null && afterStateObject != null)
+        {
+            beforeStateObject.SetActive(false);
+            afterStateObject.SetActive(true);
+        }
+        // パターン2: 画像（Sprite）の差し替え
+        else if (targetUIImage != null && changedStateSprite != null)
+        {
+            targetUIImage.sprite = changedStateSprite;
+        }
+    }
+
+    // -------------------------------------------------------------
+    //  ObjectType.Okan（クリア＆自動セーブ）
+    // -------------------------------------------------------------
+    private void OnOkanClick()
+    {
+        if (GameManager.Instance != null)
+        {
+            if (episodeData != null)
+            {
+                GameManager.Instance.CompleteCurrentEpisode(episodeData);
+            }
+            SceneManager.LoadScene(resultSceneName);
+        }
+    }
+
+    // -------------------------------------------------------------
+    //  共通メッセージ表示
+    // -------------------------------------------------------------
+    private void ShowMessage(string msg)
+    {
+        if (string.IsNullOrEmpty(msg)) return;
+
         if (MessageUI.Instance != null)
         {
-            MessageUI.Instance.ShowMessage(examineMessage);
+            MessageUI.Instance.ShowMessage(msg);
         }
         else
         {
             Debug.LogWarning("MessageUIのInstanceが見つかりません。");
-        }
-    }
-
-    private void OnDoorClick()
-    {
-        if (isDoorOpen) return;
-
-        isDoorOpen = true;
-
-        // --- パターンA: オブジェクトの表示・非表示切り替え ---
-        if (closedDoorObject != null && openDoorObject != null)
-        {
-            closedDoorObject.SetActive(false); // 閉じた扉を非表示
-            openDoorObject.SetActive(true);    // 開いた扉を表示
-        }
-        // --- パターンB: 画像の差し替え（従来の方法） ---
-        else if (targetUIImage != null && openDoorSprite != null)
-        {
-            targetUIImage.sprite = openDoorSprite;
-        }
-
-        Debug.Log("ドアが開いた！");
-    }
-
-    private void OnOkanClick()
-    {
-        Debug.Log("おかんを発見！クリア！");
-
-        if (episodeManager != null)
-        {
-            episodeManager.OnClearEpisode();
-        }
-        else
-        {
-            var manager = FindObjectOfType<EpisodeManager>();
-            if (manager != null)
-            {
-                manager.OnClearEpisode();
-            }
         }
     }
 }
