@@ -6,6 +6,9 @@ using System.Collections.Generic;
 
 public class EpisodeSelectManager : MonoBehaviour
 {
+    [Header("エピソードデータ（順番通りにセット）")]
+    [SerializeField] private List<EpisodeData> episodeDataList;
+
     [Header("UI参照")]
     [SerializeField] private RectTransform panelA;
     [SerializeField] private RectTransform panelB;
@@ -34,7 +37,7 @@ public class EpisodeSelectManager : MonoBehaviour
 
     private RectTransform activePanel;
     private RectTransform inactivePanel;
-    private List<Image> dotImages = new List<Image>(); // 生成したドットのImage群
+    private List<Image> dotImages = new List<Image>();
 
     private void Start()
     {
@@ -44,7 +47,7 @@ public class EpisodeSelectManager : MonoBehaviour
         activePanel.anchoredPosition = Vector2.zero;
         inactivePanel.anchoredPosition = new Vector2(1920, 0);
 
-        GenerateDots(); // ドットの自動生成
+        GenerateDots();
         SetupPanelData(activePanel, currentPage);
         UpdateUIState();
     }
@@ -56,14 +59,12 @@ public class EpisodeSelectManager : MonoBehaviour
     {
         int maxPage = Mathf.CeilToInt((float)totalEpisodes / ITEMS_PER_PAGE);
 
-        // 既存のドットをクリア
         foreach (Transform child in pageIndicatorContainer)
         {
             Destroy(child.gameObject);
         }
         dotImages.Clear();
 
-        // ページ数分だけドットを生成
         for (int i = 0; i < maxPage; i++)
         {
             GameObject dot = Instantiate(pageDotPrefab, pageIndicatorContainer);
@@ -85,13 +86,11 @@ public class EpisodeSelectManager : MonoBehaviour
             if (i == currentPage)
             {
                 dotImages[i].color = activeDotColor;
-                // 0.2秒かけて100%のサイズになめらかに拡大
                 dotImages[i].transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutBack);
             }
             else
             {
                 dotImages[i].color = inactiveDotColor;
-                // 0.2秒かけて90%のサイズになめらかに縮小
                 dotImages[i].transform.DOScale(new Vector3(0.9f, 0.9f, 1f), 0.2f);
             }
         }
@@ -105,20 +104,36 @@ public class EpisodeSelectManager : MonoBehaviour
         for (int i = 0; i < buttons.Length; i++)
         {
             int episodeNumber = (pageIndex * ITEMS_PER_PAGE) + i + 1;
+            int dataIndex = episodeNumber - 1; // List用インデックス
 
             if (episodeNumber <= totalEpisodes)
             {
                 buttons[i].gameObject.SetActive(true);
 
+                // EpisodeDataからタイトルを取得（データがある場合）
                 TMP_Text btnText = buttons[i].GetComponentInChildren<TMP_Text>();
-                if (btnText != null) btnText.text = $"Ep.{episodeNumber:D3}";
+                if (btnText != null)
+                {
+                    if (episodeDataList != null && dataIndex < episodeDataList.Count && episodeDataList[dataIndex] != null)
+                    {
+                        btnText.text = episodeDataList[dataIndex].FullTitleText;
+                    }
+                    else
+                    {
+                        btnText.text = $"エピソード{episodeNumber}";
+                    }
+                }
 
                 bool isUnlocked = episodeNumber <= clearedIndex + 1;
                 buttons[i].interactable = isUnlocked;
 
-                buttons[i].onClick.RemoveAllListeners();
+                // ★修正点：RemoveAllListeners() をやめ、プログラム登録分のみListenerを安全に登録
+                EpisodeData targetData = (episodeDataList != null && dataIndex < episodeDataList.Count) ? episodeDataList[dataIndex] : null;
                 int epNum = episodeNumber;
-                buttons[i].onClick.AddListener(() => OnSelectEpisode(epNum));
+
+                // ページ切り替え時にクリックイベントが重複登録されるのを防ぐため、一旦この処理だけを外してから再登録
+                buttons[i].onClick.RemoveListener(() => OnSelectEpisode(epNum, targetData));
+                buttons[i].onClick.AddListener(() => OnSelectEpisode(epNum, targetData));
             }
             else
             {
@@ -127,9 +142,6 @@ public class EpisodeSelectManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 右ボタン（次へ）を押した時
-    /// </summary>
     public void OnClickNextPage()
     {
         if (isAnimating) return;
@@ -138,7 +150,6 @@ public class EpisodeSelectManager : MonoBehaviour
 
         AnimateButton(nextButton.transform);
 
-        // 最後のページなら最初のページ(0)へ、それ以外は次のページへ
         if (currentPage >= maxPage)
         {
             currentPage = 0;
@@ -151,9 +162,6 @@ public class EpisodeSelectManager : MonoBehaviour
         SlidePanel(isNext: true);
     }
 
-    /// <summary>
-    /// 左ボタン（前へ）を押した時
-    /// </summary>
     public void OnClickPrevPage()
     {
         if (isAnimating) return;
@@ -162,7 +170,6 @@ public class EpisodeSelectManager : MonoBehaviour
 
         AnimateButton(prevButton.transform);
 
-        // 最初のページ(0)なら最後のページへ、それ以外は前のページへ
         if (currentPage <= 0)
         {
             currentPage = maxPage;
@@ -175,16 +182,11 @@ public class EpisodeSelectManager : MonoBehaviour
         SlidePanel(isNext: false);
     }
 
-    /// <summary>
-    /// ボタンをクリックした時のポヨンとした拡縮アニメーション
-    /// </summary>
     private void AnimateButton(Transform buttonTransform)
     {
-        // 連打時のサイズ崩れを防ぐため一旦スケールをリセットしてTweenをキル
         buttonTransform.DOKill();
         buttonTransform.localScale = Vector3.one;
 
-        // 一瞬 0.85倍 に縮んでから、少し反動をつけて 1.0倍 に戻る
         buttonTransform.DOScale(0.85f, 0.08f)
             .OnComplete(() =>
             {
@@ -220,28 +222,31 @@ public class EpisodeSelectManager : MonoBehaviour
             });
     }
 
-    /// <summary>
-    /// UI状態の更新（矢印は常に表示）
-    /// </summary>
     private void UpdateUIState()
     {
         int maxPage = Mathf.CeilToInt((float)totalEpisodes / ITEMS_PER_PAGE) - 1;
 
         if (pageText != null) pageText.text = $"{currentPage + 1} / {maxPage + 1}";
 
-        // ★ループ仕様のため、左右の矢印ボタンは常に表示（True）にする
         if (prevButton != null) prevButton.gameObject.SetActive(true);
         if (nextButton != null) nextButton.gameObject.SetActive(true);
 
-        // ドット表示の更新
         UpdateDots();
     }
 
-    private void OnSelectEpisode(int episodeNumber)
+    private void OnSelectEpisode(int episodeNumber, EpisodeData data)
     {
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.StartEpisode(episodeNumber);
+            // GameManager側に EpisodeData を渡してエピソード開始
+            if (data != null)
+            {
+                GameManager.Instance.StartEpisode(data);
+            }
+            else
+            {
+                GameManager.Instance.StartEpisode(episodeNumber);
+            }
         }
     }
 }

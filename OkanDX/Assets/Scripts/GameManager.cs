@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour
     // ★リザルト画面に渡す現在のクリアデータ
     public EpisodeData CurrentEpisodeData { get; set; }
 
+    // ★EpisodeTitleUI等から参照用（CurrentEpisodeDataのエイリアス）
+    public EpisodeData CurrentEpisode => CurrentEpisodeData;
+
     // Easy Save用のキー名
     private const string SAVE_KEY_CLEARED_EP = "ClearedEpisodeIndex";
 
@@ -52,6 +55,24 @@ public class GameManager : MonoBehaviour
     public void GoToEpisodeSelect()
     {
         SceneManager.LoadScene("EpisodeSelect");
+    }
+
+    /// <summary>
+    /// 指定したエピソードを EpisodeData を使用して開始
+    /// </summary>
+    public void StartEpisode(EpisodeData episodeData)
+    {
+        if (episodeData == null) return;
+
+        CurrentEpisodeData = episodeData;
+        CurrentEpisodeNumber = episodeData.episodeIndex;
+
+        string sceneName = !string.IsNullOrEmpty(episodeData.nextSceneName)
+            ? episodeData.nextSceneName
+            : $"Episode_{episodeData.episodeIndex:D3}";
+
+        Debug.Log($"シーン読み込み: {sceneName}");
+        SceneManager.LoadScene(sceneName);
     }
 
     /// <summary>
