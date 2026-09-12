@@ -38,6 +38,59 @@ public class GameManager : MonoBehaviour
     }
 
     // ================================================
+    //  自動UI生成イベントの登録
+    // ================================================
+
+    private void OnEnable()
+    {
+        // シーン読み込み完了イベントを登録
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        // イベント解除（メモリリーク防止）
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    /// <summary>
+    /// シーン読み込み完了時に自動実行される処理
+    /// </summary>
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // エピソードシーン（名前が "Episode_" から始まるシーン）の時だけタイトルUIを自動生成
+        if (scene.name.StartsWith("Episode_"))
+        {
+            SpawnEpisodeTitleUI();
+        }
+    }
+
+    /// <summary>
+    /// Resources/UI/EpisodeTitlePanel を読み込んで現在のCanvas内に生成する
+    /// </summary>
+    private void SpawnEpisodeTitleUI()
+    {
+        // シーン内の Canvas を検索
+        Canvas mainCanvas = FindFirstObjectByType<Canvas>();
+        if (mainCanvas == null)
+        {
+            Debug.LogWarning("[GameManager] シーン内に Canvas が見つかりませんでした。");
+            return;
+        }
+
+        // Resources/UI/EpisodeTitlePanel をロード
+        GameObject prefab = Resources.Load<GameObject>("UI/EpisodeTitlePanel");
+        if (prefab != null)
+        {
+            Instantiate(prefab, mainCanvas.transform);
+        }
+        else
+        {
+            Debug.LogWarning("[GameManager] Resources/UI/EpisodeTitlePanel が見つかりませんでした。フォルダ配置を確認してください。");
+        }
+    }
+
+    // ================================================
     //  シーン遷移の処理
     // ================================================
 
