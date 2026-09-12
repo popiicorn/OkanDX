@@ -31,6 +31,10 @@ public class EpisodeSelectManager : MonoBehaviour
     [SerializeField] private float slideDuration = 0.35f;
     [SerializeField] private Ease slideEase = Ease.OutCubic;
 
+    [Header("未解放ボタンのカラー設定")]
+    [SerializeField] private Color lockedButtonColor = new Color(0.5f, 0.5f, 0.5f, 1f); // 暗めのグレー
+    [SerializeField] private Color normalButtonColor = Color.white;
+
     private const int ITEMS_PER_PAGE = 8;
     private int currentPage = 0;
     private bool isAnimating = false;
@@ -52,9 +56,6 @@ public class EpisodeSelectManager : MonoBehaviour
         UpdateUIState();
     }
 
-    /// <summary>
-    /// 総ページ数に合わせてドット（〇）を生成する
-    /// </summary>
     private void GenerateDots()
     {
         int maxPage = Mathf.CeilToInt((float)totalEpisodes / ITEMS_PER_PAGE);
@@ -76,9 +77,6 @@ public class EpisodeSelectManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// ドットの色を現在のページに合わせて更新する
-    /// </summary>
     private void UpdateDots()
     {
         for (int i = 0; i < dotImages.Count; i++)
@@ -104,36 +102,63 @@ public class EpisodeSelectManager : MonoBehaviour
         for (int i = 0; i < buttons.Length; i++)
         {
             int episodeNumber = (pageIndex * ITEMS_PER_PAGE) + i + 1;
-            int dataIndex = episodeNumber - 1; // List用インデックス
+            int dataIndex = episodeNumber - 1;
 
             if (episodeNumber <= totalEpisodes)
             {
                 buttons[i].gameObject.SetActive(true);
 
-                // EpisodeDataからタイトルを取得（データがある場合）
-                TMP_Text btnText = buttons[i].GetComponentInChildren<TMP_Text>();
-                if (btnText != null)
+                bool isUnlocked = episodeNumber <= clearedIndex + 1;
+
+                TMP_Text[] texts = buttons[i].GetComponentsInChildren<TMP_Text>();
+
+                if (texts.Length >= 2)
                 {
+                    TMP_Text numberText = texts[0];
+                    TMP_Text titleText = texts[1];
+
                     if (episodeDataList != null && dataIndex < episodeDataList.Count && episodeDataList[dataIndex] != null)
                     {
-                        btnText.text = episodeDataList[dataIndex].FullTitleText;
+                        numberText.text = episodeDataList[dataIndex].EpisodeNumberText;
+                        titleText.text = isUnlocked ? episodeDataList[dataIndex].EpisodeTitleText : "？？？";
                     }
                     else
                     {
-                        btnText.text = $"エピソード{episodeNumber}";
+                        numberText.text = $"エピソード{episodeNumber}";
+                        titleText.text = "？？？";
+                    }
+                }
+                else if (texts.Length == 1)
+                {
+                    if (episodeDataList != null && dataIndex < episodeDataList.Count && episodeDataList[dataIndex] != null)
+                    {
+                        texts[0].text = isUnlocked
+                            ? episodeDataList[dataIndex].FullTitleText
+                            : $"{episodeDataList[dataIndex].EpisodeNumberText}  ？？？";
+                    }
+                    else
+                    {
+                        texts[0].text = $"エピソード{episodeNumber}  ？？？";
                     }
                 }
 
-                bool isUnlocked = episodeNumber <= clearedIndex + 1;
-                buttons[i].interactable = isUnlocked;
+                // ★ボタン自体は常に interactable = true にしてアニメーションを受け付ける
+                buttons[i].interactable = true;
 
-                // ★修正点：RemoveAllListeners() をやめ、プログラム登録分のみListenerを安全に登録
+                // ★見た目のグレーアウト処理（ボタン画像の色を切り替え）
+                Image btnImage = buttons[i].GetComponent<Image>();
+                if (btnImage != null)
+                {
+                    btnImage.color = isUnlocked ? normalButtonColor : lockedButtonColor;
+                }
+
                 EpisodeData targetData = (episodeDataList != null && dataIndex < episodeDataList.Count) ? episodeDataList[dataIndex] : null;
                 int epNum = episodeNumber;
+                Button targetButton = buttons[i];
 
-                // ページ切り替え時にクリックイベントが重複登録されるのを防ぐため、一旦この処理だけを外してから再登録
-                buttons[i].onClick.RemoveListener(() => OnSelectEpisode(epNum, targetData));
-                buttons[i].onClick.AddListener(() => OnSelectEpisode(epNum, targetData));
+                targetButton.onClick.RemoveAllListeners();
+                // ★クリック時に isUnlocked の状態も渡す
+                targetButton.onClick.AddListener(() => OnSelectEpisode(targetButton.transform, epNum, targetData, isUnlocked));
             }
             else
             {
@@ -182,15 +207,17 @@ public class EpisodeSelectManager : MonoBehaviour
         SlidePanel(isNext: false);
     }
 
-    private void AnimateButton(Transform buttonTransform)
+    private void AnimateButton(Transform buttonTransform, System.Action onComplete = null)
     {
         buttonTransform.DOKill();
         buttonTransform.localScale = Vector3.one;
 
-        buttonTransform.DOScale(0.85f, 0.08f)
+        buttonTransform.DOScale(0.95f, 0.08f)
             .OnComplete(() =>
             {
-                buttonTransform.DOScale(1f, 0.15f).SetEase(Ease.OutBack);
+                buttonTransform.DOScale(1f, 0.15f)
+                    .SetEase(Ease.OutBack)
+                    .OnComplete(() => onComplete?.Invoke());
             });
     }
 
@@ -234,19 +261,33 @@ public class EpisodeSelectManager : MonoBehaviour
         UpdateDots();
     }
 
-    private void OnSelectEpisode(int episodeNumber, EpisodeData data)
+    /// <summary>
+    /// エピソード選択時の処理
+    /// </summary>
+    private void OnSelectEpisode(Transform btnTransform, int episodeNumber, EpisodeData data, bool isUnlocked)
     {
-        if (GameManager.Instance != null)
+        if (isAnimating) return;
+
+        // ★解放済み・未解放に関わらず「ポヨン」アニメーションを再生
+        AnimateButton(btnTransform, () =>
         {
-            // GameManager側に EpisodeData を渡してエピソード開始
-            if (data != null)
+            // ★解放済みのときだけシーン遷移を実行
+            if (isUnlocked && GameManager.Instance != null)
             {
-                GameManager.Instance.StartEpisode(data);
+                if (data != null)
+                {
+                    GameManager.Instance.StartEpisode(data);
+                }
+                else
+                {
+                    GameManager.Instance.StartEpisode(episodeNumber);
+                }
             }
-            else
+            else if (!isUnlocked)
             {
-                GameManager.Instance.StartEpisode(episodeNumber);
+                // 必要に応じて未解放時のSE（ブッブー音など）をここで鳴らせます
+                Debug.Log($"エピソード {episodeNumber} はまだ解放されていません。");
             }
-        }
+        });
     }
 }

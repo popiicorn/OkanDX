@@ -1497,6 +1497,8 @@ MonoBehaviour:
   totalEpisodes: 32
   slideDuration: 0.35
   slideEase: 9
+  lockedButtonColor: {r: 0.7058824, g: 0.7058824, b: 0.7058824, a: 1}
+  normalButtonColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!4 &1151101456
 Transform:
   m_ObjectHideFlags: 0
