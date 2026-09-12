@@ -10,8 +10,9 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
     {
         Examine,    // ① 調べるだけ（メッセージ表示）
         Item,       // ② アイテム取得（4つの後処理対応）
-        StateChange,// ③ 状態変化（ドア開閉・箱開け・スイッチ・画像差し替えなど）
-        Okan        // ④ おかん（クリックでクリア＆自動セーブ）
+        StateChange,// ③ 状態変化（条件なしでのドア開閉・画像差し替えなど）
+        ItemUse,    // ④ 指定アイテム使用による状態変化・ギミック解除
+        Okan        // ⑤ おかん（クリックでクリア＆自動セーブ）
     }
 
     public enum ItemPostAction
@@ -33,9 +34,9 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
     [SerializeField] private string examineMessage = "特に変わったところはないようだ。";
 
     // -------------------------------------------------------------
-    // 【アイテム】タイプ用の設定
+    // 【アイテム取得】タイプ用の設定
     // -------------------------------------------------------------
-    [Header("■ 【アイテム】用の設定")]
+    [Header("■ 【アイテム取得】用の設定")]
     [SerializeField] private Item itemData;
     [SerializeField] private ItemPostAction itemPostAction = ItemPostAction.Hide;
 
@@ -52,18 +53,33 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
     private bool hasGottenItem = false;
 
     // -------------------------------------------------------------
-    // 【状態変化】タイプ用の設定（ドア、箱、スイッチ、ギミック等）
+    // 【状態変化 / アイテム使用】タイプ用の設定
     // -------------------------------------------------------------
-    [Header("■ 【状態変化】用の設定")]
+    [Header("■ 【状態変化・アイテム使用】共通設定")]
     [Tooltip("変化後の画像（画像差し替えで表現する場合）")]
     [SerializeField] private Sprite changedStateSprite;
     [SerializeField] private Image targetUIImage;
 
-    [Tooltip("変化前のオブジェクト（非表示にするオブジェクト）")]
+    [Tooltip("変化前のオブジェクト（非表示にするオブジェクト/自分自身など）")]
     [SerializeField] private GameObject beforeStateObject;
 
-    [Tooltip("変化後のオブジェクト（表示するオブジェクト）")]
+    [Tooltip("変化後のオブジェクト（出現させる新しいオブジェクト）")]
     [SerializeField] private GameObject afterStateObject;
+
+    [Header("■ 【アイテム使用】専用設定")]
+    [Tooltip("使用に必要なアイテムのID（例: key_01）")]
+    [SerializeField] private string requiredItemID = "key_01";
+
+    [Tooltip("使用時にインベントリからそのアイテムを削除するか")]
+    [SerializeField] private bool consumeItemOnUse = true;
+
+    [Header(" └ メッセージ設定")]
+    [TextArea(2, 5)]
+    [SerializeField] private string wrongItemMessage = "鍵がかかっている。";
+    [TextArea(2, 5)]
+    [SerializeField] private string successMessage = "鍵を使って開けた！";
+    [TextArea(2, 5)]
+    [SerializeField] private string afterUnlockedMessage = "すでに開いている。";
 
     private bool isStateChanged = false;
 
@@ -81,21 +97,16 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
         imageComponent = GetComponent<Image>();
     }
 
-    // Canvas UI 用クリック検知
     public void OnPointerClick(PointerEventData eventData)
     {
         ExecuteClickAction();
     }
 
-    // 2D Collider (Sprite) 用クリック検知
     private void OnMouseDown()
     {
         ExecuteClickAction();
     }
 
-    /// <summary>
-    /// クリック時のメイン分岐処理
-    /// </summary>
     private void ExecuteClickAction()
     {
         switch (objectType)
@@ -114,6 +125,11 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
                 OnStateChangeClick();
                 break;
 
+            case ObjectType.ItemUse:
+                AnimateClick();
+                OnItemUseClick();
+                break;
+
             case ObjectType.Okan:
                 AnimateClick();
                 OnOkanClick();
@@ -121,9 +137,6 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    // -------------------------------------------------------------
-    //  アニメーション
-    // -------------------------------------------------------------
     private void AnimateClick()
     {
         transform.DOKill();
@@ -135,9 +148,6 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
         });
     }
 
-    // -------------------------------------------------------------
-    //  ObjectType.Item（アイテム取得）
-    // -------------------------------------------------------------
     private void OnItemClick()
     {
         if (hasGottenItem)
@@ -202,30 +212,66 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    // -------------------------------------------------------------
-    //  ObjectType.StateChange（状態変化：ドア、箱、スイッチ等）
-    // -------------------------------------------------------------
     private void OnStateChangeClick()
     {
         if (isStateChanged) return;
+        ChangeState();
+    }
+
+    private void OnItemUseClick()
+    {
+        if (isStateChanged)
+        {
+            ShowMessage(afterUnlockedMessage);
+            return;
+        }
+
+        // 選択中のアイテムを取得
+        Item selected = InventoryManager.Instance != null ? InventoryManager.Instance.SelectedItem : null;
+
+        // 【成功】選択アイテムの id と requiredItemID が一致する場合
+        if (selected != null && !string.IsNullOrEmpty(selected.id) && selected.id == requiredItemID)
+        {
+            if (consumeItemOnUse)
+            {
+                InventoryManager.Instance.RemoveSelectedItem();
+            }
+
+            ShowMessage(successMessage);
+            ChangeState();
+        }
+        else
+        {
+            ShowMessage(wrongItemMessage);
+        }
+    }
+
+    private void ChangeState()
+    {
         isStateChanged = true;
 
-        // パターン1: オブジェクト自体の切り替え
-        if (beforeStateObject != null && afterStateObject != null)
+        if (beforeStateObject != null || afterStateObject != null)
         {
-            beforeStateObject.SetActive(false);
-            afterStateObject.SetActive(true);
+            if (beforeStateObject != null)
+            {
+                beforeStateObject.SetActive(false);
+            }
+            else
+            {
+                gameObject.SetActive(false);
+            }
+
+            if (afterStateObject != null)
+            {
+                afterStateObject.SetActive(true);
+            }
         }
-        // パターン2: 画像（Sprite）の差し替え
         else if (targetUIImage != null && changedStateSprite != null)
         {
             targetUIImage.sprite = changedStateSprite;
         }
     }
 
-    // -------------------------------------------------------------
-    //  ObjectType.Okan（クリア＆自動セーブ）
-    // -------------------------------------------------------------
     private void OnOkanClick()
     {
         if (GameManager.Instance != null)
@@ -238,9 +284,6 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    // -------------------------------------------------------------
-    //  共通メッセージ表示
-    // -------------------------------------------------------------
     private void ShowMessage(string msg)
     {
         if (string.IsNullOrEmpty(msg)) return;

@@ -662,11 +662,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectType: 0
   examineMessage: "\u304A\u304B\u3093\u306E\u65E5\u8A18"
-  openDoorSprite: {fileID: 0}
+  itemData:
+    id: 
+    itemName: 
+    description: 
+    icon: {fileID: 0}
+  itemPostAction: 0
+  changedSprite: {fileID: 0}
+  newObject: {fileID: 0}
+  inspectAfterGetMessage: 
+  changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
-  closedDoorObject: {fileID: 0}
-  openDoorObject: {fileID: 0}
-  episodeManager: {fileID: 0}
+  beforeStateObject: {fileID: 0}
+  afterStateObject: {fileID: 0}
+  episodeData: {fileID: 0}
+  resultSceneName: ResultScene
 --- !u!1 &215538331
 GameObject:
   m_ObjectHideFlags: 0
@@ -979,13 +989,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14e909cf0d4003646beae8da27b2dcb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectType: 1
+  objectType: 2
   examineMessage: "\u7279\u306B\u5909\u308F\u3063\u305F\u3068\u3053\u308D\u306F\u306A\u3044\u3088\u3046\u3060\u3002"
-  openDoorSprite: {fileID: 0}
+  itemData:
+    id: 
+    itemName: 
+    description: 
+    icon: {fileID: 0}
+  itemPostAction: 0
+  changedSprite: {fileID: 0}
+  newObject: {fileID: 0}
+  inspectAfterGetMessage: 
+  changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
-  closedDoorObject: {fileID: 321421878}
-  openDoorObject: {fileID: 1103351680}
-  episodeManager: {fileID: 0}
+  beforeStateObject: {fileID: 321421878}
+  afterStateObject: {fileID: 1103351680}
+  episodeData: {fileID: 0}
+  resultSceneName: ResultScene
 --- !u!1 &334628293
 GameObject:
   m_ObjectHideFlags: 0
@@ -1462,11 +1482,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectType: 0
   examineMessage: "\u9152\u5C4B\u304B\u3089\u3082\u3089\u3063\u305F\u30AB\u30EC\u30F3\u30C0\u30FC"
-  openDoorSprite: {fileID: 0}
+  itemData:
+    id: 
+    itemName: 
+    description: 
+    icon: {fileID: 0}
+  itemPostAction: 0
+  changedSprite: {fileID: 0}
+  newObject: {fileID: 0}
+  inspectAfterGetMessage: 
+  changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
-  closedDoorObject: {fileID: 0}
-  openDoorObject: {fileID: 0}
-  episodeManager: {fileID: 0}
+  beforeStateObject: {fileID: 0}
+  afterStateObject: {fileID: 0}
+  episodeData: {fileID: 0}
+  resultSceneName: ResultScene
 --- !u!114 &576480296
 MonoBehaviour:
   m_ObjectHideFlags: 0
