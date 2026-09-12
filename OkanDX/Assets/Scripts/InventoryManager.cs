@@ -21,6 +21,19 @@ public class InventoryManager : MonoBehaviour
     [Tooltip("アイテムスロットからの表示位置のズレ（X, Y）")]
     [SerializeField] private Vector2 tooltipOffset = new Vector2(0f, 100f);
 
+    [Header("ツールチップ アニメーション設定")]
+    [Tooltip("ポヨン演出の開始スケール（例: 0.5）")]
+    [SerializeField] private float baseStartScale = 0.5f;
+
+    [Tooltip("表示完了時の目標スケール（通常: 1.0）")]
+    [SerializeField] private float targetScale = 1.0f;
+
+    [Tooltip("表示にかかる時間（秒）")]
+    [SerializeField] private float showDuration = 0.15f;
+
+    [Tooltip("非表示にかかる時間（秒）")]
+    [SerializeField] private float hideDuration = 0.1f;
+
     private int selectedIndex = -1; // -1 は未選択
 
     public Item SelectedItem => (selectedIndex >= 0 && selectedIndex < itemSlots.Count) ? itemSlots[selectedIndex].CurrentItem : null;
@@ -42,7 +55,11 @@ public class InventoryManager : MonoBehaviour
             }
         }
 
-        if (tooltipPanel != null) tooltipPanel.SetActive(false);
+        if (tooltipPanel != null)
+        {
+            tooltipPanel.transform.localScale = Vector3.zero;
+            tooltipPanel.SetActive(false);
+        }
     }
 
     /// <summary>
@@ -139,13 +156,29 @@ public class InventoryManager : MonoBehaviour
 
         tooltipPanel.SetActive(true);
         tooltipPanel.transform.DOKill();
-        tooltipPanel.transform.localScale = Vector3.zero;
-        tooltipPanel.transform.DOScale(Vector3.one, 0.15f).SetEase(Ease.OutBack);
+
+        // ★ 一度 0.5 の大きさからスタートさせて、そこから 1.0 へポヨンと拡大
+        tooltipPanel.transform.localScale = Vector3.one * baseStartScale;
+
+        tooltipPanel.transform.DOScale(Vector3.one * targetScale, showDuration)
+            .SetEase(Ease.OutBack)
+            .SetUpdate(true);
     }
 
     public void HideItemTooltip()
     {
         if (tooltipPanel == null) return;
-        tooltipPanel.SetActive(false);
+
+        tooltipPanel.transform.DOKill();
+
+        // ★ 1.0 から 0.5 へシュッと縮み、終わったら一瞬で 0 に落として非表示にする
+        tooltipPanel.transform.DOScale(Vector3.one * baseStartScale, hideDuration)
+            .SetEase(Ease.InBack)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                tooltipPanel.transform.localScale = Vector3.zero; // 完全に消す
+                tooltipPanel.SetActive(false);
+            });
     }
 }

@@ -17,7 +17,17 @@ public class MessageUI : MonoBehaviour
     [SerializeField] private TMP_Text messageText;
 
     [Header("アニメーション設定")]
-    [SerializeField] private float popupDuration = 0.25f; // ポヨンにかかる時間
+    [Tooltip("ポヨン演出の開始スケール（例: 0.5）")]
+    [SerializeField] private float baseStartScale = 0.5f;
+
+    [Tooltip("表示完了時の目標スケール（通常: 1.0）")]
+    [SerializeField] private float targetScale = 1.0f;
+
+    [Tooltip("ポヨンにかかる時間（表示）")]
+    [SerializeField] private float popupDuration = 0.25f;
+
+    [Tooltip("シュッと閉じるにかかる時間（非表示）")]
+    [SerializeField] private float hideDuration = 0.15f;
 
     private void Awake()
     {
@@ -31,7 +41,7 @@ public class MessageUI : MonoBehaviour
             return;
         }
 
-        // 編集時に表示オンになっていても、起動時に自動で非表示＆スケールゼロにする
+        // 起動時は完全にスケール0にする（画面に残らないように）
         if (messagePanelTransform != null)
         {
             messagePanelTransform.localScale = Vector3.zero;
@@ -45,7 +55,6 @@ public class MessageUI : MonoBehaviour
 
     private void Start()
     {
-        // 起動時は非表示
         if (messageLayer != null) messageLayer.SetActive(false);
     }
 
@@ -66,14 +75,14 @@ public class MessageUI : MonoBehaviour
 
         if (messagePanelTransform != null)
         {
-            // 進行中のアニメーションをキャンセルしてスケールを0にする
             messagePanelTransform.DOKill();
-            messagePanelTransform.localScale = Vector3.zero;
 
-            // 0 から 1.0 へ向かって反動をつけて拡大（Ease.OutBack）
-            messagePanelTransform.DOScale(Vector3.one, popupDuration)
-     .SetEase(Ease.OutBack)
-     .SetUpdate(true); // ← SetUpdate(true) に変更
+            // ★一度 0.5 の大きさからスタートさせて、そこから 1.0 へポヨンと拡大
+            messagePanelTransform.localScale = Vector3.one * baseStartScale;
+
+            messagePanelTransform.DOScale(Vector3.one * targetScale, popupDuration)
+                .SetEase(Ease.OutBack)
+                .SetUpdate(true);
         }
     }
 
@@ -85,11 +94,15 @@ public class MessageUI : MonoBehaviour
         if (messagePanelTransform != null)
         {
             messagePanelTransform.DOKill();
-            // シュッと縮んでから非表示にする
-            messagePanelTransform.DOScale(Vector3.zero, 0.15f)
+
+            // ★ 1.0 から 0.5 へシュッと縮み、終わったら一瞬で 0 に落として非表示にする
+            messagePanelTransform.DOScale(Vector3.one * baseStartScale, hideDuration)
                 .SetEase(Ease.InBack)
+                .SetUpdate(true)
                 .OnComplete(() =>
                 {
+                    messagePanelTransform.localScale = Vector3.zero; // 完全に消す
+
                     if (messageLayer != null)
                     {
                         messageLayer.SetActive(false);
