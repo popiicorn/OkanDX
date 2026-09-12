@@ -82,11 +82,31 @@ public class GameManager : MonoBehaviour
     {
         CurrentEpisodeNumber = episodeNumber;
 
+        // ★追加修正: ResourcesからEpisodeDataを自動検索して CurrentEpisodeData を更新
+        EpisodeData loadedData = GetEpisodeData(episodeNumber);
+        if (loadedData != null)
+        {
+            CurrentEpisodeData = loadedData;
+        }
+        else
+        {
+            Debug.LogWarning($"[GameManager] EpisodeData_{episodeNumber:D3} の自動ロードに失敗しました。Resources/EpisodeData/ フォルダを確認してください。");
+        }
+
         // :D3 で「数字を3桁でゼロ埋め（1 -> 001）」にする
         string sceneName = $"Episode_{episodeNumber:D3}";
 
         Debug.Log($"シーン読み込み: {sceneName}");
         SceneManager.LoadScene(sceneName);
+    }
+
+    /// <summary>
+    /// ★追加: 指定したエピソード番号の EpisodeData を Resources から取得する
+    /// </summary>
+    public EpisodeData GetEpisodeData(int episodeNumber)
+    {
+        string dataPath = $"EpisodeData/EpisodeData_{episodeNumber:D3}";
+        return Resources.Load<EpisodeData>(dataPath);
     }
 
     /// <summary>

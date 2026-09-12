@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class EpisodeSelectManager : MonoBehaviour
 {
-    [Header("エピソードデータ（順番通りにセット）")]
+    [Header("エピソードデータ（手動セット用：基本は空でもResourcesから自動ロードされます）")]
     [SerializeField] private List<EpisodeData> episodeDataList;
 
     [Header("UI参照")]
@@ -110,6 +110,17 @@ public class EpisodeSelectManager : MonoBehaviour
 
                 bool isUnlocked = episodeNumber <= clearedIndex + 1;
 
+                // ★追加: 最初にInspectorのリストを確認し、無ければ GameManager 経由で Resources から取得
+                EpisodeData currentData = null;
+                if (episodeDataList != null && dataIndex < episodeDataList.Count && episodeDataList[dataIndex] != null)
+                {
+                    currentData = episodeDataList[dataIndex];
+                }
+                else if (GameManager.Instance != null)
+                {
+                    currentData = GameManager.Instance.GetEpisodeData(episodeNumber);
+                }
+
                 TMP_Text[] texts = buttons[i].GetComponentsInChildren<TMP_Text>();
 
                 if (texts.Length >= 2)
@@ -117,10 +128,10 @@ public class EpisodeSelectManager : MonoBehaviour
                     TMP_Text numberText = texts[0];
                     TMP_Text titleText = texts[1];
 
-                    if (episodeDataList != null && dataIndex < episodeDataList.Count && episodeDataList[dataIndex] != null)
+                    if (currentData != null)
                     {
-                        numberText.text = episodeDataList[dataIndex].EpisodeNumberText;
-                        titleText.text = isUnlocked ? episodeDataList[dataIndex].EpisodeTitleText : "？？？";
+                        numberText.text = currentData.EpisodeNumberText;
+                        titleText.text = isUnlocked ? currentData.EpisodeTitleText : "？？？";
                     }
                     else
                     {
@@ -130,11 +141,11 @@ public class EpisodeSelectManager : MonoBehaviour
                 }
                 else if (texts.Length == 1)
                 {
-                    if (episodeDataList != null && dataIndex < episodeDataList.Count && episodeDataList[dataIndex] != null)
+                    if (currentData != null)
                     {
                         texts[0].text = isUnlocked
-                            ? episodeDataList[dataIndex].FullTitleText
-                            : $"{episodeDataList[dataIndex].EpisodeNumberText}  ？？？";
+                            ? currentData.FullTitleText
+                            : $"{currentData.EpisodeNumberText}  ？？？";
                     }
                     else
                     {
@@ -152,7 +163,7 @@ public class EpisodeSelectManager : MonoBehaviour
                     btnImage.color = isUnlocked ? normalButtonColor : lockedButtonColor;
                 }
 
-                EpisodeData targetData = (episodeDataList != null && dataIndex < episodeDataList.Count) ? episodeDataList[dataIndex] : null;
+                EpisodeData targetData = currentData;
                 int epNum = episodeNumber;
                 Button targetButton = buttons[i];
 
