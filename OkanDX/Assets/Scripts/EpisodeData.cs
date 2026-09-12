@@ -12,16 +12,14 @@ public class EpisodeData : ScriptableObject
     [TextArea(3, 5)]
     public string clearText;                  // クリア時のメッセージ
 
+    // ★追加: 「次へ」ボタンの表示テキスト（デフォルトは "次へ"）
+    public string nextButtonText = "次へ";
+
     [Header("遷移設定")]
     public string nextSceneName;              // 次のエピソードのシーン名 (例: "Episode_002")
 
     // --- 表示用プロパティ ---
-    /// <summary>「エピソード1」形式のテキスト</summary>
     public string EpisodeNumberText => $"エピソード{episodeIndex}";
-
-    /// <summary>「おかんの部屋」タイトルテキスト</summary>
     public string EpisodeTitleText => episodeTitle;
-
-    /// <summary>「エピソード1  おかんの部屋」繋げたテキスト（ボタン等で一括表示したい時用）</summary>
     public string FullTitleText => $"{EpisodeNumberText}  {EpisodeTitleText}";
 }

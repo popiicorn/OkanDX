@@ -15,5 +15,6 @@ MonoBehaviour:
   episodeIndex: 1
   episodeTitle: "\u304A\u304B\u3093\u3068\u306F\u3058\u3081\u3066\u306E\u8131\u51FA"
   clearSprite: {fileID: 21300000, guid: 0fbf4f4e198d2ad4bb7ae3228c8f712e, type: 3}
-  clearText: Text
+  clearText: "\u8131\u51FA\u30B2\u30FC\u30E0\u3063\u3066\n\u30C9\u30A2\u958B\u3051\u308B\u3060\u3051\u3084\u308D\uFF1F"
+  nextButtonText: "\u306A\u3093\u3067\u3084\u306D\u3093"
   nextSceneName: Episode_001
