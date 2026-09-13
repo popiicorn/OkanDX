@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class RoomNavigationManager : MonoBehaviour
 {
     [Header("画面（View）リスト（左から順にセット）")]
-    [SerializeField] private List<GameObject> roomViews;
+    [SerializeField] private List<RectTransform> roomViews;
 
     [Header("移動ボタン")]
     [SerializeField] private Button leftButton;
@@ -14,127 +15,253 @@ public class RoomNavigationManager : MonoBehaviour
     [SerializeField] private Button downButton;
 
     [Header("特殊画面（天井・床・拡大画面など）")]
-    [SerializeField] private GameObject topView;    // 上を押した時の画面
-    [SerializeField] private GameObject bottomView; // 下を押した時の画面
+    [SerializeField] private RectTransform topView;    // 上を押した時の画面
+    [SerializeField] private RectTransform bottomView; // 下を押した時の画面
 
     [Header("設定")]
     [Tooltip("端まで行ったらループするか（一番右からさらに右で一番左へ戻るか）")]
     [SerializeField] private bool isLooping = false;
 
+    [Header("スライドアニメーション設定")]
+    [SerializeField] private float slideDuration = 0.35f;
+    [SerializeField] private Ease slideEase = Ease.OutCubic;
+    [SerializeField] private float screenWidth = 1920f;
+    [SerializeField] private float screenHeight = 1080f;
+
     private int currentIndex = 0; // 現在の横画面インデックス
     private bool isInSubView = false; // 上下や拡大画面に入っているかフラグ
+    private bool isAnimating = false; // アニメーション中フラグ
+
+    private enum SlideDirection { Right, Left, Up, Down }
 
     private void Start()
     {
-        // ボタンイベントの登録
-        if (leftButton != null) leftButton.onClick.AddListener(OnLeftButtonClicked);
-        if (rightButton != null) rightButton.onClick.AddListener(OnRightButtonClicked);
-        if (upButton != null) upButton.onClick.AddListener(OnUpButtonClicked);
-        if (downButton != null) downButton.onClick.AddListener(OnDownButtonClicked);
-
-        UpdateView();
-    }
-
-    /// <summary>
-    /// 左ボタン押下
-    /// </summary>
-    public void OnLeftButtonClicked()
-    {
-        if (isInSubView) return;
-
-        currentIndex--;
-        if (currentIndex < 0)
-        {
-            currentIndex = isLooping ? roomViews.Count - 1 : 0;
-        }
-        UpdateView();
-    }
-
-    /// <summary>
-    /// 右ボタン押下
-    /// </summary>
-    public void OnRightButtonClicked()
-    {
-        if (isInSubView) return;
-
-        currentIndex++;
-        if (currentIndex >= roomViews.Count)
-        {
-            currentIndex = isLooping ? 0 : roomViews.Count - 1;
-        }
-        UpdateView();
-    }
-
-    /// <summary>
-    /// 上ボタン押下（天井や拡大）
-    /// </summary>
-    public void OnUpButtonClicked()
-    {
-        if (topView == null || isInSubView) return;
-
-        isInSubView = true;
-        HideAllViews();
-        topView.SetActive(true);
+        InitializeViews();
+        SetupButtonListeners();
         UpdateButtonStates();
     }
 
-    /// <summary>
-    /// 下ボタン押下（元に戻る・床）
-    /// </summary>
+    private void InitializeViews()
+    {
+        if (roomViews == null || roomViews.Count == 0) return;
+
+        for (int i = 0; i < roomViews.Count; i++)
+        {
+            if (roomViews[i] == null || roomViews[i].Equals(null)) continue;
+
+            if (i == currentIndex)
+            {
+                roomViews[i].gameObject.SetActive(true);
+                roomViews[i].anchoredPosition = Vector2.zero;
+            }
+            else
+            {
+                roomViews[i].gameObject.SetActive(false);
+                roomViews[i].anchoredPosition = new Vector2(screenWidth, 0);
+            }
+        }
+
+        if (topView != null && !topView.Equals(null))
+        {
+            topView.gameObject.SetActive(false);
+            topView.anchoredPosition = new Vector2(0, screenHeight);
+        }
+
+        if (bottomView != null && !bottomView.Equals(null))
+        {
+            bottomView.gameObject.SetActive(false);
+            bottomView.anchoredPosition = new Vector2(0, -screenHeight);
+        }
+    }
+
+    private void SetupButtonListeners()
+    {
+        if (leftButton != null)
+        {
+            leftButton.onClick.RemoveAllListeners();
+            leftButton.onClick.AddListener(() => OnClickAnimated(leftButton.transform, OnLeftButtonClicked));
+        }
+
+        if (rightButton != null)
+        {
+            rightButton.onClick.RemoveAllListeners();
+            rightButton.onClick.AddListener(() => OnClickAnimated(rightButton.transform, OnRightButtonClicked));
+        }
+
+        if (upButton != null)
+        {
+            upButton.onClick.RemoveAllListeners();
+            upButton.onClick.AddListener(() => OnClickAnimated(upButton.transform, OnUpButtonClicked));
+        }
+
+        if (downButton != null)
+        {
+            downButton.onClick.RemoveAllListeners();
+            downButton.onClick.AddListener(() => OnClickAnimated(downButton.transform, OnDownButtonClicked));
+        }
+    }
+
+    private void OnClickAnimated(Transform btnTransform, System.Action action)
+    {
+        if (isAnimating) return;
+
+        btnTransform.DOKill();
+        btnTransform.localScale = Vector3.one;
+
+        btnTransform.DOScale(0.95f, 0.08f)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                btnTransform.DOScale(1f, 0.15f)
+                    .SetEase(Ease.OutBack)
+                    .SetUpdate(true)
+                    .OnComplete(() => action?.Invoke());
+            });
+    }
+
+    // ================================================
+    //  移動処理
+    // ================================================
+
+    public void OnLeftButtonClicked()
+    {
+        if (isInSubView || isAnimating || roomViews == null || roomViews.Count <= 1) return;
+
+        int nextIndex = currentIndex - 1;
+        if (nextIndex < 0)
+        {
+            if (isLooping) nextIndex = roomViews.Count - 1;
+            else return;
+        }
+
+        // 移動元をしっかり退避
+        RectTransform fromView = roomViews[currentIndex];
+        currentIndex = nextIndex;
+        RectTransform toView = roomViews[currentIndex];
+
+        // ★ボタンの表示切替を即座に実行
+        UpdateButtonStates();
+
+        // スライド開始
+        SlideView(fromView, toView, SlideDirection.Left);
+    }
+
+    public void OnRightButtonClicked()
+    {
+        if (isInSubView || isAnimating || roomViews == null || roomViews.Count <= 1) return;
+
+        int nextIndex = currentIndex + 1;
+        if (nextIndex >= roomViews.Count)
+        {
+            if (isLooping) nextIndex = 0;
+            else return;
+        }
+
+        // 移動元をしっかり退避
+        RectTransform fromView = roomViews[currentIndex];
+        currentIndex = nextIndex;
+        RectTransform toView = roomViews[currentIndex];
+
+        // ★ボタンの表示切替を即座に実行
+        UpdateButtonStates();
+
+        // スライド開始
+        SlideView(fromView, toView, SlideDirection.Right);
+    }
+
+    public void OnUpButtonClicked()
+    {
+        if (topView == null || isInSubView || isAnimating) return;
+
+        RectTransform fromView = roomViews[currentIndex];
+        isInSubView = true;
+
+        UpdateButtonStates();
+        SlideView(fromView, topView, SlideDirection.Up);
+    }
+
     public void OnDownButtonClicked()
     {
+        if (isAnimating) return;
+
         if (isInSubView)
         {
-            // 上下画面から元のメイン画面へ戻る
+            RectTransform currentSubView = (topView != null && topView.gameObject.activeSelf) ? topView : bottomView;
+            if (currentSubView == null) return;
+
+            SlideDirection dir = (currentSubView == topView) ? SlideDirection.Down : SlideDirection.Up;
             isInSubView = false;
-            UpdateView();
+
+            UpdateButtonStates();
+            SlideView(currentSubView, roomViews[currentIndex], dir);
         }
         else if (bottomView != null)
         {
-            // 床画面へ移動
+            RectTransform fromView = roomViews[currentIndex];
             isInSubView = true;
-            HideAllViews();
-            bottomView.SetActive(true);
+
             UpdateButtonStates();
+            SlideView(fromView, bottomView, SlideDirection.Down);
         }
     }
 
-    /// <summary>
-    /// 画面の表示切り替え
-    /// </summary>
-    private void UpdateView()
+    // ================================================
+    //  スライドアニメーション本体
+    // ================================================
+
+    private void SlideView(RectTransform fromView, RectTransform toView, SlideDirection direction)
     {
-        HideAllViews();
+        if (fromView == null || toView == null) return;
 
-        if (roomViews != null && roomViews.Count > 0)
+        isAnimating = true;
+
+        Vector2 startOffset = Vector2.zero;
+        Vector2 endOffset = Vector2.zero;
+
+        switch (direction)
         {
-            roomViews[currentIndex].SetActive(true);
+            case SlideDirection.Right:
+                startOffset = new Vector2(screenWidth, 0);
+                endOffset = new Vector2(-screenWidth, 0);
+                break;
+            case SlideDirection.Left:
+                startOffset = new Vector2(-screenWidth, 0);
+                endOffset = new Vector2(screenWidth, 0);
+                break;
+            case SlideDirection.Up:
+                startOffset = new Vector2(0, -screenHeight);
+                endOffset = new Vector2(0, screenHeight);
+                break;
+            case SlideDirection.Down:
+                startOffset = new Vector2(0, screenHeight);
+                endOffset = new Vector2(0, -screenHeight);
+                break;
         }
 
-        UpdateButtonStates();
+        toView.anchoredPosition = startOffset;
+        toView.gameObject.SetActive(true);
+
+        // 移動元の画面をスライド
+        fromView.DOAnchorPos(endOffset, slideDuration)
+            .SetEase(slideEase)
+            .SetUpdate(true);
+
+        // 移動先の画面をスライド
+        toView.DOAnchorPos(Vector2.zero, slideDuration)
+            .SetEase(slideEase)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                // 正しく移動前の画面だけを非表示化
+                fromView.gameObject.SetActive(false);
+                isAnimating = false;
+            });
     }
 
-    /// <summary>
-    /// 全画面を非表示
-    /// </summary>
-    private void HideAllViews()
-    {
-        foreach (var view in roomViews)
-        {
-            if (view != null) view.SetActive(false);
-        }
-        if (topView != null) topView.SetActive(false);
-        if (bottomView != null) bottomView.SetActive(false);
-    }
-
-    /// <summary>
-    /// 状況に応じてボタンの表示/非表示を切り替え
-    /// </summary>
     private void UpdateButtonStates()
     {
         if (isInSubView)
         {
-            // 特殊画面（天井・床）にいる時は「下ボタン（戻る）」だけ表示
             if (leftButton != null) leftButton.gameObject.SetActive(false);
             if (rightButton != null) rightButton.gameObject.SetActive(false);
             if (upButton != null) upButton.gameObject.SetActive(false);
@@ -142,7 +269,6 @@ public class RoomNavigationManager : MonoBehaviour
         }
         else
         {
-            // 通常の横移動画面
             bool isFirst = currentIndex == 0;
             bool isLast = currentIndex == roomViews.Count - 1;
 

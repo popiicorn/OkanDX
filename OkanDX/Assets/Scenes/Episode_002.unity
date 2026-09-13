@@ -1615,8 +1615,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomViews:
-  - {fileID: 334604904}
-  - {fileID: 714421527}
+  - {fileID: 334604905}
+  - {fileID: 714421528}
   leftButton: {fileID: 211946223}
   rightButton: {fileID: 838535380}
   upButton: {fileID: 0}
@@ -1624,6 +1624,10 @@ MonoBehaviour:
   topView: {fileID: 0}
   bottomView: {fileID: 0}
   isLooping: 0
+  slideDuration: 0.35
+  slideEase: 9
+  screenWidth: 1920
+  screenHeight: 1080
 --- !u!4 &1180437434
 Transform:
   m_ObjectHideFlags: 0

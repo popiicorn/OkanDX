@@ -12,6 +12,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 694c56d04c352634c8d6a154656f2612, type: 3}
+    - target: {fileID: 6457834664464153394, guid: fa8329a826cca294d9bac2def6153790, type: 3}
+      propertyPath: leftButton
+      value: 
+      objectReference: {fileID: 8507955043518288814}
+    - target: {fileID: 6457834664464153394, guid: fa8329a826cca294d9bac2def6153790, type: 3}
+      propertyPath: rightButton
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6817450391439603593, guid: fa8329a826cca294d9bac2def6153790, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -101,3 +109,14 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa8329a826cca294d9bac2def6153790, type: 3}
+--- !u!114 &8507955043518288814 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5029956905334854896, guid: fa8329a826cca294d9bac2def6153790, type: 3}
+  m_PrefabInstance: {fileID: 3737894434762082142}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
