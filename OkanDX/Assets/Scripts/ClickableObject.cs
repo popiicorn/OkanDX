@@ -145,7 +145,7 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
         transform.DOKill();
         transform.localScale = Vector3.one;
 
-        transform.DOScale(0.85f, 0.08f).OnComplete(() =>
+        transform.DOScale(0.85f, 0.06f).OnComplete(() =>
         {
             transform.DOScale(1f, 0.15f).SetEase(Ease.OutBack);
         });
@@ -178,7 +178,7 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
             Sequence getSequence = DOTween.Sequence();
             getSequence
                 .Append(transform.DOScale(0.85f, 0.06f).SetEase(Ease.OutQuad))
-                .Append(transform.DOScale(0f, 0.1f).SetEase(Ease.InQuad))
+                .Append(transform.DOScale(0f, 0.0f).SetEase(Ease.InQuad))
                 .OnComplete(() =>
                 {
                     // 1. 後処理（非表示化など）を完了させる

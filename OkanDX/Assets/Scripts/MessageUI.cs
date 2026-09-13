@@ -12,13 +12,20 @@ public class MessageUI : MonoBehaviour
     [SerializeField] private GameObject messageLayer;
 
     [Tooltip("吹き出し本体のTransform (MessagePanel)")]
-    [SerializeField] private Transform messagePanelTransform;
+    [SerializeField] private RectTransform messagePanelTransform;
 
     [Tooltip("吹き出し本体のImage（カラー変更用）")]
     [SerializeField] private Image panelImage;
 
     [Tooltip("メッセージ表示テキスト")]
     [SerializeField] private TMP_Text messageText;
+
+    [Header("表示位置設定 (Y座標)")]
+    [Tooltip("通常調査（説明）時のY座標（例: 0 で中央）")]
+    [SerializeField] private float examinePositionY = 0f;
+
+    [Tooltip("アイテム獲得時のY座標（例: 200 で少し上側）")]
+    [SerializeField] private float itemGetPositionY = 200f;
 
     [Header("カラー設定")]
     [Tooltip("通常のメッセージ調査時のデフォルトカラー")]
@@ -49,7 +56,6 @@ public class MessageUI : MonoBehaviour
             return;
         }
 
-        // 起動時は完全に消去＆非アクティブ化（一瞬のチラつきを100%防止）
         HideImmediate();
     }
 
@@ -59,24 +65,31 @@ public class MessageUI : MonoBehaviour
     }
 
     /// <summary>
-    /// メッセージをポヨンと表示する（デフォルトカラー）
+    /// ① 通常の調査メッセージ表示（デフォルト色 ＆ 説明用の位置）
     /// </summary>
     public void ShowMessage(string text)
     {
-        ShowMessage(text, defaultPanelColor);
+        ShowMessageInternal(text, defaultPanelColor, examinePositionY);
     }
 
     /// <summary>
-    /// メッセージをポヨンと表示する（カラー指定付き）
+    /// ② アイテム獲得時メッセージ表示（指定色 ＆ アイテム用の位置）
     /// </summary>
     public void ShowMessage(string text, Color panelColor)
+    {
+        ShowMessageInternal(text, panelColor, itemGetPositionY);
+    }
+
+    /// <summary>
+    /// 内部的な表示共通処理
+    /// </summary>
+    private void ShowMessageInternal(string text, Color panelColor, float targetPosY)
     {
         if (messageText != null)
         {
             messageText.text = text;
         }
 
-        // ★ウィンドウの色を変更
         if (panelImage != null)
         {
             panelImage.color = panelColor;
@@ -89,12 +102,16 @@ public class MessageUI : MonoBehaviour
 
         if (messagePanelTransform != null)
         {
-            messagePanelTransform.gameObject.SetActive(true); // 表示する時に初めてアクティブ化
             messagePanelTransform.DOKill();
+            messagePanelTransform.gameObject.SetActive(true);
 
-            // 一度 0.5 の大きさからスタートさせて、そこから 1.0 へポヨンと拡大
+            // ★ 呼び出し種別に応じてY座標（位置）を変更
+            Vector2 pos = messagePanelTransform.anchoredPosition;
+            pos.y = targetPosY;
+            messagePanelTransform.anchoredPosition = pos;
+
+            // ポヨンと拡大
             messagePanelTransform.localScale = Vector3.one * baseStartScale;
-
             messagePanelTransform.DOScale(Vector3.one * targetScale, popupDuration)
                 .SetEase(Ease.OutBack)
                 .SetUpdate(true);
@@ -102,7 +119,7 @@ public class MessageUI : MonoBehaviour
     }
 
     /// <summary>
-    /// 吹き出しを閉じる（通常のアニメーション付き非表示）
+    /// 吹き出しを閉じる
     /// </summary>
     public void HideMessage()
     {
@@ -110,7 +127,6 @@ public class MessageUI : MonoBehaviour
         {
             messagePanelTransform.DOKill();
 
-            // 1.0 から 0.5 へシュッと縮み、終わったら非表示にする
             messagePanelTransform.DOScale(Vector3.one * baseStartScale, hideDuration)
                 .SetEase(Ease.InBack)
                 .SetUpdate(true)
@@ -126,7 +142,7 @@ public class MessageUI : MonoBehaviour
     }
 
     /// <summary>
-    /// アニメーションなしで即座に非表示にする（画面切り替え時・チラつき防止用）
+    /// アニメーションなしで即座に非表示にする
     /// </summary>
     public void HideImmediate()
     {
@@ -134,7 +150,7 @@ public class MessageUI : MonoBehaviour
         {
             messagePanelTransform.DOKill();
             messagePanelTransform.localScale = Vector3.zero;
-            messagePanelTransform.gameObject.SetActive(false); // ★パネル自体を非アクティブ化
+            messagePanelTransform.gameObject.SetActive(false);
         }
 
         if (messageLayer != null)
