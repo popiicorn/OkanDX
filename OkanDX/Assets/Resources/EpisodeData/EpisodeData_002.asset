@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   episodeIndex: 2
   episodeTitle: "\u304A\u304B\u3093\u3068\u3042\u3081\u3061\u3083\u3093"
-  clearSprite: {fileID: 21300000, guid: 0fbf4f4e198d2ad4bb7ae3228c8f712e, type: 3}
-  clearText: "\u8131\u51FA\u30B2\u30FC\u30E0\u3063\u3066\n\u30C9\u30A2\u958B\u3051\u308B\u3060\u3051\u3084\u308D\uFF1F"
-  nextButtonText: "\u306A\u3093\u3067\u3084\u306D\u3093"
+  clearSprite: {fileID: 21300000, guid: b0d90802e8df71149ab460a1d13d9992, type: 3}
+  clearText: "\u30AB\u30D0\u30F3\u306E\u4E2D\u306B\u306F\n\u98F4\u3061\u3083\u3093\u3044\u3063\u3071\u3044\u3042\u308B\u3067"
+  nextButtonText: "\u305D\u308C\u306F\u5927\u4E8B\u3084\u306A"
   nextSceneName: Episode_002
