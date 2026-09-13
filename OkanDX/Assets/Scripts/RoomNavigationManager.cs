@@ -119,6 +119,17 @@ public class RoomNavigationManager : MonoBehaviour
             });
     }
 
+    /// <summary>
+    /// ★移動開始時に MessageUI が開いていれば閉じる
+    /// </summary>
+    private void CloseMessageUI()
+    {
+        if (MessageUI.Instance != null)
+        {
+            MessageUI.Instance.HideMessage();
+        }
+    }
+
     // ================================================
     //  移動処理
     // ================================================
@@ -134,15 +145,13 @@ public class RoomNavigationManager : MonoBehaviour
             else return;
         }
 
-        // 移動元をしっかり退避
+        CloseMessageUI(); // ★メッセージ吹き出しをシュッと閉じる
+
         RectTransform fromView = roomViews[currentIndex];
         currentIndex = nextIndex;
         RectTransform toView = roomViews[currentIndex];
 
-        // ★ボタンの表示切替を即座に実行
         UpdateButtonStates();
-
-        // スライド開始
         SlideView(fromView, toView, SlideDirection.Left);
     }
 
@@ -157,21 +166,21 @@ public class RoomNavigationManager : MonoBehaviour
             else return;
         }
 
-        // 移動元をしっかり退避
+        CloseMessageUI(); // ★メッセージ吹き出しをシュッと閉じる
+
         RectTransform fromView = roomViews[currentIndex];
         currentIndex = nextIndex;
         RectTransform toView = roomViews[currentIndex];
 
-        // ★ボタンの表示切替を即座に実行
         UpdateButtonStates();
-
-        // スライド開始
         SlideView(fromView, toView, SlideDirection.Right);
     }
 
     public void OnUpButtonClicked()
     {
         if (topView == null || isInSubView || isAnimating) return;
+
+        CloseMessageUI(); // ★メッセージ吹き出しをシュッと閉じる
 
         RectTransform fromView = roomViews[currentIndex];
         isInSubView = true;
@@ -183,6 +192,8 @@ public class RoomNavigationManager : MonoBehaviour
     public void OnDownButtonClicked()
     {
         if (isAnimating) return;
+
+        CloseMessageUI(); // ★メッセージ吹き出しをシュッと閉じる
 
         if (isInSubView)
         {
@@ -241,18 +252,15 @@ public class RoomNavigationManager : MonoBehaviour
         toView.anchoredPosition = startOffset;
         toView.gameObject.SetActive(true);
 
-        // 移動元の画面をスライド
         fromView.DOAnchorPos(endOffset, slideDuration)
             .SetEase(slideEase)
             .SetUpdate(true);
 
-        // 移動先の画面をスライド
         toView.DOAnchorPos(Vector2.zero, slideDuration)
             .SetEase(slideEase)
             .SetUpdate(true)
             .OnComplete(() =>
             {
-                // 正しく移動前の画面だけを非表示化
                 fromView.gameObject.SetActive(false);
                 isAnimating = false;
             });
