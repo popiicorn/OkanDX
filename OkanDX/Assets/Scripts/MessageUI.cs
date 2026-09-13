@@ -41,21 +41,13 @@ public class MessageUI : MonoBehaviour
             return;
         }
 
-        // 起動時は完全にスケール0にする（画面に残らないように）
-        if (messagePanelTransform != null)
-        {
-            messagePanelTransform.localScale = Vector3.zero;
-        }
-
-        if (messageLayer != null)
-        {
-            messageLayer.SetActive(false);
-        }
+        // 起動時は完全に消去＆非アクティブ化（一瞬のチラつきを100%防止）
+        HideImmediate();
     }
 
     private void Start()
     {
-        if (messageLayer != null) messageLayer.SetActive(false);
+        HideImmediate();
     }
 
     /// <summary>
@@ -75,9 +67,10 @@ public class MessageUI : MonoBehaviour
 
         if (messagePanelTransform != null)
         {
+            messagePanelTransform.gameObject.SetActive(true); // 表示する時に初めてアクティブ化
             messagePanelTransform.DOKill();
 
-            // ★一度 0.5 の大きさからスタートさせて、そこから 1.0 へポヨンと拡大
+            // 一度 0.5 の大きさからスタートさせて、そこから 1.0 へポヨンと拡大
             messagePanelTransform.localScale = Vector3.one * baseStartScale;
 
             messagePanelTransform.DOScale(Vector3.one * targetScale, popupDuration)
@@ -87,34 +80,44 @@ public class MessageUI : MonoBehaviour
     }
 
     /// <summary>
-    /// 吹き出しを閉じる
+    /// 吹き出しを閉じる（通常のアニメーション付き非表示）
     /// </summary>
     public void HideMessage()
     {
-        if (messagePanelTransform != null)
+        if (messagePanelTransform != null && messagePanelTransform.gameObject.activeSelf)
         {
             messagePanelTransform.DOKill();
 
-            // ★ 1.0 から 0.5 へシュッと縮み、終わったら一瞬で 0 に落として非表示にする
+            // 1.0 から 0.5 へシュッと縮み、終わったら非表示にする
             messagePanelTransform.DOScale(Vector3.one * baseStartScale, hideDuration)
                 .SetEase(Ease.InBack)
                 .SetUpdate(true)
                 .OnComplete(() =>
                 {
-                    messagePanelTransform.localScale = Vector3.zero; // 完全に消す
-
-                    if (messageLayer != null)
-                    {
-                        messageLayer.SetActive(false);
-                    }
+                    HideImmediate();
                 });
         }
         else
         {
-            if (messageLayer != null)
-            {
-                messageLayer.SetActive(false);
-            }
+            HideImmediate();
+        }
+    }
+
+    /// <summary>
+    /// アニメーションなしで即座に非表示にする（画面切り替え時・チラつき防止用）
+    /// </summary>
+    public void HideImmediate()
+    {
+        if (messagePanelTransform != null)
+        {
+            messagePanelTransform.DOKill();
+            messagePanelTransform.localScale = Vector3.zero;
+            messagePanelTransform.gameObject.SetActive(false); // ★パネル自体を非アクティブ化
+        }
+
+        if (messageLayer != null)
+        {
+            messageLayer.SetActive(false);
         }
     }
 }
