@@ -40,6 +40,9 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Item itemData;
     [SerializeField] private ItemPostAction itemPostAction = ItemPostAction.Hide;
 
+    [Header(" └ アイテム獲得時のウィンドウカラー")]
+    [SerializeField] private Color itemGetPanelColor = new Color(1.0f, 0.9f, 0.4f); // デフォルト：明るいゴールド/黄色系
+
     [Header(" └ 画像切り替え用 (ChangeSprite)")]
     [SerializeField] private Sprite changedSprite;
 
@@ -159,27 +162,37 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
 
         if (InventoryManager.Instance == null || itemData == null) return;
 
-        transform.DOKill();
-        transform.localScale = Vector3.one;
+        bool isAdded = InventoryManager.Instance.AddItem(itemData);
 
-        Sequence getSequence = DOTween.Sequence();
-        getSequence
-            .Append(transform.DOScale(0.85f, 0.06f).SetEase(Ease.OutQuad))
-            .Append(transform.DOScale(0f, 0.0f).SetEase(Ease.InQuad))
-            .OnComplete(() =>
-            {
-                bool isAdded = InventoryManager.Instance.AddItem(itemData);
+        if (isAdded)
+        {
+            hasGottenItem = true;
 
-                if (isAdded)
+            string itemNameText = !string.IsNullOrEmpty(itemData.itemName) ? itemData.itemName : "アイテム";
+            string getMsg = $"{itemNameText}を手に入れた！";
+
+            // ★先にオブジェクト側の消去・変形演出を行う
+            transform.DOKill();
+            transform.localScale = Vector3.one;
+
+            Sequence getSequence = DOTween.Sequence();
+            getSequence
+                .Append(transform.DOScale(0.85f, 0.06f).SetEase(Ease.OutQuad))
+                .Append(transform.DOScale(0f, 0.1f).SetEase(Ease.InQuad))
+                .OnComplete(() =>
                 {
-                    hasGottenItem = true;
+                    // 1. 後処理（非表示化など）を完了させる
                     ApplyItemPostAction();
-                }
-                else
-                {
-                    transform.localScale = Vector3.one;
-                }
-            });
+
+                    // 2. オブジェクト消去完了直後にメッセージを表示
+                    ShowMessage(getMsg, itemGetPanelColor);
+                });
+        }
+        else
+        {
+            AnimateClick();
+            ShowMessage("これ以上持てないようだ。");
+        }
     }
 
     private void ApplyItemPostAction()
@@ -284,6 +297,11 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
         }
     }
 
+    // ================================================
+    //  メッセージ呼び出し部（カラー機能を追加）
+    // ================================================
+
+    // 通常のメッセージ呼び出し（色は指定せずMessageUI側のデフォルトを使用）
     private void ShowMessage(string msg)
     {
         if (string.IsNullOrEmpty(msg)) return;
@@ -291,6 +309,21 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
         if (MessageUI.Instance != null)
         {
             MessageUI.Instance.ShowMessage(msg);
+        }
+        else
+        {
+            Debug.LogWarning("MessageUIのInstanceが見つかりません。");
+        }
+    }
+
+    // カラー指定付きのメッセージ呼び出し
+    private void ShowMessage(string msg, Color customColor)
+    {
+        if (string.IsNullOrEmpty(msg)) return;
+
+        if (MessageUI.Instance != null)
+        {
+            MessageUI.Instance.ShowMessage(msg, customColor);
         }
         else
         {

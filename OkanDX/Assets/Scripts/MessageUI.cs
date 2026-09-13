@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using DG.Tweening; // DOTweenを使用
 
@@ -13,8 +14,15 @@ public class MessageUI : MonoBehaviour
     [Tooltip("吹き出し本体のTransform (MessagePanel)")]
     [SerializeField] private Transform messagePanelTransform;
 
+    [Tooltip("吹き出し本体のImage（カラー変更用）")]
+    [SerializeField] private Image panelImage;
+
     [Tooltip("メッセージ表示テキスト")]
     [SerializeField] private TMP_Text messageText;
+
+    [Header("カラー設定")]
+    [Tooltip("通常のメッセージ調査時のデフォルトカラー")]
+    [SerializeField] private Color defaultPanelColor = Color.white;
 
     [Header("アニメーション設定")]
     [Tooltip("ポヨン演出の開始スケール（例: 0.5）")]
@@ -51,13 +59,27 @@ public class MessageUI : MonoBehaviour
     }
 
     /// <summary>
-    /// メッセージをポヨンと表示する
+    /// メッセージをポヨンと表示する（デフォルトカラー）
     /// </summary>
     public void ShowMessage(string text)
+    {
+        ShowMessage(text, defaultPanelColor);
+    }
+
+    /// <summary>
+    /// メッセージをポヨンと表示する（カラー指定付き）
+    /// </summary>
+    public void ShowMessage(string text, Color panelColor)
     {
         if (messageText != null)
         {
             messageText.text = text;
+        }
+
+        // ★ウィンドウの色を変更
+        if (panelImage != null)
+        {
+            panelImage.color = panelColor;
         }
 
         if (messageLayer != null)
