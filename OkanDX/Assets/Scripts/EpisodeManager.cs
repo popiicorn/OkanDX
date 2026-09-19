@@ -2,6 +2,21 @@
 
 public class EpisodeManager : MonoBehaviour
 {
+    [Header("■ このエピソード用ヒントデータ")]
+    [SerializeField] private HintData episodeHintData;
+
+    private void Start()
+    {
+        // ★テスト用に 1,000 円追加する
+        HesokuriManager.Instance.AddHesokuri(1000);
+
+        // ★シーン開始時に HintModalUI へこのエピソードのヒントデータを渡す
+        if (HintModalUI.Instance != null && episodeHintData != null)
+        {
+            HintModalUI.Instance.SetHintData(episodeHintData);
+        }
+    }
+
     /// <summary>
     /// 脱出成功（ギミッククリア）した時に呼び出す処理
     /// </summary>

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a519aa3d42319fb46b127ff82c886987, type: 3}
+  m_Name: HintData_Ep1
+  m_EditorClassIdentifier: 
+  hints:
+  - hintKey: Ep1_Hint1
+    buttonTitle: "\u30D2\u30F3\u30C8 1"
+    cost: 100
+    hintText: "\t\t"
+  - hintKey: Ep1_Hint1
+    buttonTitle: "\u30D2\u30F3\u30C8 1"
+    cost: 1
+    hintText: "\u3053\u3053\u306B\u30D2\u30F3\u30C8\u306E\u5185\u5BB9\u304C\u5165\u308A\u307E\u3059\u3002"
+  - hintKey: Ep1_Hint1
+    buttonTitle: "\u30D2\u30F3\u30C8 1"
+    cost: 1
+    hintText: "\u3053\u3053\u306B\u30D2\u30F3\u30C8\u306E\u5185\u5BB9\u304C\u5165\u308A\u307E\u3059\u3002"
