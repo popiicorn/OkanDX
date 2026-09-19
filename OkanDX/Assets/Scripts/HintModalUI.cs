@@ -180,7 +180,7 @@ public class HintModalUI : MonoBehaviour
     }
 
     /// <summary>
-    /// 詳細用 子パネルを開く
+    /// 子パネル（ヒント詳細）を開く（MainPanelを縮小非表示にしてDetailPanelを表示）
     /// </summary>
     private void OpenDetailPanel(string text)
     {
@@ -189,6 +189,32 @@ public class HintModalUI : MonoBehaviour
             detailHintText.text = text;
         }
 
+        // ① MainPanel をポヨンと縮小して非表示にする
+        if (mainPanelTransform != null && mainPanelTransform.gameObject.activeSelf)
+        {
+            mainPanelTransform.DOKill();
+            mainPanelTransform.DOScale(Vector3.one * 0.5f, hideDuration)
+                .SetEase(Ease.InBack)
+                .SetUpdate(true)
+                .OnComplete(() =>
+                {
+                    mainPanelTransform.gameObject.SetActive(false);
+
+                    // ② MainPanel が消え切ったら DetailPanel をポヨンと拡大表示する
+                    ShowDetailPanelAnim();
+                });
+        }
+        else
+        {
+            ShowDetailPanelAnim();
+        }
+    }
+
+    /// <summary>
+    /// DetailPanelの拡大アニメーション表示
+    /// </summary>
+    private void ShowDetailPanelAnim()
+    {
         if (detailPanelTransform != null)
         {
             detailPanelTransform.DOKill();
@@ -202,12 +228,13 @@ public class HintModalUI : MonoBehaviour
     }
 
     /// <summary>
-    /// 詳細用 子パネルを閉じる（縮小）
+    /// 子パネル（ヒント詳細）を閉じる（DetailPanelを閉じたらMainPanelを再表示）
     /// </summary>
     public void CloseDetailPanel()
     {
         if (detailPanelTransform != null && detailPanelTransform.gameObject.activeSelf)
         {
+            // ① DetailPanel を縮小非表示にする
             detailPanelTransform.DOKill();
             detailPanelTransform.DOScale(Vector3.one * 0.5f, hideDuration)
                 .SetEase(Ease.InBack)
@@ -215,7 +242,27 @@ public class HintModalUI : MonoBehaviour
                 .OnComplete(() =>
                 {
                     detailPanelTransform.gameObject.SetActive(false);
+
+                    // ② DetailPanel が消え切ったら MainPanel を再びポヨンと拡大表示する
+                    ShowMainPanelAnim();
                 });
+        }
+    }
+
+    /// <summary>
+    /// MainPanelの拡大アニメーション表示
+    /// </summary>
+    private void ShowMainPanelAnim()
+    {
+        if (mainPanelTransform != null)
+        {
+            mainPanelTransform.DOKill();
+            mainPanelTransform.gameObject.SetActive(true);
+            mainPanelTransform.localScale = Vector3.one * 0.5f;
+
+            mainPanelTransform.DOScale(Vector3.one, popupDuration)
+                .SetEase(Ease.OutBack)
+                .SetUpdate(true);
         }
     }
 
@@ -224,8 +271,12 @@ public class HintModalUI : MonoBehaviour
     /// </summary>
     public void CloseMainPanel()
     {
-        // 子パネルが開いていれば先に即時閉じる
-        CloseDetailPanel();
+        // DetailPanel が開いていれば先に即時閉じる
+        if (detailPanelTransform != null)
+        {
+            detailPanelTransform.DOKill();
+            detailPanelTransform.gameObject.SetActive(false);
+        }
 
         if (overlayCanvasGroup != null)
         {
@@ -233,7 +284,7 @@ public class HintModalUI : MonoBehaviour
             overlayCanvasGroup.DOFade(0f, hideDuration).SetUpdate(true);
         }
 
-        if (mainPanelTransform != null)
+        if (mainPanelTransform != null && mainPanelTransform.gameObject.activeSelf)
         {
             mainPanelTransform.DOKill();
             mainPanelTransform.DOScale(Vector3.one * 0.5f, hideDuration)
