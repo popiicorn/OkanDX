@@ -221,8 +221,8 @@ MonoBehaviour:
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
-  beforeStateObject: {fileID: 0}
-  afterStateObject: {fileID: 0}
+  beforeStateObjects: []
+  afterStateObjects: []
   requiredItemID: key_01
   consumeItemOnUse: 1
   wrongItemMessage: "\u9375\u304C\u304B\u304B\u3063\u3066\u3044\u308B\u3002"
@@ -498,13 +498,15 @@ MonoBehaviour:
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
-  beforeStateObject: {fileID: 321421878}
-  afterStateObject: {fileID: 1103351680}
-  requiredItemID: key_01
-  consumeItemOnUse: 1
-  wrongItemMessage: "\u9375\u304C\u304B\u304B\u3063\u3066\u3044\u308B\u3002"
-  successMessage: "\u9375\u3092\u4F7F\u3063\u3066\u958B\u3051\u305F\uFF01"
-  afterUnlockedMessage: "\u3059\u3067\u306B\u958B\u3044\u3066\u3044\u308B\u3002"
+  beforeStateObjects:
+  - {fileID: 321421878}
+  afterStateObjects:
+  - {fileID: 1103351680}
+  requiredItemID: 
+  consumeItemOnUse: 0
+  wrongItemMessage: 
+  successMessage: 
+  afterUnlockedMessage: 
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!1 &362371107
@@ -677,8 +679,8 @@ MonoBehaviour:
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
-  beforeStateObject: {fileID: 0}
-  afterStateObject: {fileID: 0}
+  beforeStateObjects: []
+  afterStateObjects: []
   requiredItemID: key_01
   consumeItemOnUse: 1
   wrongItemMessage: "\u9375\u304C\u304B\u304B\u3063\u3066\u3044\u308B\u3002"

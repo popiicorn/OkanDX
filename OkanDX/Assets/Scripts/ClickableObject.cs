@@ -64,10 +64,10 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Image targetUIImage;
 
     [Tooltip("変化前のオブジェクト（非表示にするオブジェクト/自分自身など）")]
-    [SerializeField] private GameObject beforeStateObject;
+    [SerializeField] private GameObject[] beforeStateObjects;
 
     [Tooltip("変化後のオブジェクト（出現させる新しいオブジェクト）")]
-    [SerializeField] private GameObject afterStateObject;
+    [SerializeField] private GameObject[] afterStateObjects;
 
     [Header("■ 【アイテム使用】専用設定")]
     [Tooltip("使用に必要なアイテムのID（例: key_01）")]
@@ -145,7 +145,7 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
         transform.DOKill();
         transform.localScale = Vector3.one;
 
-        transform.DOScale(0.85f, 0.06f).OnComplete(() =>
+        transform.DOScale(0.9f, 0.06f).OnComplete(() =>
         {
             transform.DOScale(1f, 0.15f).SetEase(Ease.OutBack);
         });
@@ -169,7 +169,7 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
             hasGottenItem = true;
 
             string itemNameText = !string.IsNullOrEmpty(itemData.itemName) ? itemData.itemName : "アイテム";
-            string getMsg = $"{itemNameText}を手に入れた！";
+            string getMsg = $"「{itemNameText}」を手に入れた！";
 
             // ★先にオブジェクト側の消去・変形演出を行う
             transform.DOKill();
@@ -227,7 +227,13 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
 
     private void OnStateChangeClick()
     {
-        if (isStateChanged) return;
+        if (isStateChanged)
+        {
+            // ★すでに変化済みの場合は2回目以降のメッセージを表示する
+            ShowMessage(inspectAfterGetMessage);
+            return;
+        }
+
         ChangeState();
     }
 
@@ -263,20 +269,29 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
     {
         isStateChanged = true;
 
-        if (beforeStateObject != null || afterStateObject != null)
+        // ★ 配列に何か登録されているかチェック
+        bool hasBefore = beforeStateObjects != null && beforeStateObjects.Length > 0;
+        bool hasAfter = afterStateObjects != null && afterStateObjects.Length > 0;
+
+        if (hasBefore || hasAfter)
         {
-            if (beforeStateObject != null)
+            // 変化前のオブジェクトをすべて非表示にする
+            if (hasBefore)
             {
-                beforeStateObject.SetActive(false);
-            }
-            else
-            {
-                gameObject.SetActive(false);
+                foreach (var obj in beforeStateObjects)
+                {
+                    if (obj != null) obj.SetActive(false);
+                }
             }
 
-            if (afterStateObject != null)
+
+            // 変化後のオブジェクトをすべて表示する
+            if (hasAfter)
             {
-                afterStateObject.SetActive(true);
+                foreach (var obj in afterStateObjects)
+                {
+                    if (obj != null) obj.SetActive(true);
+                }
             }
         }
         else if (targetUIImage != null && changedStateSprite != null)

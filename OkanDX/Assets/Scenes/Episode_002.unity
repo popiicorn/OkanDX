@@ -497,8 +497,8 @@ MonoBehaviour:
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
-  beforeStateObject: {fileID: 0}
-  afterStateObject: {fileID: 0}
+  beforeStateObjects: []
+  afterStateObjects: []
   requiredItemID: 
   consumeItemOnUse: 0
   wrongItemMessage: 
@@ -692,11 +692,14 @@ MonoBehaviour:
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
-  beforeStateObject: {fileID: 354817527}
-  afterStateObject: {fileID: 1422012119}
+  beforeStateObjects:
+  - {fileID: 354817527}
+  afterStateObjects:
+  - {fileID: 2027501331}
+  - {fileID: 1422012119}
   requiredItemID: Item_0201
   consumeItemOnUse: 1
-  wrongItemMessage: "\u30A2\u30E1\u3061\u3083\u3093\u3082\u3063\u3066\u304D\u3066\u306A"
+  wrongItemMessage: "\u3042\u3081\u3061\u3083\u3093\u3082\u3063\u3066\u304D\u3066\u306A"
   successMessage: "\u3042\u3044\u305F\u3067"
   afterUnlockedMessage: "\u3059\u3067\u306B\u958B\u3044\u3066\u3044\u308B\u3002"
   episodeData: {fileID: 0}
@@ -1584,8 +1587,8 @@ MonoBehaviour:
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
-  beforeStateObject: {fileID: 0}
-  afterStateObject: {fileID: 0}
+  beforeStateObjects: []
+  afterStateObjects: []
   requiredItemID: key_01
   consumeItemOnUse: 1
   wrongItemMessage: "\u9375\u304C\u304B\u304B\u3063\u3066\u3044\u308B\u3002"
@@ -2302,8 +2305,8 @@ MonoBehaviour:
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
-  beforeStateObject: {fileID: 0}
-  afterStateObject: {fileID: 0}
+  beforeStateObjects: []
+  afterStateObjects: []
   requiredItemID: key_01
   consumeItemOnUse: 1
   wrongItemMessage: "\u9375\u304C\u304B\u304B\u3063\u3066\u3044\u308B\u3002"
@@ -2413,8 +2416,8 @@ MonoBehaviour:
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
-  beforeStateObject: {fileID: 0}
-  afterStateObject: {fileID: 0}
+  beforeStateObjects: []
+  afterStateObjects: []
   requiredItemID: 
   consumeItemOnUse: 0
   wrongItemMessage: 
@@ -2440,7 +2443,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1941659364
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2524,8 +2527,8 @@ MonoBehaviour:
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
-  beforeStateObject: {fileID: 0}
-  afterStateObject: {fileID: 0}
+  beforeStateObjects: []
+  afterStateObjects: []
   requiredItemID: key_01
   consumeItemOnUse: 1
   wrongItemMessage: "\u9375\u304C\u304B\u304B\u3063\u3066\u3044\u308B\u3002"
@@ -2582,7 +2585,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2009876360
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2666,8 +2669,8 @@ MonoBehaviour:
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
-  beforeStateObject: {fileID: 0}
-  afterStateObject: {fileID: 0}
+  beforeStateObjects: []
+  afterStateObjects: []
   requiredItemID: key_01
   consumeItemOnUse: 1
   wrongItemMessage: "\u9375\u304C\u304B\u304B\u3063\u3066\u3044\u308B\u3002"
@@ -2694,7 +2697,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2027501332
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3219,8 +3222,8 @@ MonoBehaviour:
   examineMessage: 
   itemData:
     id: Item_0201
-    itemName: "\u3042\u3081\u3061\u3083\u3093"
-    description: "\u3044\u3064\u3082\u306E\u3042\u3081\u3061\u3083\u3093"
+    itemName: "\u304A\u304B\u3093\u306E\u3042\u3081\u3061\u3083\u3093"
+    description: "\u3044\u3061\u3054\u306E\u7518\u3044\u306E\u304C\u3048\u3048\u306D\u3093"
     icon: {fileID: 21300000, guid: 39791ddc52beb124f839f6b56e045b3d, type: 3}
   itemPostAction: 1
   itemGetPanelColor: {r: 1, g: 1, b: 0.6666667, a: 1}
@@ -3229,8 +3232,8 @@ MonoBehaviour:
   inspectAfterGetMessage: "\u306A\u306B\u3082\u306A\u3044"
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
-  beforeStateObject: {fileID: 0}
-  afterStateObject: {fileID: 0}
+  beforeStateObjects: []
+  afterStateObjects: []
   requiredItemID: Item_0201
   consumeItemOnUse: 1
   wrongItemMessage: "\u9375\u304C\u304B\u304B\u3063\u3066\u3044\u308B\u3002"

@@ -333,9 +333,57 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4376753137469884662, guid: d55f77c598faf744980f168d19328fc2, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4376753137469884662, guid: d55f77c598faf744980f168d19328fc2, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4376753137469884662, guid: d55f77c598faf744980f168d19328fc2, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4376753137469884662, guid: d55f77c598faf744980f168d19328fc2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4578465755174604803, guid: d55f77c598faf744980f168d19328fc2, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4578465755174604803, guid: d55f77c598faf744980f168d19328fc2, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4578465755174604803, guid: d55f77c598faf744980f168d19328fc2, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4578465755174604803, guid: d55f77c598faf744980f168d19328fc2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5152609121449387038, guid: d55f77c598faf744980f168d19328fc2, type: 3}
       propertyPath: m_Name
       value: HintModalUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 7738379579239740665, guid: d55f77c598faf744980f168d19328fc2, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7738379579239740665, guid: d55f77c598faf744980f168d19328fc2, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7738379579239740665, guid: d55f77c598faf744980f168d19328fc2, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7738379579239740665, guid: d55f77c598faf744980f168d19328fc2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -599,8 +647,8 @@ MonoBehaviour:
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
-  beforeStateObject: {fileID: 0}
-  afterStateObject: {fileID: 0}
+  beforeStateObjects: []
+  afterStateObjects: []
   requiredItemID: 
   consumeItemOnUse: 0
   wrongItemMessage: 
@@ -794,8 +842,11 @@ MonoBehaviour:
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
-  beforeStateObject: {fileID: 354817527}
-  afterStateObject: {fileID: 1422012119}
+  beforeStateObjects:
+  - {fileID: 354817527}
+  afterStateObjects:
+  - {fileID: 2027501331}
+  - {fileID: 1422012119}
   requiredItemID: Item_0201
   consumeItemOnUse: 1
   wrongItemMessage: "\u30A2\u30E1\u3061\u3083\u3093\u3082\u3063\u3066\u304D\u3066\u306A"
@@ -1483,9 +1534,9 @@ RectTransform:
   - {fileID: 1074115299}
   - {fileID: 838535379}
   - {fileID: 211946222}
-  - {fileID: 2051470795}
   - {fileID: 208209549}
   - {fileID: 426428206}
+  - {fileID: 2051470795}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1798,8 +1849,8 @@ MonoBehaviour:
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
-  beforeStateObject: {fileID: 0}
-  afterStateObject: {fileID: 0}
+  beforeStateObjects: []
+  afterStateObjects: []
   requiredItemID: key_01
   consumeItemOnUse: 1
   wrongItemMessage: "\u9375\u304C\u304B\u304B\u3063\u3066\u3044\u308B\u3002"
@@ -2516,8 +2567,8 @@ MonoBehaviour:
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
-  beforeStateObject: {fileID: 0}
-  afterStateObject: {fileID: 0}
+  beforeStateObjects: []
+  afterStateObjects: []
   requiredItemID: key_01
   consumeItemOnUse: 1
   wrongItemMessage: "\u9375\u304C\u304B\u304B\u3063\u3066\u3044\u308B\u3002"
@@ -2627,8 +2678,8 @@ MonoBehaviour:
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
-  beforeStateObject: {fileID: 0}
-  afterStateObject: {fileID: 0}
+  beforeStateObjects: []
+  afterStateObjects: []
   requiredItemID: 
   consumeItemOnUse: 0
   wrongItemMessage: 
@@ -2738,8 +2789,8 @@ MonoBehaviour:
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
-  beforeStateObject: {fileID: 0}
-  afterStateObject: {fileID: 0}
+  beforeStateObjects: []
+  afterStateObjects: []
   requiredItemID: key_01
   consumeItemOnUse: 1
   wrongItemMessage: "\u9375\u304C\u304B\u304B\u3063\u3066\u3044\u308B\u3002"
@@ -2880,8 +2931,8 @@ MonoBehaviour:
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
-  beforeStateObject: {fileID: 0}
-  afterStateObject: {fileID: 0}
+  beforeStateObjects: []
+  afterStateObjects: []
   requiredItemID: key_01
   consumeItemOnUse: 1
   wrongItemMessage: "\u9375\u304C\u304B\u304B\u3063\u3066\u3044\u308B\u3002"
@@ -2908,7 +2959,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2027501332
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3326,8 +3377,8 @@ MonoBehaviour:
   inspectAfterGetMessage: "\u306A\u306B\u3082\u306A\u3044"
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
-  beforeStateObject: {fileID: 0}
-  afterStateObject: {fileID: 0}
+  beforeStateObjects: []
+  afterStateObjects: []
   requiredItemID: Item_0201
   consumeItemOnUse: 1
   wrongItemMessage: "\u9375\u304C\u304B\u304B\u3063\u3066\u3044\u308B\u3002"
