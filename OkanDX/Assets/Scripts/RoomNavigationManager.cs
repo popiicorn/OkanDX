@@ -8,6 +8,10 @@ public class RoomNavigationManager : MonoBehaviour
     [Header("画面（View）リスト（左から順にセット）")]
     [SerializeField] private List<RectTransform> roomViews;
 
+    [Header("初期画面設定")]
+    [Tooltip("ゲーム開始時に表示するViewのインデックス（0 = View_0, 1 = View_1...）")]
+    [SerializeField] private int initialIndex = 0; // ★ 開始Viewの設定項目を追加
+
     [Header("移動ボタン")]
     [SerializeField] private Button leftButton;
     [SerializeField] private Button rightButton;
@@ -36,6 +40,7 @@ public class RoomNavigationManager : MonoBehaviour
 
     private void Start()
     {
+        currentIndex = initialIndex; // ★ 指定した初期Viewの番号を適用
         InitializeViews();
         SetupButtonListeners();
         UpdateButtonStates();
@@ -44,6 +49,9 @@ public class RoomNavigationManager : MonoBehaviour
     private void InitializeViews()
     {
         if (roomViews == null || roomViews.Count == 0) return;
+
+        // 設定値が範囲外の場合は安全な範囲に収める
+        currentIndex = Mathf.Clamp(currentIndex, 0, roomViews.Count - 1);
 
         for (int i = 0; i < roomViews.Count; i++)
         {

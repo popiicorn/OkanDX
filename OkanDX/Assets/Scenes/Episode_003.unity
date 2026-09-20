@@ -3664,6 +3664,7 @@ MonoBehaviour:
   - {fileID: 334604905}
   - {fileID: 336454671}
   - {fileID: 714421528}
+  initialIndex: 1
   leftButton: {fileID: 211946223}
   rightButton: {fileID: 838535380}
   upButton: {fileID: 0}
