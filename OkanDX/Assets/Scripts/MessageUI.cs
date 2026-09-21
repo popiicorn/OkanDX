@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using DG.Tweening; // DOTweenを使用
+using DG.Tweening;
 
 public class MessageUI : MonoBehaviour
 {
@@ -21,28 +22,20 @@ public class MessageUI : MonoBehaviour
     [SerializeField] private TMP_Text messageText;
 
     [Header("表示位置設定 (Y座標)")]
-    [Tooltip("通常調査（説明）時のY座標（例: 0 で中央）")]
     [SerializeField] private float examinePositionY = 0f;
-
-    [Tooltip("アイテム獲得時のY座標（例: 200 で少し上側）")]
     [SerializeField] private float itemGetPositionY = 200f;
 
     [Header("カラー設定")]
-    [Tooltip("通常のメッセージ調査時のデフォルトカラー")]
     [SerializeField] private Color defaultPanelColor = Color.white;
 
     [Header("アニメーション設定")]
-    [Tooltip("ポヨン演出の開始スケール（例: 0.5）")]
     [SerializeField] private float baseStartScale = 0.5f;
-
-    [Tooltip("表示完了時の目標スケール（通常: 1.0）")]
     [SerializeField] private float targetScale = 1.0f;
-
-    [Tooltip("ポヨンにかかる時間（表示）")]
     [SerializeField] private float popupDuration = 0.25f;
-
-    [Tooltip("シュッと閉じるにかかる時間（非表示）")]
     [SerializeField] private float hideDuration = 0.15f;
+
+    private bool canClose = false;
+    private CanvasGroup messageCanvasGroup; // ★透明度制御用
 
     private void Awake()
     {
@@ -56,74 +49,92 @@ public class MessageUI : MonoBehaviour
             return;
         }
 
+        // ★ CanvasGroup を取得（無ければ自動追加）
+        messageCanvasGroup = GetComponent<CanvasGroup>();
+        if (messageCanvasGroup == null)
+        {
+            messageCanvasGroup = gameObject.AddComponent<CanvasGroup>();
+        }
+
+        // 初期状態は画面上に配置しつつ透明（Alpha=0）＆クリック透過（BlocksRaycasts=false）にしておく
         HideImmediate();
     }
 
-    private void Start()
+    private void Update()
     {
-        HideImmediate();
+        if (canClose && messageCanvasGroup != null && messageCanvasGroup.alpha > 0.9f)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                HideMessage();
+            }
+        }
     }
 
-    /// <summary>
-    /// ① 通常の調査メッセージ表示（デフォルト色 ＆ 説明用の位置）
-    /// </summary>
     public void ShowMessage(string text)
     {
         ShowMessageInternal(text, defaultPanelColor, examinePositionY);
     }
 
-    /// <summary>
-    /// ② アイテム獲得時メッセージ表示（指定色 ＆ アイテム用の位置）
-    /// </summary>
     public void ShowMessage(string text, Color panelColor)
     {
         ShowMessageInternal(text, panelColor, itemGetPositionY);
     }
 
-    /// <summary>
-    /// 内部的な表示共通処理
-    /// </summary>
     private void ShowMessageInternal(string text, Color panelColor, float targetPosY)
     {
-        if (messageText != null)
-        {
-            messageText.text = text;
-        }
+        if (messageText != null) messageText.text = text;
+        if (panelImage != null) panelImage.color = panelColor;
 
-        if (panelImage != null)
-        {
-            panelImage.color = panelColor;
-        }
+        canClose = false;
 
-        if (messageLayer != null)
+        // ★ オブジェクト自体は常にアクティブにしておき、CanvasGroupで可視化する
+        gameObject.SetActive(true);
+        if (messageLayer != null) messageLayer.SetActive(true);
+        if (messagePanelTransform != null) messagePanelTransform.gameObject.SetActive(true);
+
+        if (messageCanvasGroup != null)
         {
-            messageLayer.SetActive(true);
+            messageCanvasGroup.alpha = 1f;
+            messageCanvasGroup.blocksRaycasts = true; // タップ受付ON
         }
 
         if (messagePanelTransform != null)
         {
             messagePanelTransform.DOKill();
-            messagePanelTransform.gameObject.SetActive(true);
 
-            // ★ 呼び出し種別に応じてY座標（位置）を変更
+            // Y位置設定
             Vector2 pos = messagePanelTransform.anchoredPosition;
             pos.y = targetPosY;
             messagePanelTransform.anchoredPosition = pos;
 
-            // ポヨンと拡大
+            // ポヨンと拡大アニメーション
             messagePanelTransform.localScale = Vector3.one * baseStartScale;
             messagePanelTransform.DOScale(Vector3.one * targetScale, popupDuration)
                 .SetEase(Ease.OutBack)
-                .SetUpdate(true);
+                .SetUpdate(true)
+                .OnComplete(() =>
+                {
+                    StartCoroutine(EnableCloseNextFrame());
+                });
+        }
+        else
+        {
+            StartCoroutine(EnableCloseNextFrame());
         }
     }
 
-    /// <summary>
-    /// 吹き出しを閉じる
-    /// </summary>
+    private IEnumerator EnableCloseNextFrame()
+    {
+        yield return null;
+        canClose = true;
+    }
+
     public void HideMessage()
     {
-        if (messagePanelTransform != null && messagePanelTransform.gameObject.activeSelf)
+        canClose = false;
+
+        if (messagePanelTransform != null && messageCanvasGroup != null && messageCanvasGroup.alpha > 0f)
         {
             messagePanelTransform.DOKill();
 
@@ -141,21 +152,21 @@ public class MessageUI : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// アニメーションなしで即座に非表示にする
-    /// </summary>
     public void HideImmediate()
     {
+        canClose = false;
+
+        // ★ 非アクティブ(SetActive(false))にせず、透明(alpha=0) ＆ タップ無効(blocksRaycasts=false)にする
+        if (messageCanvasGroup != null)
+        {
+            messageCanvasGroup.alpha = 0f;
+            messageCanvasGroup.blocksRaycasts = false;
+        }
+
         if (messagePanelTransform != null)
         {
             messagePanelTransform.DOKill();
-            messagePanelTransform.localScale = Vector3.zero;
-            messagePanelTransform.gameObject.SetActive(false);
-        }
-
-        if (messageLayer != null)
-        {
-            messageLayer.SetActive(false);
+            messagePanelTransform.localScale = Vector3.one * baseStartScale;
         }
     }
 }

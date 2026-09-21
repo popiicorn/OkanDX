@@ -98,6 +98,7 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
     private void Awake()
     {
         imageComponent = GetComponent<Image>();
+
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -181,11 +182,11 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
                 .Append(transform.DOScale(0f, 0.0f).SetEase(Ease.InQuad))
                 .OnComplete(() =>
                 {
-                    // 1. 後処理（非表示化など）を完了させる
-                    ApplyItemPostAction();
-
-                    // 2. オブジェクト消去完了直後にメッセージを表示
+                    // ★ 1. 先にメッセージ表示（MessageUIを呼び出す）
                     ShowMessage(getMsg, itemGetPanelColor);
+
+                    // ★ 2. その後に後処理（オブジェクト非表示・切り替え等）を行う
+                    ApplyItemPostAction();
                 });
         }
         else
@@ -323,26 +324,27 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
 
         if (MessageUI.Instance != null)
         {
+            Debug.Log($"[MessageUI] メッセージ呼び出し成功: {msg}");
             MessageUI.Instance.ShowMessage(msg);
         }
         else
         {
-            Debug.LogWarning("MessageUIのInstanceが見つかりません。");
+            Debug.LogError($"[MessageUI] エラー: Instance が null です！ (メッセージ: {msg})");
         }
     }
 
-    // カラー指定付きのメッセージ呼び出し
     private void ShowMessage(string msg, Color customColor)
     {
         if (string.IsNullOrEmpty(msg)) return;
 
         if (MessageUI.Instance != null)
         {
+            Debug.Log($"[MessageUI] カラー付きメッセージ呼び出し成功: {msg}");
             MessageUI.Instance.ShowMessage(msg, customColor);
         }
         else
         {
-            Debug.LogWarning("MessageUIのInstanceが見つかりません。");
+            Debug.LogError($"[MessageUI] エラー: Instance が null です！ (メッセージ: {msg})");
         }
     }
 }
