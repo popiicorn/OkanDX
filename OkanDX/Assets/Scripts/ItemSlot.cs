@@ -8,12 +8,22 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     [Header("UI要素")]
     [SerializeField] private Image itemIconImage;      // アイテム画像のImage
     [SerializeField] private Image selectOutlineImage; // 選択状態を示す外枠Image
+    [SerializeField] private Button inspectButton;     // ★追加: 右上の虫眼鏡ボタン
 
     private Item currentItem;
     private int slotIndex;
     private InventoryManager inventoryManager;
 
     public Item CurrentItem => currentItem;
+
+    private void Awake()
+    {
+        // ★追加: 虫眼鏡ボタンのクリックイベントを設定
+        if (inspectButton != null)
+        {
+            inspectButton.onClick.AddListener(OnInspectButtonClicked);
+        }
+    }
 
     public void SetupSlot(int index, InventoryManager manager)
     {
@@ -30,6 +40,12 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         currentItem = item;
         itemIconImage.sprite = item.icon;
         itemIconImage.enabled = true;
+
+        // ★追加: canInspect が true の時だけ虫眼鏡ボタンを表示する
+        if (inspectButton != null)
+        {
+            inspectButton.gameObject.SetActive(item != null && item.canInspect);
+        }
     }
 
     /// <summary>
@@ -41,6 +57,12 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         itemIconImage.sprite = null;
         itemIconImage.enabled = false;
         SetSelectState(false);
+
+        // ★追加: 虫眼鏡ボタンを非表示にする
+        if (inspectButton != null)
+        {
+            inspectButton.gameObject.SetActive(false);
+        }
     }
 
     /// <summary>
@@ -69,9 +91,30 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         }
     }
 
+    // ★追加: 虫眼鏡ボタンが押された時の処理
+    private void OnInspectButtonClicked()
+    {
+        if (currentItem == null) return;
+
+        // ツールチップが開いていれば隠す
+        if (inventoryManager != null)
+        {
+            inventoryManager.HideItemTooltip();
+        }
+
+        // 詳細（拡大）モーダルUIを開く
+        if (ItemDetailUI.Instance != null)
+        {
+            ItemDetailUI.Instance.OpenDetail(currentItem);
+        }
+    }
+
     // --- マウスクリック時の処理 ---
     public void OnPointerClick(PointerEventData eventData)
     {
+        // 虫眼鏡ボタンをクリックしたイベントがスロット本体に伝播しないようガード
+        if (eventData.pointerCurrentRaycast.gameObject == inspectButton?.gameObject) return;
+
         if (currentItem == null) return;
         inventoryManager.OnSelectSlot(slotIndex);
     }
