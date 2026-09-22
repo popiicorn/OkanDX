@@ -8,16 +8,17 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
 {
     public enum ObjectType
     {
-        Examine,    // ① 調べるだけ（メッセージ表示）
-        Item,       // ② アイテム取得（4つの後処理対応）
-        StateChange,// ③ 状態変化（条件なしでのドア開閉・画像差し替えなど）
-        ItemUse,    // ④ 指定アイテム使用による状態変化・ギミック解除
-        Okan        // ⑤ おかん（クリックでクリア＆自動セーブ）
+        Examine,          // ① 調べるだけ（メッセージ表示）
+        Item,             // ② アイテム取得（4つの後処理対応）
+        StateChange,      // ③ 状態変化（条件なしでのドア開閉・画像差し替えなど）
+        ItemUse,          // ④ 指定アイテム使用による状態変化・ギミック解除
+        Okan,             // ⑤ おかん（クリックでクリア＆自動セーブ）
+        MultiStateChange  // ⑥ 複数段階の画像切り替え（順番に画像を差し替える）
     }
 
     public enum ItemPostAction
     {
-        Hide,                   // 消える
+        Hide,                    // 消える
         RemainAndShowText,      // 残って2回目以降テキスト
         ChangeSpriteAndShowText,// 画像切り替わって2回目以降テキスト
         SwapObject              // 消えて別オブジェクト表示
@@ -41,7 +42,7 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
     [SerializeField] private ItemPostAction itemPostAction = ItemPostAction.Hide;
 
     [Header(" └ アイテム獲得時のウィンドウカラー")]
-    [SerializeField] private Color itemGetPanelColor = new Color(1.0f, 0.9f, 0.4f); // デフォルト：明るいゴールド/黄色系
+    [SerializeField] private Color itemGetPanelColor = new Color(1.0f, 0.9f, 0.4f);
 
     [Header(" └ 画像切り替え用 (ChangeSprite)")]
     [SerializeField] private Sprite changedSprite;
@@ -87,6 +88,28 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
     private bool isStateChanged = false;
 
     // -------------------------------------------------------------
+    // 【複数段階の画像切り替え】タイプ用の設定
+    // -------------------------------------------------------------
+    [Header("■ 【複数段階画像切り替え】用の設定")]
+    [Tooltip("切り替えていく画像のリスト（要素数をインスペクターで自由に設定）")]
+    [SerializeField] private Sprite[] multiSprites;
+
+    [Tooltip("各画像（ステップ）に対応して出現させたいオブジェクトのリスト\n※画像と同じ順番・要素数で設定。出したいものがないステップは『None』のままでOK")]
+    [SerializeField] private GameObject[] stepObjects;
+
+    [Tooltip("次のステップに進んだ際、前のステップで出現させたオブジェクトを自動で消す（非表示にする）か")]
+    [SerializeField] private bool hidePreviousStepObject = true;
+
+    [Tooltip("最後の画像に達した後にクリックした際に出すメッセージ")]
+    [TextArea(2, 5)]
+    [SerializeField] private string multiStateEndMessage = "これ以上は動かないようだ。";
+
+    [Tooltip("最後の画像まで切り替わった後、最初（0番目）に戻るか")]
+    [SerializeField] private bool loopSprites = false;
+
+    private int currentSpriteIndex = 0; // 現在の画像インデックス
+
+    // -------------------------------------------------------------
     // 【おかん】タイプ用の設定
     // -------------------------------------------------------------
     [Header("■ 【おかん】用の設定")]
@@ -98,7 +121,6 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
     private void Awake()
     {
         imageComponent = GetComponent<Image>();
-
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -138,6 +160,11 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
                 AnimateClick();
                 OnOkanClick();
                 break;
+
+            case ObjectType.MultiStateChange:
+                AnimateClick();
+                OnMultiStateChangeClick();
+                break;
         }
     }
 
@@ -172,7 +199,6 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
             string itemNameText = !string.IsNullOrEmpty(itemData.itemName) ? itemData.itemName : "アイテム";
             string getMsg = $"「{itemNameText}」を手に入れた！";
 
-            // ★先にオブジェクト側の消去・変形演出を行う
             transform.DOKill();
             transform.localScale = Vector3.one;
 
@@ -182,10 +208,7 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
                 .Append(transform.DOScale(0f, 0.0f).SetEase(Ease.InQuad))
                 .OnComplete(() =>
                 {
-                    // ★ 1. 先にメッセージ表示（MessageUIを呼び出す）
                     ShowMessage(getMsg, itemGetPanelColor);
-
-                    // ★ 2. その後に後処理（オブジェクト非表示・切り替え等）を行う
                     ApplyItemPostAction();
                 });
         }
@@ -230,12 +253,78 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
     {
         if (isStateChanged)
         {
-            // ★すでに変化済みの場合は2回目以降のメッセージを表示する
             ShowMessage(inspectAfterGetMessage);
             return;
         }
 
         ChangeState();
+    }
+
+    // ★ 複数段階の画像切り替え ＆ インデックスごとのオブジェクト表示制御
+    private void OnMultiStateChangeClick()
+    {
+        if (multiSprites == null || multiSprites.Length == 0) return;
+
+        Image targetImg = targetUIImage != null ? targetUIImage : imageComponent;
+        if (targetImg == null) return;
+
+        // まだ次の画像がある場合
+        if (currentSpriteIndex < multiSprites.Length)
+        {
+            if (multiSprites[currentSpriteIndex] != null)
+            {
+                targetImg.sprite = multiSprites[currentSpriteIndex];
+            }
+
+            // オブジェクトの表示・非表示コントロール
+            UpdateStepObjects(currentSpriteIndex);
+
+            currentSpriteIndex++;
+        }
+        else
+        {
+            // 最後の画像に達している場合
+            if (loopSprites)
+            {
+                currentSpriteIndex = 0;
+                if (multiSprites[currentSpriteIndex] != null)
+                {
+                    targetImg.sprite = multiSprites[currentSpriteIndex];
+                }
+
+                // ループ時もオブジェクト表示を更新
+                UpdateStepObjects(currentSpriteIndex);
+
+                currentSpriteIndex++;
+            }
+            else
+            {
+                ShowMessage(multiStateEndMessage);
+            }
+        }
+    }
+
+    /// <summary>
+    /// ★ 指定されたインデックスのステップオブジェクトを表示し、不要なら前のものを非表示にする
+    /// </summary>
+    private void UpdateStepObjects(int index)
+    {
+        if (stepObjects == null || stepObjects.Length == 0) return;
+
+        // 設定で「前ステップのオブジェクトを消す」がONの場合、配下の全オブジェクトを一旦非表示にする
+        if (hidePreviousStepObject)
+        {
+            foreach (var obj in stepObjects)
+            {
+                if (obj != null) obj.SetActive(false);
+            }
+        }
+
+        // 現在のインデックスに対応するオブジェクトが存在すれば表示する
+        if (index < stepObjects.Length && stepObjects[index] != null)
+        {
+            stepObjects[index].SetActive(true);
+        }
     }
 
     private void OnItemUseClick()
@@ -246,10 +335,8 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
             return;
         }
 
-        // 選択中のアイテムを取得
         Item selected = InventoryManager.Instance != null ? InventoryManager.Instance.SelectedItem : null;
 
-        // 【成功】選択アイテムの id と requiredItemID が一致する場合
         if (selected != null && !string.IsNullOrEmpty(selected.id) && selected.id == requiredItemID)
         {
             if (consumeItemOnUse)
@@ -270,13 +357,11 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
     {
         isStateChanged = true;
 
-        // ★ 配列に何か登録されているかチェック
         bool hasBefore = beforeStateObjects != null && beforeStateObjects.Length > 0;
         bool hasAfter = afterStateObjects != null && afterStateObjects.Length > 0;
 
         if (hasBefore || hasAfter)
         {
-            // 変化前のオブジェクトをすべて非表示にする
             if (hasBefore)
             {
                 foreach (var obj in beforeStateObjects)
@@ -285,8 +370,6 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
                 }
             }
 
-
-            // 変化後のオブジェクトをすべて表示する
             if (hasAfter)
             {
                 foreach (var obj in afterStateObjects)
@@ -313,11 +396,6 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    // ================================================
-    //  メッセージ呼び出し部（カラー機能を追加）
-    // ================================================
-
-    // 通常のメッセージ呼び出し（色は指定せずMessageUI側のデフォルトを使用）
     private void ShowMessage(string msg)
     {
         if (string.IsNullOrEmpty(msg)) return;
