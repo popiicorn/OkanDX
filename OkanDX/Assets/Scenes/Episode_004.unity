@@ -312,6 +312,7 @@ RectTransform:
   - {fileID: 1323698581}
   - {fileID: 509064790}
   - {fileID: 179886844}
+  - {fileID: 1819467408}
   - {fileID: 645101233}
   - {fileID: 782989299}
   - {fileID: 200294803}
@@ -735,7 +736,8 @@ MonoBehaviour:
   itemPostAction: 2
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -929,7 +931,8 @@ MonoBehaviour:
   itemPostAction: 2
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -1132,7 +1135,8 @@ MonoBehaviour:
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -1464,12 +1468,12 @@ GameObject:
   - component: {fileID: 645101235}
   - component: {fileID: 645101234}
   m_Layer: 5
-  m_Name: Obj_Clock
+  m_Name: Obj_Clock_Gimick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &645101233
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1514,7 +1518,8 @@ MonoBehaviour:
   itemPostAction: 2
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -1687,7 +1692,8 @@ MonoBehaviour:
   itemPostAction: 2
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -1806,7 +1812,8 @@ MonoBehaviour:
   itemPostAction: 2
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -2042,7 +2049,8 @@ MonoBehaviour:
   itemPostAction: 2
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -2201,7 +2209,8 @@ MonoBehaviour:
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -2971,7 +2980,8 @@ MonoBehaviour:
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -3095,7 +3105,8 @@ MonoBehaviour:
   itemPostAction: 2
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -3496,7 +3507,8 @@ MonoBehaviour:
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -3840,7 +3852,8 @@ MonoBehaviour:
   itemPostAction: 2
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -3959,7 +3972,8 @@ MonoBehaviour:
   itemPostAction: 2
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -4152,6 +4166,134 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!1 &1819467407
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1819467408}
+  - component: {fileID: 1819467411}
+  - component: {fileID: 1819467410}
+  - component: {fileID: 1819467409}
+  m_Layer: 5
+  m_Name: Obj_Clock_Before
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1819467408
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1819467407}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 196102161}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -544, y: 377}
+  m_SizeDelta: {x: 166, y: 160}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1819467409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1819467407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14e909cf0d4003646beae8da27b2dcb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectType: 0
+  examineMessage: "\u3055\u3063\u304D\u304A\u3084\u3064\u98DF\u3079\u305F\u3057\u306A\u3041"
+  itemData:
+    id: 
+    itemName: 
+    description: 
+    icon: {fileID: 0}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
+  itemPostAction: 2
+  itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
+  changedSprite: {fileID: 0}
+  hideObjects: []
+  newObjects: []
+  inspectAfterGetMessage: 
+  changedStateSprite: {fileID: 0}
+  targetUIImage: {fileID: 0}
+  beforeStateObjects: []
+  afterStateObjects: []
+  requiredItemID: 
+  consumeItemOnUse: 0
+  wrongItemMessage: 
+  successMessage: 
+  afterUnlockedMessage: 
+  multiSprites:
+  - {fileID: 21300000, guid: d60892d7de5a83143b9a51e519422f74, type: 3}
+  - {fileID: 21300000, guid: 9ea36f30f20223547b8a9a9f1590bd02, type: 3}
+  - {fileID: 21300000, guid: fd37999041504d145a097b4860c7fe6e, type: 3}
+  - {fileID: 21300000, guid: 0717ce8f7a083f44aac42c4bb461544b, type: 3}
+  stepObjects:
+  - {fileID: 797965766}
+  - {fileID: 1306410762}
+  - {fileID: 797965766}
+  - {fileID: 797965766}
+  hidePreviousStepObject: 1
+  multiStateEndMessage: 
+  loopSprites: 1
+  episodeData: {fileID: 0}
+  resultSceneName: ResultScene
+--- !u!114 &1819467410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1819467407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 0717ce8f7a083f44aac42c4bb461544b, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1819467411
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1819467407}
+  m_CullTransparentMesh: 1
 --- !u!1 &1840177399
 GameObject:
   m_ObjectHideFlags: 0
@@ -4328,7 +4470,8 @@ MonoBehaviour:
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -4447,7 +4590,11 @@ MonoBehaviour:
   itemPostAction: 3
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 842067057}
+  hideObjects:
+  - {fileID: 1819467407}
+  newObjects:
+  - {fileID: 842067057}
+  - {fileID: 645101232}
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -4568,7 +4715,8 @@ MonoBehaviour:
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -4718,7 +4866,8 @@ MonoBehaviour:
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}

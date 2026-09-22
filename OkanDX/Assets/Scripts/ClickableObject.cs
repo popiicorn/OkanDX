@@ -47,8 +47,13 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
     [Header(" └ 画像切り替え用 (ChangeSprite)")]
     [SerializeField] private Sprite changedSprite;
 
+    [Header(" └ 非表示用オブジェクト (Hide / SwapObject)")]
+    [Tooltip("アイテム取得時に非表示（消去）にしたいオブジェクトのリスト（※空欄の場合は自分自身のみ非表示）")]
+    [SerializeField] private GameObject[] hideObjects; // ★ 複数非表示用
+
     [Header(" └ 別オブジェクト出現用 (SwapObject)")]
-    [SerializeField] private GameObject newObject;
+    [Tooltip("出現させたい新しいオブジェクト（複数指定可能）")]
+    [SerializeField] private GameObject[] newObjects;
 
     [Header(" └ 2回目以降のメッセージ (Remain / ChangeSprite)")]
     [TextArea(2, 5)]
@@ -221,6 +226,19 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
 
     private void ApplyItemPostAction()
     {
+        // ★ 1. HideObjects（非表示リスト）に登録されているオブジェクトを一括非表示
+        if (hideObjects != null && hideObjects.Length > 0)
+        {
+            foreach (var obj in hideObjects)
+            {
+                if (obj != null)
+                {
+                    obj.SetActive(false);
+                }
+            }
+        }
+
+        // ★ 2. 各後処理の実行
         switch (itemPostAction)
         {
             case ItemPostAction.Hide:
@@ -240,9 +258,16 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
                 break;
 
             case ItemPostAction.SwapObject:
-                if (newObject != null)
+                // 登録された複数のオブジェクトを一括アクティブ化
+                if (newObjects != null && newObjects.Length > 0)
                 {
-                    newObject.SetActive(true);
+                    foreach (var obj in newObjects)
+                    {
+                        if (obj != null)
+                        {
+                            obj.SetActive(true);
+                        }
+                    }
                 }
                 gameObject.SetActive(false);
                 break;
@@ -260,7 +285,6 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
         ChangeState();
     }
 
-    // ★ 複数段階の画像切り替え ＆ インデックスごとのオブジェクト表示制御
     private void OnMultiStateChangeClick()
     {
         if (multiSprites == null || multiSprites.Length == 0) return;
@@ -268,7 +292,6 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
         Image targetImg = targetUIImage != null ? targetUIImage : imageComponent;
         if (targetImg == null) return;
 
-        // まだ次の画像がある場合
         if (currentSpriteIndex < multiSprites.Length)
         {
             if (multiSprites[currentSpriteIndex] != null)
@@ -276,14 +299,11 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
                 targetImg.sprite = multiSprites[currentSpriteIndex];
             }
 
-            // オブジェクトの表示・非表示コントロール
             UpdateStepObjects(currentSpriteIndex);
-
             currentSpriteIndex++;
         }
         else
         {
-            // 最後の画像に達している場合
             if (loopSprites)
             {
                 currentSpriteIndex = 0;
@@ -292,9 +312,7 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
                     targetImg.sprite = multiSprites[currentSpriteIndex];
                 }
 
-                // ループ時もオブジェクト表示を更新
                 UpdateStepObjects(currentSpriteIndex);
-
                 currentSpriteIndex++;
             }
             else
@@ -304,14 +322,10 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    /// <summary>
-    /// ★ 指定されたインデックスのステップオブジェクトを表示し、不要なら前のものを非表示にする
-    /// </summary>
     private void UpdateStepObjects(int index)
     {
         if (stepObjects == null || stepObjects.Length == 0) return;
 
-        // 設定で「前ステップのオブジェクトを消す」がONの場合、配下の全オブジェクトを一旦非表示にする
         if (hidePreviousStepObject)
         {
             foreach (var obj in stepObjects)
@@ -320,7 +334,6 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
             }
         }
 
-        // 現在のインデックスに対応するオブジェクトが存在すれば表示する
         if (index < stepObjects.Length && stepObjects[index] != null)
         {
             stepObjects[index].SetActive(true);
