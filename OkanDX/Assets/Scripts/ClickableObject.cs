@@ -8,12 +8,13 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
 {
     public enum ObjectType
     {
-        Examine,          // ① 調べるだけ（メッセージ表示）
-        Item,             // ② アイテム取得（4つの後処理対応）
-        StateChange,      // ③ 状態変化（条件なしでのドア開閉・画像差し替えなど）
-        ItemUse,          // ④ 指定アイテム使用による状態変化・ギミック解除
-        Okan,             // ⑤ おかん（クリックでクリア＆自動セーブ）
-        MultiStateChange  // ⑥ 複数段階の画像切り替え（順番に画像を差し替える）
+        Examine,                  // ① 調べるだけ（メッセージ表示）
+        Item,                     // ② アイテム取得（4つの後処理対応）
+        StateChange,              // ③ 状態変化（条件なしでのドア開閉・画像差し替えなど）
+        ItemUse,                  // ④ 指定アイテム使用による状態変化・ギミック解除
+        Okan,                     // ⑤ おかん（クリックでクリア＆自動セーブ）
+        MultiStateChange,         // ⑥ 複数段階の画像切り替え（通常クリック用・既存処理）
+        ItemUseMultiStateChange   // ⑦ ★新規追加：指定アイテム使用時のみ画像切り替え（消費なし）
     }
 
     public enum ItemPostAction
@@ -49,7 +50,7 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
 
     [Header(" └ 非表示用オブジェクト (Hide / SwapObject)")]
     [Tooltip("アイテム取得時に非表示（消去）にしたいオブジェクトのリスト（※空欄の場合は自分自身のみ非表示）")]
-    [SerializeField] private GameObject[] hideObjects; // ★ 複数非表示用
+    [SerializeField] private GameObject[] hideObjects;
 
     [Header(" └ 別オブジェクト出現用 (SwapObject)")]
     [Tooltip("出現させたい新しいオブジェクト（複数指定可能）")]
@@ -112,7 +113,7 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
     [Tooltip("最後の画像まで切り替わった後、最初（0番目）に戻るか")]
     [SerializeField] private bool loopSprites = false;
 
-    private int currentSpriteIndex = 0; // 現在の画像インデックス
+    private int currentSpriteIndex = 0;
 
     // -------------------------------------------------------------
     // 【おかん】タイプ用の設定
@@ -170,6 +171,12 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
                 AnimateClick();
                 OnMultiStateChangeClick();
                 break;
+
+            // ★ 新規追加：アイテム使用で複数段階画像切り替え
+            case ObjectType.ItemUseMultiStateChange:
+                AnimateClick();
+                OnItemUseMultiStateChangeClick();
+                break;
         }
     }
 
@@ -226,7 +233,6 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
 
     private void ApplyItemPostAction()
     {
-        // ★ 1. HideObjects（非表示リスト）に登録されているオブジェクトを一括非表示
         if (hideObjects != null && hideObjects.Length > 0)
         {
             foreach (var obj in hideObjects)
@@ -238,7 +244,6 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
             }
         }
 
-        // ★ 2. 各後処理の実行
         switch (itemPostAction)
         {
             case ItemPostAction.Hide:
@@ -258,7 +263,6 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
                 break;
 
             case ItemPostAction.SwapObject:
-                // 登録された複数のオブジェクトを一括アクティブ化
                 if (newObjects != null && newObjects.Length > 0)
                 {
                     foreach (var obj in newObjects)
@@ -318,6 +322,33 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
             else
             {
                 ShowMessage(multiStateEndMessage);
+            }
+        }
+    }
+
+    // ★ リモコン使用時：未使用時・選択時・使用後でメッセージや画像を分岐
+    private void OnItemUseMultiStateChangeClick()
+    {
+        Item selected = InventoryManager.Instance != null ? InventoryManager.Instance.SelectedItem : null;
+
+        // ① リモコンを選択している場合（画像を切り替える）
+        if (selected != null && !string.IsNullOrEmpty(selected.id) && selected.id == requiredItemID)
+        {
+            isStateChanged = true; // ★「一度でもリモコンを使った」フラグを立てる
+            OnMultiStateChangeClick();
+        }
+        else
+        {
+            // ② リモコンを選択していない場合
+            if (isStateChanged)
+            {
+                // ★ リモコン使用後のメッセージ（Multi State End Message）
+                ShowMessage(multiStateEndMessage);
+            }
+            else
+            {
+                // ★ リモコン使用前のメッセージ（Wrong Item Message）
+                ShowMessage(wrongItemMessage);
             }
         }
     }
