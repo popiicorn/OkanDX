@@ -68,6 +68,7 @@ public class PictureMatchGimmickUI : MonoBehaviour
 
     private void Awake()
     {
+        /* シングルトン処理をコメントアウト/削除
         if (Instance == null)
         {
             Instance = this;
@@ -77,6 +78,7 @@ public class PictureMatchGimmickUI : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        */
 
         if (mainCloseButton != null) mainCloseButton.onClick.AddListener(ClosePanel);
 
