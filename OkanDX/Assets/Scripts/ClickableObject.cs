@@ -113,6 +113,9 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
     [Tooltip("最後の画像まで切り替わった後、最初（0番目）に戻るか")]
     [SerializeField] private bool loopSprites = false;
 
+    [Tooltip("このオブジェクト（例: オブジェクトC）が表示されている間は、Step Objectsの自動切り替えを無効化します")]
+    [SerializeField] private GameObject disableStepObjectsIfActive;
+
     private int currentSpriteIndex = 0;
 
     // -------------------------------------------------------------
@@ -296,34 +299,31 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
         Image targetImg = targetUIImage != null ? targetUIImage : imageComponent;
         if (targetImg == null) return;
 
-        if (currentSpriteIndex < multiSprites.Length)
-        {
-            if (multiSprites[currentSpriteIndex] != null)
-            {
-                targetImg.sprite = multiSprites[currentSpriteIndex];
-            }
-
-            UpdateStepObjects(currentSpriteIndex);
-            currentSpriteIndex++;
-        }
-        else
+        // ループ判定を含めたインデックス調整
+        if (currentSpriteIndex >= multiSprites.Length)
         {
             if (loopSprites)
             {
                 currentSpriteIndex = 0;
-                if (multiSprites[currentSpriteIndex] != null)
-                {
-                    targetImg.sprite = multiSprites[currentSpriteIndex];
-                }
-
-                UpdateStepObjects(currentSpriteIndex);
-                currentSpriteIndex++;
             }
             else
             {
                 ShowMessage(multiStateEndMessage);
+                return;
             }
         }
+
+        // ① 画像の反映
+        if (multiSprites[currentSpriteIndex] != null)
+        {
+            targetImg.sprite = multiSprites[currentSpriteIndex];
+        }
+
+        // ② ステップに対応するオブジェクトの表示・非表示切り替え
+        UpdateStepObjects(currentSpriteIndex);
+
+        // 次のクリック用にインデックスをカウントアップ
+        currentSpriteIndex++;
     }
 
     // ★ リモコン使用時：未使用時・選択時・使用後でメッセージや画像を分岐
@@ -357,6 +357,13 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
     {
         if (stepObjects == null || stepObjects.Length == 0) return;
 
+        // ★ オブジェクトC（disableStepObjectsIfActive）が表示されている場合は、AやBの自動切り替えを行わない
+        if (disableStepObjectsIfActive != null && disableStepObjectsIfActive.activeSelf)
+        {
+            return;
+        }
+
+        // 一旦すべてのステップオブジェクトを非表示（排他制御）
         if (hidePreviousStepObject)
         {
             foreach (var obj in stepObjects)
@@ -365,6 +372,7 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
             }
         }
 
+        // 現在のステップ（画像）に対応するオブジェクトのみを表示
         if (index < stepObjects.Length && stepObjects[index] != null)
         {
             stepObjects[index].SetActive(true);

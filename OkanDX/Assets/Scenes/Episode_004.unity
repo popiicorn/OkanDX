@@ -382,6 +382,7 @@ MonoBehaviour:
   hidePreviousStepObject: 1
   multiStateEndMessage: 
   loopSprites: 1
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &181662012
@@ -643,35 +644,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4376753137469884662, guid: d55f77c598faf744980f168d19328fc2, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4376753137469884662, guid: d55f77c598faf744980f168d19328fc2, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4376753137469884662, guid: d55f77c598faf744980f168d19328fc2, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 350
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4376753137469884662, guid: d55f77c598faf744980f168d19328fc2, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -200
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4578465755174604803, guid: d55f77c598faf744980f168d19328fc2, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4578465755174604803, guid: d55f77c598faf744980f168d19328fc2, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4578465755174604803, guid: d55f77c598faf744980f168d19328fc2, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 350
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4578465755174604803, guid: d55f77c598faf744980f168d19328fc2, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -66.666664
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5152609121449387038, guid: d55f77c598faf744980f168d19328fc2, type: 3}
       propertyPath: m_Name
@@ -679,23 +680,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5152609121449387038, guid: d55f77c598faf744980f168d19328fc2, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7738379579239740665, guid: d55f77c598faf744980f168d19328fc2, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7738379579239740665, guid: d55f77c598faf744980f168d19328fc2, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7738379579239740665, guid: d55f77c598faf744980f168d19328fc2, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 350
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7738379579239740665, guid: d55f77c598faf744980f168d19328fc2, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -333.3333
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -909,6 +910,7 @@ MonoBehaviour:
   hidePreviousStepObject: 1
   multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
   loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &215586954
@@ -983,7 +985,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 391.5, y: -40.4}
+  m_AnchoredPosition: {x: 338, y: -52}
   m_SizeDelta: {x: 289, y: 188}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &227106372
@@ -1477,7 +1479,7 @@ MonoBehaviour:
   afterStateObjects:
   - {fileID: 2027501331}
   - {fileID: 1422012119}
-  requiredItemID: Item_0201
+  requiredItemID: Item_0404
   consumeItemOnUse: 1
   wrongItemMessage: "\u300C\u304A\u304B\u3093\u306E\u305B\u3044\u3093\u3079\u3044\u6301\u3063\u3066\u304D\u3066\u300D\n\u3068\u66F8\u304B\u308C\u3066\u308B"
   successMessage: "\u3042\u3044\u305F\u3067"
@@ -1487,6 +1489,7 @@ MonoBehaviour:
   hidePreviousStepObject: 1
   multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
   loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &354817530
@@ -1621,7 +1624,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8083902533532677504, guid: 9b65230eea44db0469e3e9a2177e06f9, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1644,6 +1647,130 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ebcd4fa3deaefd4b9c9321ded646df1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &441667587
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 441667591}
+  - component: {fileID: 441667590}
+  - component: {fileID: 441667589}
+  - component: {fileID: 441667588}
+  m_Layer: 5
+  m_Name: Obj_Girl_Book_2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &441667588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 441667587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14e909cf0d4003646beae8da27b2dcb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectType: 3
+  examineMessage: "\u5A18\u306FVR\u306B\u8208\u5473\u304C\u3042\u308A\u305D\u3046\u3060"
+  itemData:
+    id: 
+    itemName: 
+    description: 
+    icon: {fileID: 0}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
+  itemPostAction: 0
+  itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
+  changedSprite: {fileID: 0}
+  hideObjects: []
+  newObjects: []
+  inspectAfterGetMessage: 
+  changedStateSprite: {fileID: 0}
+  targetUIImage: {fileID: 0}
+  beforeStateObjects:
+  - {fileID: 441667587}
+  afterStateObjects:
+  - {fileID: 1675154021}
+  - {fileID: 1472753855}
+  requiredItemID: Item_0403
+  consumeItemOnUse: 1
+  wrongItemMessage: "\u5A18\u306FVR\u306B\u8208\u5473\u304C\u3042\u308A\u305D\u3046\u3060"
+  successMessage: "\u306A\u3093\u304B\u843D\u3068\u3057\u305F"
+  afterUnlockedMessage: 
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
+  episodeData: {fileID: 0}
+  resultSceneName: ResultScene
+--- !u!114 &441667589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 441667587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: b629bd64fb8be2e45bc58c48f8ece394, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &441667590
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 441667587}
+  m_CullTransparentMesh: 1
+--- !u!224 &441667591
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 441667587}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 714421528}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 498, y: -112}
+  m_SizeDelta: {x: 314, y: 405}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &462967982
 GameObject:
   m_ObjectHideFlags: 0
@@ -1679,7 +1806,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 349.4, y: -78.5}
+  m_AnchoredPosition: {x: 295.9, y: -90.100006}
   m_SizeDelta: {x: 154, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &462967984
@@ -1724,6 +1851,7 @@ MonoBehaviour:
   hidePreviousStepObject: 1
   multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
   loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &462967985
@@ -2005,7 +2133,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1329986242360292900, guid: c95654aafe017c148badaeda0c46c770, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 301.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1329986242360292900, guid: c95654aafe017c148badaeda0c46c770, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -2037,7 +2165,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1739174908392485022, guid: c95654aafe017c148badaeda0c46c770, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 500
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1739174908392485022, guid: c95654aafe017c148badaeda0c46c770, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -2197,7 +2325,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5708044518666475022, guid: c95654aafe017c148badaeda0c46c770, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 698.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5708044518666475022, guid: c95654aafe017c148badaeda0c46c770, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -2499,6 +2627,7 @@ MonoBehaviour:
   hidePreviousStepObject: 1
   multiStateEndMessage: 
   loopSprites: 1
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &645101235
@@ -2573,6 +2702,7 @@ RectTransform:
   - {fileID: 84753660}
   - {fileID: 1868669509}
   - {fileID: 842067058}
+  - {fileID: 441667591}
   - {fileID: 1675154022}
   - {fileID: 1472753856}
   - {fileID: 989520848}
@@ -2580,7 +2710,6 @@ RectTransform:
   - {fileID: 1048251827}
   - {fileID: 1900407546}
   - {fileID: 1689841714}
-  - {fileID: 1038463237}
   - {fileID: 545998949}
   m_Father: {fileID: 1086895142}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2669,6 +2798,7 @@ MonoBehaviour:
   hidePreviousStepObject: 1
   multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
   loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &782989301
@@ -2767,7 +2897,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4891344408866839756, guid: f971370da0ec31a4385f1081daf1166f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5663140183512973790, guid: f971370da0ec31a4385f1081daf1166f, type: 3}
       propertyPath: m_Pivot.x
@@ -3153,6 +3283,7 @@ MonoBehaviour:
   hidePreviousStepObject: 1
   multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
   loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!1001 &838535378
@@ -3355,6 +3486,7 @@ MonoBehaviour:
   hidePreviousStepObject: 1
   multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
   loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &842067060
@@ -3551,6 +3683,7 @@ MonoBehaviour:
   hidePreviousStepObject: 1
   multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
   loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &937695236
@@ -3627,7 +3760,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -262, y: 45}
+  m_AnchoredPosition: {x: -262, y: 29}
   m_SizeDelta: {x: 423, y: 147}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &989520849
@@ -3981,11 +4114,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1038168633}
   m_CullTransparentMesh: 1
---- !u!224 &1038463237 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 2749764238048414355, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-  m_PrefabInstance: {fileID: 6408136725047071652}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1048251826
 GameObject:
   m_ObjectHideFlags: 0
@@ -4021,7 +4149,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -163, y: 29}
+  m_AnchoredPosition: {x: -163, y: 10}
   m_SizeDelta: {x: 126, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1048251828
@@ -4066,6 +4194,7 @@ MonoBehaviour:
   hidePreviousStepObject: 1
   multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
   loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &1048251829
@@ -4633,6 +4762,7 @@ MonoBehaviour:
   hidePreviousStepObject: 1
   multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
   loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &1205554377
@@ -4753,6 +4883,7 @@ MonoBehaviour:
   hidePreviousStepObject: 1
   multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
   loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &1269618419
@@ -5112,6 +5243,7 @@ MonoBehaviour:
   hidePreviousStepObject: 1
   multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
   loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &1345827172
@@ -5318,7 +5450,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -262, y: 45}
+  m_AnchoredPosition: {x: -262, y: 29}
   m_SizeDelta: {x: 423, y: 147}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1419579188
@@ -5528,6 +5660,7 @@ MonoBehaviour:
   hidePreviousStepObject: 1
   multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
   loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &1472753858
@@ -5724,6 +5857,7 @@ MonoBehaviour:
   hidePreviousStepObject: 1
   multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
   loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &1548810844
@@ -6148,7 +6282,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1329986242360292900, guid: c95654aafe017c148badaeda0c46c770, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 301.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1329986242360292900, guid: c95654aafe017c148badaeda0c46c770, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -6180,7 +6314,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1739174908392485022, guid: c95654aafe017c148badaeda0c46c770, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 500
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1739174908392485022, guid: c95654aafe017c148badaeda0c46c770, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -6368,7 +6502,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5708044518666475022, guid: c95654aafe017c148badaeda0c46c770, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 698.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5708044518666475022, guid: c95654aafe017c148badaeda0c46c770, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -6682,6 +6816,7 @@ MonoBehaviour:
   hidePreviousStepObject: 1
   multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
   loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &1648646584
@@ -6802,6 +6937,7 @@ MonoBehaviour:
   hidePreviousStepObject: 1
   multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
   loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &1675154024
@@ -6922,6 +7058,7 @@ MonoBehaviour:
   hidePreviousStepObject: 1
   multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
   loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &1689841716
@@ -7187,6 +7324,7 @@ MonoBehaviour:
   hidePreviousStepObject: 1
   multiStateEndMessage: 
   loopSprites: 1
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &1819467410
@@ -7420,6 +7558,7 @@ MonoBehaviour:
   hidePreviousStepObject: 1
   multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
   loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!1 &1868669508
@@ -7545,6 +7684,7 @@ MonoBehaviour:
   hidePreviousStepObject: 1
   multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
   loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!1 &1900407545
@@ -7583,7 +7723,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -262, y: 240}
+  m_AnchoredPosition: {x: -262, y: 224}
   m_SizeDelta: {x: 322, y: 190}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1900407547
@@ -7666,10 +7806,15 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 8beb5d98e7c6cae449ec07a721df1ba6, type: 3}
   - {fileID: 21300000, guid: 3b656a647c4259147bc5d95dd53dadc6, type: 3}
   - {fileID: 21300000, guid: 225b84794c940074a9edee16cdfd54c3, type: 3}
-  stepObjects: []
+  stepObjects:
+  - {fileID: 842067057}
+  - {fileID: 441667587}
+  - {fileID: 842067057}
+  - {fileID: 842067057}
   hidePreviousStepObject: 1
   multiStateEndMessage: "\u4ECA\u306F\u914D\u4FE1\u3067\u3082\u307F\u308C\u308B\u6642\u4EE3\u3084\u308F"
   loopSprites: 1
+  disableStepObjectsIfActive: {fileID: 1675154021}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!1 &1941659363
@@ -7790,6 +7935,7 @@ MonoBehaviour:
   hidePreviousStepObject: 1
   multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
   loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!1 &1976581477
@@ -8033,6 +8179,7 @@ MonoBehaviour:
   hidePreviousStepObject: 1
   multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
   loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!1 &2027501331
@@ -8295,6 +8442,7 @@ MonoBehaviour:
   hidePreviousStepObject: 1
   multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
   loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &2040333287
@@ -9119,175 +9267,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 767088c8e889dd346af2d8f642e29387, type: 3}
---- !u!1001 &6408136725047071652
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 714421528}
-    m_Modifications:
-    - target: {fileID: 1329986242360292900, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1329986242360292900, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1329986242360292900, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 150
-      objectReference: {fileID: 0}
-    - target: {fileID: 1329986242360292900, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -275
-      objectReference: {fileID: 0}
-    - target: {fileID: 1739174908392485022, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1739174908392485022, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1739174908392485022, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 500
-      objectReference: {fileID: 0}
-    - target: {fileID: 1739174908392485022, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -275
-      objectReference: {fileID: 0}
-    - target: {fileID: 2749764238048414355, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2749764238048414355, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2749764238048414355, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2749764238048414355, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2749764238048414355, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2749764238048414355, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2749764238048414355, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 1920
-      objectReference: {fileID: 0}
-    - target: {fileID: 2749764238048414355, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 1080
-      objectReference: {fileID: 0}
-    - target: {fileID: 2749764238048414355, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2749764238048414355, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2749764238048414355, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2749764238048414355, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2749764238048414355, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2749764238048414355, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2749764238048414355, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2749764238048414355, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2749764238048414355, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2749764238048414355, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2749764238048414355, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2749764238048414355, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2828890113912507034, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_Name
-      value: PictureMatchGimmickPanel_NoUSE
-      objectReference: {fileID: 0}
-    - target: {fileID: 2828890113912507034, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5708044518666475022, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5708044518666475022, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5708044518666475022, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 850
-      objectReference: {fileID: 0}
-    - target: {fileID: 5708044518666475022, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -275
-      objectReference: {fileID: 0}
-    - target: {fileID: 7480946996624125443, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: 'hideObjectsOnSolved.Array.data[0]'
-      value: 
-      objectReference: {fileID: 989520847}
-    - target: {fileID: 7480946996624125443, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: 'showObjectsOnSolved.Array.data[0]'
-      value: 
-      objectReference: {fileID: 1419579186}
-    - target: {fileID: 7480946996624125443, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: 'showObjectsOnSolved.Array.data[1]'
-      value: 
-      objectReference: {fileID: 1048251826}
-    - target: {fileID: 7480946996624125443, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: slots.Array.data[0].targetSpriteIndex
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7480946996624125443, guid: c95654aafe017c148badaeda0c46c770, type: 3}
-      propertyPath: slots.Array.data[1].targetSpriteIndex
-      value: 2
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: c95654aafe017c148badaeda0c46c770, type: 3}
 --- !u!1001 &7263008748613983067
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9306,7 +9285,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6324692287688722152, guid: 1237bc56aec77624abc3e34d8cc62b55, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9132650852310112031, guid: 1237bc56aec77624abc3e34d8cc62b55, type: 3}
       propertyPath: m_Pivot.x

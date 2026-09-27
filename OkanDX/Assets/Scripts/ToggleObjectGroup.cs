@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,30 +6,31 @@ public class ToggleObjectGroup : MonoBehaviour
 {
     public enum ToggleMode
     {
-        MutualExclusion, // ƒpƒ^[ƒ“‡@FØ‚è‘Ö‚¦•û®iA‚ª•\¦‚ÌB”ñ•\¦ • B‚ª•\¦‚ÌA”ñ•\¦j
-        OneWayAtoB       // ƒpƒ^[ƒ“‡AFˆê•û‚Ì‚İiA‚ª•\¦‚ÌB”ñ•\¦j
+        MutualExclusion, // ãƒ‘ã‚¿ãƒ¼ãƒ³â‘ ï¼šåˆ‡ã‚Šæ›¿ãˆæ–¹å¼ï¼ˆAãŒè¡¨ç¤ºã®æ™‚Béè¡¨ç¤º ï¼† BãŒè¡¨ç¤ºã®æ™‚Aéè¡¨ç¤ºï¼‰
+        OneWayAtoB,      // ãƒ‘ã‚¿ãƒ¼ãƒ³â‘¡ï¼šä¸€æ–¹ã®ã¿ï¼ˆAãŒè¡¨ç¤ºã®æ™‚Béè¡¨ç¤ºï¼‰
+        ShowBWhenAActive // ãƒ‘ã‚¿ãƒ¼ãƒ³â‘¢ï¼šé€£é–é€£å‹•ï¼ˆAãŒè¡¨ç¤ºã®æ™‚Bã‚’è‡ªå‹•è¡¨ç¤ºï¼‰â˜…æ–°è¦è¿½åŠ 
     }
 
     [System.Serializable]
     public class TogglePair
     {
-        [Tooltip("ƒyƒA‚Ì¯•Ê–¼iƒCƒ“ƒXƒyƒNƒ^[ŠÇ——pE”CˆÓj")]
+        [Tooltip("ãƒšã‚¢ã®è­˜åˆ¥åï¼ˆã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ãƒ¼ç®¡ç†ç”¨ãƒ»ä»»æ„ï¼‰")]
         public string pairName = "New Pair";
 
-        [Tooltip("˜A“®ƒpƒ^[ƒ“")]
+        [Tooltip("é€£å‹•ãƒ‘ã‚¿ãƒ¼ãƒ³")]
         public ToggleMode mode = ToggleMode.MutualExclusion;
 
-        [Header("¡ ƒIƒuƒWƒFƒNƒgAŒQ")]
+        [Header("â–  ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆAç¾¤")]
         public GameObject[] objectsA;
 
-        [Header("¡ ƒIƒuƒWƒFƒNƒgBŒQ")]
+        [Header("â–  ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆBç¾¤")]
         public GameObject[] objectsB;
 
         [HideInInspector] public bool lastStateA = false;
         [HideInInspector] public bool lastStateB = false;
     }
 
-    [Header("¡ ˜A“®ƒyƒA‚ÌƒŠƒXƒgi”CˆÓ‚É‚¢‚­‚ç‚Å‚à’Ç‰Á‰Â”\j")]
+    [Header("â–  é€£å‹•ãƒšã‚¢ã®ãƒªã‚¹ãƒˆï¼ˆä»»æ„ã«ã„ãã‚‰ã§ã‚‚è¿½åŠ å¯èƒ½ï¼‰")]
     [SerializeField] private List<TogglePair> togglePairs = new List<TogglePair>();
 
     private void Update()
@@ -46,28 +47,36 @@ public class ToggleObjectGroup : MonoBehaviour
             switch (pair.mode)
             {
                 case ToggleMode.MutualExclusion:
-                    // ƒpƒ^[ƒ“‡@FØ‚è‘Ö‚¦•û®
+                    // ãƒ‘ã‚¿ãƒ¼ãƒ³â‘ ï¼šåˆ‡ã‚Šæ›¿ãˆæ–¹å¼
                     if (isAActive && isAActive != pair.lastStateA)
                     {
-                        // A‚ª•\¦‚³‚ê‚½‚çB‚ğ”ñ•\¦
+                        // AãŒè¡¨ç¤ºã•ã‚ŒãŸã‚‰Bã‚’éè¡¨ç¤º
                         SetAllActive(pair.objectsB, false);
                         pair.lastStateB = false;
                     }
                     else if (isBActive && isBActive != pair.lastStateB)
                     {
-                        // B‚ª•\¦‚³‚ê‚½‚çA‚ğ”ñ•\¦
+                        // BãŒè¡¨ç¤ºã•ã‚ŒãŸã‚‰Aã‚’éè¡¨ç¤º
                         SetAllActive(pair.objectsA, false);
                         pair.lastStateA = false;
                     }
                     break;
 
                 case ToggleMode.OneWayAtoB:
-                    // ƒpƒ^[ƒ“‡AFˆê•û‚Ì‚İ
+                    // ãƒ‘ã‚¿ãƒ¼ãƒ³â‘¡ï¼šä¸€æ–¹ã®ã¿ï¼ˆAè¡¨ç¤º â” Béè¡¨ç¤ºï¼‰
                     if (isAActive && isAActive != pair.lastStateA)
                     {
-                        // A‚ª•\¦‚³‚ê‚½‚çB‚ğ”ñ•\¦
                         SetAllActive(pair.objectsB, false);
                         pair.lastStateB = false;
+                    }
+                    break;
+
+                case ToggleMode.ShowBWhenAActive:
+                    // ãƒ‘ã‚¿ãƒ¼ãƒ³â‘¢ï¼šé€£é–ç”¨ï¼ˆAè¡¨ç¤º â” Bã‚’è‡ªå‹•è¡¨ç¤ºï¼‰â˜…æ–°è¦è¿½åŠ 
+                    if (isAActive && isAActive != pair.lastStateA)
+                    {
+                        SetAllActive(pair.objectsB, true);
+                        pair.lastStateB = true;
                     }
                     break;
             }
