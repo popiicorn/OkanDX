@@ -11,40 +11,34 @@ public class TPCatchMiniGame : MonoBehaviour
 
     [Header("■ 買い物カート設定")]
     [SerializeField] private RectTransform cartTransform;
-    [SerializeField] private Rigidbody2D cartRigidbody; // カートのRigidbody2D
+    [SerializeField] private Rigidbody2D cartRigidbody;
     [SerializeField] private float minX = -400f;
     [SerializeField] private float maxX = 400f;
-    [SerializeField] private Collider2D cartInnerArea; // ⑧ 計測用：カート内側のTriggerエリア
+    [SerializeField] private float cartMoveSpeed = 25f; // カート追従スピード
+    [SerializeField] private Collider2D cartInnerArea; // カート内側の判定エリア (Trigger)
 
     [Header("■ トイレットペーパー基本設定")]
-    [SerializeField] private GameObject toiletPaperPrefab;
+    [SerializeField] private GameObject normalPaperPrefab;  // 通常トイレットペーパー
+    [SerializeField] private GameObject goldenPaperPrefab;  // ゴールデントイレットペーパー
+    [Range(0, 100)]
+    [SerializeField] private float goldenSpawnChance = 15f; // ゴールデンが出現する確率（％）
+
     [SerializeField] private RectTransform spawnAreaCenter;
     [SerializeField] private Transform canvasParent;
     [SerializeField] private float spawnInterval = 0.8f;
 
     [Header("■ 物理・発射パラメータ（インスペクター調整用）")]
-    [Tooltip("上方向（Y軸）へ飛ばす力")]
-    [SerializeField] private float minForceY = 300f;
-    [SerializeField] private float maxForceY = 500f;
-
-    [Tooltip("左右（X軸）へ散らばせる力")]
-    [SerializeField] private float minForceX = -100f;
-    [SerializeField] private float maxForceX = 100f;
-
-    [Tooltip("回転させる力")]
-    [SerializeField] private float torqueAmount = 20f;
-
-    [Header("■ リザルト表示・へそくり（円）設定")]
-    [SerializeField] private GameObject resultPanel;
-    [SerializeField] private TextMeshProUGUI resultScoreText;
-    [SerializeField] private int pricePerPaper = 100; // ペーパー1個あたりのへそくり額（円）
+    [SerializeField] private float minForceY = 1000f;
+    [SerializeField] private float maxForceY = 1500f;
+    [SerializeField] private float minForceX = -200f;
+    [SerializeField] private float maxForceX = 200f;
+    [SerializeField] private float torqueAmount = 50f;
 
     private float currentTimer;
     private bool isGameActive = false;
     private Canvas parentCanvas;
     private List<ToiletPaperItem> spawnedPapers = new List<ToiletPaperItem>();
 
-    // ⑨ 脱出ゲーム本編へ引き継ぐへそくり合計額（他スクリプトから参照可能）
     public static int TotalHesokuriMoney { get; private set; } = 0;
 
     private void Start()
@@ -63,8 +57,6 @@ public class TPCatchMiniGame : MonoBehaviour
         currentTimer = gameTime;
         isGameActive = true;
 
-        if (resultPanel != null) resultPanel.SetActive(false);
-
         StartCoroutine(SpawnRoutine());
     }
 
@@ -72,11 +64,10 @@ public class TPCatchMiniGame : MonoBehaviour
     {
         if (!isGameActive) return;
 
-        // タイマーカウントダウン
         currentTimer -= Time.deltaTime;
         if (timerText != null)
         {
-            timerText.text = Mathf.CeilToInt(Mathf.Max(0, currentTimer)).ToString() + "秒";
+            timerText.text = Mathf.CeilToInt(Mathf.Max(0, currentTimer)).ToString();
         }
 
         if (currentTimer <= 0)
@@ -85,12 +76,8 @@ public class TPCatchMiniGame : MonoBehaviour
             return;
         }
 
-        // ② カートの物理移動（ドラッグ処理）
         HandleCartInput();
     }
-
-    [Header("■ カート追従の滑らかさ")]
-    [SerializeField] private float cartMoveSpeed = 25f; // 追従スピード（値が大きいほど俊敏）
 
     private void HandleCartInput()
     {
@@ -113,15 +100,12 @@ public class TPCatchMiniGame : MonoBehaviour
                 uiCamera,
                 out Vector2 localPoint))
             {
-                // 目標のX座標
                 float targetX = Mathf.Clamp(localPoint.x, minX, maxX);
 
                 if (cartRigidbody != null)
                 {
-                    // ★ 物理移動（MovePosition）の急激なワープを防ぐため、Lerpで滑らかに追従
                     Vector2 targetWorldPos = canvasRect.TransformPoint(new Vector3(targetX, cartTransform.anchoredPosition.y, 0));
                     Vector2 nextPos = Vector2.Lerp(cartRigidbody.position, targetWorldPos, Time.deltaTime * cartMoveSpeed);
-
                     cartRigidbody.MovePosition(nextPos);
                 }
                 else
@@ -134,7 +118,6 @@ public class TPCatchMiniGame : MonoBehaviour
         }
         else
         {
-            // マウスを離している時はカートの物理速度を完全にリセット（残存慣性で弾けるのを防ぐ）
             if (cartRigidbody != null)
             {
                 cartRigidbody.linearVelocity = Vector2.zero;
@@ -148,14 +131,20 @@ public class TPCatchMiniGame : MonoBehaviour
         {
             yield return new WaitForSeconds(spawnInterval);
 
-            if (!isGameActive || toiletPaperPrefab == null) break;
+            if (!isGameActive) break;
 
-            // ① スポーン生成
+            // 出現確率によって通常かゴールデンかをランダム選択
+            GameObject prefabToSpawn = normalPaperPrefab;
+            if (goldenPaperPrefab != null && Random.Range(0f, 100f) <= goldenSpawnChance)
+            {
+                prefabToSpawn = goldenPaperPrefab;
+            }
+
+            if (prefabToSpawn == null) continue;
+
             Transform parent = canvasParent != null ? canvasParent : transform;
-            GameObject tp = Instantiate(toiletPaperPrefab, parent);
-            //tp.transform.SetAsLastSibling();
+            GameObject tp = Instantiate(prefabToSpawn, parent);
 
-            // 生成位置（SpawnAreaCenterから少しランダムズレ）
             Vector2 startPos = spawnAreaCenter != null ? spawnAreaCenter.anchoredPosition : Vector2.zero;
             float halfWidth = spawnAreaCenter != null ? spawnAreaCenter.rect.width * 0.5f : 100f;
             startPos.x += Random.Range(-halfWidth, halfWidth);
@@ -163,7 +152,6 @@ public class TPCatchMiniGame : MonoBehaviour
             RectTransform tpRect = tp.GetComponent<RectTransform>();
             if (tpRect != null) tpRect.anchoredPosition = startPos;
 
-            // 物理的な放り投げ力を計算
             Vector2 force = new Vector2(
                 Random.Range(minForceX, maxForceX),
                 Random.Range(minForceY, maxForceY)
@@ -183,37 +171,72 @@ public class TPCatchMiniGame : MonoBehaviour
     {
         isGameActive = false;
 
-        // ⑧ タイムアップ時、カート内エリアに残っている数を集計
-        int finalInCartCount = CountPapersInCart();
+        // カート内にある各ペーパーの金額と数を集計
+        int totalGainedMoney = CalculateTotalMoneyInCart(out int totalCount, out int goldenCount);
 
-        // ⑨ へそくり額を計算して合算
-        int gainedMoney = finalInCartCount * pricePerPaper;
-        TotalHesokuriMoney += gainedMoney;
-
-        if (resultPanel != null) resultPanel.SetActive(true);
-        if (resultScoreText != null)
+        // 本編のへそくりマネージャーへ加算
+        if (HesokuriManager.Instance != null)
         {
-            resultScoreText.text = $"カートに入った数: {finalInCartCount}個\n獲得へそくり: {gainedMoney}円！\n(総へそくり: {TotalHesokuriMoney}円)";
+            HesokuriManager.Instance.AddHesokuri(totalGainedMoney);
+        }
+        else
+        {
+            TotalHesokuriMoney += totalGainedMoney;
+        }
+
+        int currentTotalMoney = HesokuriManager.Instance != null
+            ? HesokuriManager.Instance.CurrentHesokuri
+            : TotalHesokuriMoney;
+
+        // モーダルUIを使ってリザルトを表示
+        if (TPResultModalUI.Instance != null)
+        {
+            TPResultModalUI.Instance.Show(totalCount, goldenCount, totalGainedMoney, currentTotalMoney, this);
         }
     }
 
     /// <summary>
-    /// カートのTriggerエリア（cartInnerArea）内に留まっているペーパーの数を判定
+    /// カート内にあるトイレットペーパーの個別の金額（PaperValue）を合計するメソッド
     /// </summary>
-    private int CountPapersInCart()
+    private int CalculateTotalMoneyInCart(out int totalCount, out int goldenCount)
     {
-        int count = 0;
+        int totalMoney = 0;
+        totalCount = 0;
+        goldenCount = 0;
+
         foreach (var paper in spawnedPapers)
         {
             if (paper != null && cartInnerArea != null)
             {
-                // ペーパーの位置がカート内エリアの中にあるかチェック
                 if (cartInnerArea.OverlapPoint(paper.transform.position))
                 {
-                    count++;
+                    totalMoney += paper.PaperValue; // 各ペーパーが持つ個別金額を加算
+                    totalCount++;
+
+                    // 100円を超える高額ペーパー（金）を個別にカウント
+                    if (paper.PaperValue > 100)
+                    {
+                        goldenCount++;
+                    }
                 }
             }
         }
-        return count;
+        return totalMoney;
+    }
+
+    /// <summary>
+    /// リザルトの閉じるボタン押下時に呼ばれる（本編復帰処理）
+    /// </summary>
+    public void OnCloseResultAndReturnMain()
+    {
+        // 画面に残っているペーパーのクリア
+        foreach (var paper in spawnedPapers)
+        {
+            if (paper != null) Destroy(paper.gameObject);
+        }
+        spawnedPapers.Clear();
+
+        // ミニゲームUI全体の非アクティブ化
+        gameObject.SetActive(false);
     }
 }

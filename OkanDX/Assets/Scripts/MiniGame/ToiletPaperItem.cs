@@ -2,8 +2,13 @@
 
 public class ToiletPaperItem : MonoBehaviour
 {
+    [Header("■ ペーパー個別の設定")]
+    [SerializeField] private int paperValue = 100; // このペーパー1個あたりのへそくり額（金なら500円など）
+
     private Rigidbody2D rb;
     private RectTransform rectTransform;
+
+    public int PaperValue => paperValue; // 外部から金額を取得するプロパティ
 
     private void Awake()
     {
@@ -27,7 +32,7 @@ public class ToiletPaperItem : MonoBehaviour
 
     private void Update()
     {
-        // ⑦ 画面下（Y座標 -800以下）に落ちたペーパーは処理負荷軽減のため自動消去
+        // 画面下に落ちたペーパーは消去
         if (rectTransform != null && rectTransform.anchoredPosition.y < -800f)
         {
             Destroy(gameObject);

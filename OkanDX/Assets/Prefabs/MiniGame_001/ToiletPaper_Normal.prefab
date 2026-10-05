@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2118202188387003452}
   - component: {fileID: 7945502667046013616}
   m_Layer: 5
-  m_Name: ToiletPaper
+  m_Name: ToiletPaper_Normal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -90,6 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 223c6b1354fedfb4aac9cb8654f0ba47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  paperValue: 10
 --- !u!50 &2118202188387003452
 Rigidbody2D:
   serializedVersion: 5
