@@ -58,10 +58,14 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // エピソードシーン（名前が "Episode_" から始まるシーン）の時だけタイトルUIを自動生成
-        if (scene.name.StartsWith("Episode_"))
+        // ★ "Episode_" または "MiniGame_" から始まるシーン、あるいは EpisodeData が存在するときにタイトルUIを自動生成
+        if (scene.name.StartsWith("Episode_") || scene.name.StartsWith("MiniGame_") || CurrentEpisodeData != null)
         {
-            SpawnEpisodeTitleUI();
+            // タイトル画面や選択画面などの基本画面でなければ表示
+            if (scene.name != "Title" && scene.name != "EpisodeSelect")
+            {
+                SpawnEpisodeTitleUI();
+            }
         }
     }
 
@@ -120,46 +124,77 @@ public class GameManager : MonoBehaviour
         CurrentEpisodeData = episodeData;
         CurrentEpisodeNumber = episodeData.episodeIndex;
 
-        string sceneName = !string.IsNullOrEmpty(episodeData.nextSceneName)
-            ? episodeData.nextSceneName
-            : $"Episode_{episodeData.episodeIndex:D3}";
+        string sceneName = "";
 
-        Debug.Log($"シーン読み込み: {sceneName}");
+        // ★ nextSceneName が指定されていればそれを優先、無ければ型や番号から自動生成
+        if (!string.IsNullOrEmpty(episodeData.nextSceneName))
+        {
+            sceneName = episodeData.nextSceneName;
+        }
+        else if (episodeData.episodeType == EpisodeType.MiniGame)
+        {
+            // ミニゲーム用シーン名（例: "MiniGame_005" など）
+            sceneName = $"MiniGame_{episodeData.episodeIndex:D3}";
+        }
+        else
+        {
+            // 通常エピソード（例: "Episode_001" など）
+            sceneName = $"Episode_{episodeData.episodeIndex:D3}";
+        }
+
+        Debug.Log($"シーン読み込み: {sceneName} (種類: {episodeData.episodeType})");
         SceneManager.LoadScene(sceneName);
     }
 
     /// <summary>
-    /// 指定したエピソードを開始（3桁フォーマット："Episode_001", "Episode_002" など）
+    /// 指定したエピソードを開始（エピソード番号指定）
     /// </summary>
     public void StartEpisode(int episodeNumber)
     {
         CurrentEpisodeNumber = episodeNumber;
 
-        // ★追加修正: ResourcesからEpisodeDataを自動検索して CurrentEpisodeData を更新
+        // Resources/EpisodeData/ フォルダからデータを検索
         EpisodeData loadedData = GetEpisodeData(episodeNumber);
+
         if (loadedData != null)
         {
-            CurrentEpisodeData = loadedData;
+            // ★ EpisodeData 経由でスタート（これで nextSceneName や MiniGame 判定が正しく反映される！）
+            StartEpisode(loadedData);
         }
         else
         {
-            Debug.LogWarning($"[GameManager] EpisodeData_{episodeNumber:D3} の自動ロードに失敗しました。Resources/EpisodeData/ フォルダを確認してください。");
+            Debug.LogError($"[GameManager] エピソード番号 {episodeNumber} (または MiniGameData) の EpisodeData が見つかりませんでした。Resources/EpisodeData/ フォルダ内を確認してください。");
         }
-
-        // :D3 で「数字を3桁でゼロ埋め（1 -> 001）」にする
-        string sceneName = $"Episode_{episodeNumber:D3}";
-
-        Debug.Log($"シーン読み込み: {sceneName}");
-        SceneManager.LoadScene(sceneName);
     }
 
     /// <summary>
-    /// ★追加: 指定したエピソード番号の EpisodeData を Resources から取得する
+    /// 指定したエピソード番号の EpisodeData を Resources から自動検索して取得する
     /// </summary>
     public EpisodeData GetEpisodeData(int episodeNumber)
     {
-        string dataPath = $"EpisodeData/EpisodeData_{episodeNumber:D3}";
-        return Resources.Load<EpisodeData>(dataPath);
+        // ① まず "EpisodeData_005" などの名前を探す
+        string epPath = $"EpisodeData/EpisodeData_{episodeNumber:D3}";
+        EpisodeData data = Resources.Load<EpisodeData>(epPath);
+
+        if (data != null) return data;
+
+        // ② 見つからなければ "MiniGameData_005" や "MiniGameData_001" などの名前を探す
+        string miniPath = $"EpisodeData/MiniGameData_{episodeNumber:D3}";
+        data = Resources.Load<EpisodeData>(miniPath);
+
+        if (data != null) return data;
+
+        // ③ それでも見つからない場合、Resources/EpisodeData/ 内の全アセットから episodeIndex が一致するものを探す
+        EpisodeData[] allData = Resources.LoadAll<EpisodeData>("EpisodeData");
+        foreach (var d in allData)
+        {
+            if (d != null && d.episodeIndex == episodeNumber)
+            {
+                return d;
+            }
+        }
+
+        return null;
     }
 
     /// <summary>
