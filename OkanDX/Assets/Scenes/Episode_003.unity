@@ -342,10 +342,14 @@ MonoBehaviour:
     itemName: 
     description: 
     icon: {fileID: 0}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 1
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: "\u3051\u3093\u3059\u3044\u4E2D"
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -357,6 +361,12 @@ MonoBehaviour:
   wrongItemMessage: 
   successMessage: 
   afterUnlockedMessage: 
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &119534213
@@ -655,10 +665,14 @@ MonoBehaviour:
     itemName: 
     description: 
     icon: {fileID: 0}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -672,6 +686,12 @@ MonoBehaviour:
   wrongItemMessage: "\u304A\u8179\u304C\u7A7A\u3044\u3066\u308B\u30AE\u30BF\u30FC\u606F\u5B50"
   successMessage: "\u3053\u308C\u304C\u6B32\u3057\u304B\u3063\u3066\u3093"
   afterUnlockedMessage: 
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &211522182
@@ -769,10 +789,14 @@ MonoBehaviour:
     itemName: "\u3069\u3053\u304B\u306E\u30AB\u30AE"
     description: "\u30AD\u30FC\u30DB\u30EB\u30C0\u30FC\u3082\u3064\u3044\u3066\u306A\u3044\u308F"
     icon: {fileID: 21300000, guid: f287280961a0f0c448ed2c831bb2e409, type: 3}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -783,6 +807,12 @@ MonoBehaviour:
   wrongItemMessage: "\u9375\u304C\u304B\u304B\u3063\u3066\u3044\u308B\u3002"
   successMessage: "\u9375\u3092\u4F7F\u3063\u3066\u958B\u3051\u305F\uFF01"
   afterUnlockedMessage: "\u3059\u3067\u306B\u958B\u3044\u3066\u3044\u308B\u3002"
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &211539188
@@ -993,10 +1023,14 @@ MonoBehaviour:
     itemName: 
     description: 
     icon: {fileID: 0}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -1007,6 +1041,12 @@ MonoBehaviour:
   wrongItemMessage: "\u9375\u304C\u304B\u304B\u3063\u3066\u3044\u308B\u3002"
   successMessage: "\u9375\u3092\u4F7F\u3063\u3066\u958B\u3051\u305F\uFF01"
   afterUnlockedMessage: "\u3059\u3067\u306B\u958B\u3044\u3066\u3044\u308B\u3002"
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &261588476
@@ -1104,10 +1144,14 @@ MonoBehaviour:
     itemName: 
     description: 
     icon: {fileID: 0}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 2
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -1118,6 +1162,12 @@ MonoBehaviour:
   wrongItemMessage: 
   successMessage: 
   afterUnlockedMessage: 
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &266475451
@@ -1288,10 +1338,14 @@ MonoBehaviour:
     itemName: 
     description: 
     icon: {fileID: 0}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -1302,6 +1356,12 @@ MonoBehaviour:
   wrongItemMessage: 
   successMessage: 
   afterUnlockedMessage: 
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!1 &334604904
@@ -1447,10 +1507,14 @@ MonoBehaviour:
     itemName: 
     description: 
     icon: {fileID: 0}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -1461,6 +1525,12 @@ MonoBehaviour:
   wrongItemMessage: 
   successMessage: 
   afterUnlockedMessage: 
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &413902487
@@ -1694,10 +1764,14 @@ MonoBehaviour:
     itemName: 
     description: 
     icon: {fileID: 0}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -1708,6 +1782,12 @@ MonoBehaviour:
   wrongItemMessage: "\u9375\u304C\u304B\u304B\u3063\u3066\u3044\u308B\u3002"
   successMessage: "\u9375\u3092\u4F7F\u3063\u3066\u958B\u3051\u305F\uFF01"
   afterUnlockedMessage: "\u3059\u3067\u306B\u958B\u3044\u3066\u3044\u308B\u3002"
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &528529404
@@ -1892,10 +1972,14 @@ MonoBehaviour:
     itemName: 
     description: 
     icon: {fileID: 0}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -1906,6 +1990,12 @@ MonoBehaviour:
   wrongItemMessage: 
   successMessage: 
   afterUnlockedMessage: 
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &592221583
@@ -2078,10 +2168,14 @@ MonoBehaviour:
     itemName: "\u30D1\u30BD\u30B3\u30F3\u306E\u30B3\u30F3\u30BB\u30F3\u30C8"
     description: "\u30AE\u30BF\u30FC\u306E\u5F26\u3068\u3061\u3083\u3046\u306D\u3093\u3067"
     icon: {fileID: 21300000, guid: f31dedbb3820c7d4fbfd743b03e77a1d, type: 3}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -2092,6 +2186,12 @@ MonoBehaviour:
   wrongItemMessage: 
   successMessage: 
   afterUnlockedMessage: 
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &676230696
@@ -2236,10 +2336,14 @@ MonoBehaviour:
     itemName: 
     description: 
     icon: {fileID: 0}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 1
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: "\u3051\u3093\u3059\u3044\u4E2D"
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -2251,6 +2355,12 @@ MonoBehaviour:
   wrongItemMessage: 
   successMessage: 
   afterUnlockedMessage: 
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &755562560
@@ -2423,10 +2533,14 @@ MonoBehaviour:
     itemName: 
     description: 
     icon: {fileID: 0}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -2437,6 +2551,12 @@ MonoBehaviour:
   wrongItemMessage: "\u8D64\u3044\u5E3D\u5B50"
   successMessage: "\u3053\u308C\u304C\u6B32\u3057\u304B\u3063\u3066\u3093"
   afterUnlockedMessage: "\u5B9F\u306F\u30AE\u30BF\u30FC\u306A\u3093\u3066\u5F3E\u304B\u308C\u3078\u3093"
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &798279876
@@ -2647,10 +2767,14 @@ MonoBehaviour:
     itemName: 
     description: 
     icon: {fileID: 0}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -2661,6 +2785,12 @@ MonoBehaviour:
   wrongItemMessage: "\u9375\u304C\u304B\u304B\u3063\u3066\u3044\u308B\u3002"
   successMessage: "\u9375\u3092\u4F7F\u3063\u3066\u958B\u3051\u305F\uFF01"
   afterUnlockedMessage: "\u3059\u3067\u306B\u958B\u3044\u3066\u3044\u308B\u3002"
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &866629029
@@ -2834,10 +2964,14 @@ MonoBehaviour:
     itemName: "\u30A4\u30C1\u30B4\u306E\u30B1\u30FC\u30AD"
     description: "\u30B1\u30FC\u30AD\u304A\u3044\u3057\u3044\u308F"
     icon: {fileID: 21300000, guid: b72117296c7b95040a5f7cd0e5f52c34, type: 3}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -2848,6 +2982,12 @@ MonoBehaviour:
   wrongItemMessage: "\u9375\u304C\u304B\u304B\u3063\u3066\u3044\u308B\u3002"
   successMessage: "\u9375\u3092\u4F7F\u3063\u3066\u958B\u3051\u305F\uFF01"
   afterUnlockedMessage: "\u3059\u3067\u306B\u958B\u3044\u3066\u3044\u308B\u3002"
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &891744257
@@ -3025,10 +3165,14 @@ MonoBehaviour:
     itemName: 
     description: 
     icon: {fileID: 0}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -3042,6 +3186,12 @@ MonoBehaviour:
   wrongItemMessage: "\u8D64\u3044\u5E3D\u5B50\u6301\u3063\u3066\u304D\u3066\u306A"
   successMessage: "\u307E\u3063\u3066\u305F\u3067"
   afterUnlockedMessage: 
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &1012927879
@@ -3823,10 +3973,14 @@ MonoBehaviour:
     itemName: 
     description: 
     icon: {fileID: 0}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -3837,6 +3991,12 @@ MonoBehaviour:
   wrongItemMessage: "\u9375\u304C\u304B\u304B\u3063\u3066\u3044\u308B\u3002"
   successMessage: "\u9375\u3092\u4F7F\u3063\u3066\u958B\u3051\u305F\uFF01"
   afterUnlockedMessage: "\u3059\u3067\u306B\u958B\u3044\u3066\u3044\u308B\u3002"
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &1269618419
@@ -3934,10 +4094,14 @@ MonoBehaviour:
     itemName: 
     description: 
     icon: {fileID: 0}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -3948,6 +4112,12 @@ MonoBehaviour:
   wrongItemMessage: 
   successMessage: 
   afterUnlockedMessage: 
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &1307867374
@@ -4039,8 +4209,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a9a3228a30d6c04bb363dc876da21ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  episodeData: {fileID: 11400000, guid: 68078293795167846b493db1ec7e5480, type: 2}
-  resultSceneName: ResultScene
+  currentEpisodeData: {fileID: 11400000, guid: 68078293795167846b493db1ec7e5480, type: 2}
+  targetEpisodeData: {fileID: 0}
+  nextEpisodeNumber: 4
 --- !u!114 &1347428773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4508,10 +4679,14 @@ MonoBehaviour:
     itemName: 
     description: 
     icon: {fileID: 0}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -4533,6 +4708,12 @@ MonoBehaviour:
   wrongItemMessage: "\u307F\u3093\u306A\u3067\u4F7F\u3046\u30D1\u30BD\u30B3\u30F3\u3084\u3067"
   successMessage: "\u96FB\u6E90\u304C\u3064\u3044\u305F\uFF01"
   afterUnlockedMessage: 
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &1486993911
@@ -4911,10 +5092,14 @@ MonoBehaviour:
     itemName: "\u8D64\u3044\u5E3D\u5B50"
     description: "\u904B\u52D5\u4F1A\u601D\u3044\u51FA\u3059\u308F"
     icon: {fileID: 21300000, guid: 6ef4afaa07a6bd24db89cb3a24e83ce3, type: 3}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -4925,6 +5110,12 @@ MonoBehaviour:
   wrongItemMessage: "\u8D64\u3044\u5E3D\u5B50"
   successMessage: "\u3053\u308C\u304C\u6B32\u3057\u304B\u3063\u3066\u3093"
   afterUnlockedMessage: "\u5B9F\u306F\u30AE\u30BF\u30FC\u306A\u3093\u3066\u5F3E\u304B\u308C\u3078\u3093"
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &1615708589
@@ -5513,10 +5704,14 @@ MonoBehaviour:
     itemName: 
     description: 
     icon: {fileID: 0}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -5527,6 +5722,12 @@ MonoBehaviour:
   wrongItemMessage: "\u9375\u304C\u304B\u304B\u3063\u3066\u3044\u308B\u3002"
   successMessage: "\u9375\u3092\u4F7F\u3063\u3066\u958B\u3051\u305F\uFF01"
   afterUnlockedMessage: "\u3059\u3067\u306B\u958B\u3044\u3066\u3044\u308B\u3002"
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &1889110338
@@ -5662,10 +5863,14 @@ MonoBehaviour:
     itemName: "\u304A\u3068\u3093\u306E\u30D1\u30F3\u30C4"
     description: "\u304A\u7236\u3055\u3093\u306E\u30D1\u30F3\u30C4\u306B\u3057\u3066\u306F\u5C0F\u3055\u3044"
     icon: {fileID: 21300000, guid: d569629ba30bd6a40a0248b3479809ae, type: 3}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -5676,6 +5881,12 @@ MonoBehaviour:
   wrongItemMessage: "\u9375\u304C\u304B\u304B\u3063\u3066\u3044\u308B\u3002"
   successMessage: "\u9375\u3092\u4F7F\u3063\u3066\u958B\u3051\u305F\uFF01"
   afterUnlockedMessage: "\u3059\u3067\u306B\u958B\u3044\u3066\u3044\u308B\u3002"
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!1 &1985108604
@@ -5804,10 +6015,14 @@ MonoBehaviour:
     itemName: "\u30A4\u30C1\u30B4\u306E\u30B1\u30FC\u30AD"
     description: "\u30B1\u30FC\u30AD\u304A\u3044\u3057\u3044\u308F"
     icon: {fileID: 21300000, guid: b72117296c7b95040a5f7cd0e5f52c34, type: 3}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -5818,6 +6033,12 @@ MonoBehaviour:
   wrongItemMessage: "\u9375\u304C\u304B\u304B\u3063\u3066\u3044\u308B\u3002"
   successMessage: "\u9375\u3092\u4F7F\u3063\u3066\u958B\u3051\u305F\uFF01"
   afterUnlockedMessage: "\u3059\u3067\u306B\u958B\u3044\u3066\u3044\u308B\u3002"
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!1 &2023923677
@@ -5877,10 +6098,14 @@ MonoBehaviour:
     itemName: "\u304A\u3068\u3093\u306E\u30D1\u30F3\u30C4"
     description: "\u304A\u7236\u3055\u3093\u306E\u30D1\u30F3\u30C4\u306B\u3057\u3066\u306F\u5C0F\u3055\u3044"
     icon: {fileID: 21300000, guid: d569629ba30bd6a40a0248b3479809ae, type: 3}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -5891,6 +6116,12 @@ MonoBehaviour:
   wrongItemMessage: "\u9375\u304C\u304B\u304B\u3063\u3066\u3044\u308B\u3002"
   successMessage: "\u9375\u3092\u4F7F\u3063\u3066\u958B\u3051\u305F\uFF01"
   afterUnlockedMessage: "\u3059\u3067\u306B\u958B\u3044\u3066\u3044\u308B\u3002"
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &2023923680
@@ -6124,10 +6355,14 @@ MonoBehaviour:
     itemName: "\u30C9\u30FC\u30CA\u30C4"
     description: "\u30C1\u30E7\u30B3\u5473\u304C\u6700\u9AD8\u3084\u306D\u3093"
     icon: {fileID: 21300000, guid: 284ac416812dbac4fb4b8ff83b2e17cd, type: 3}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -6138,6 +6373,12 @@ MonoBehaviour:
   wrongItemMessage: 
   successMessage: 
   afterUnlockedMessage: 
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &2094660266
@@ -6273,10 +6514,14 @@ MonoBehaviour:
     itemName: 
     description: 
     icon: {fileID: 0}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 1, b: 0.6666667, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: "\u306A\u306B\u3082\u306A\u3044"
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -6289,6 +6534,12 @@ MonoBehaviour:
   wrongItemMessage: "\u9375\u304B\u304B\u3063\u3066\u308B\u308F"
   successMessage: "\u3088\u3046\u5206\u304B\u3063\u305F\u306A\uFF01"
   afterUnlockedMessage: 
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!1001 &3175147529283736828
@@ -6339,8 +6590,40 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 433790609775826397, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 433790609775826397, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 433790609775826397, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 433790609775826397, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1003802349521807345, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
       propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1194587247332330230, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1194587247332330230, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1194587247332330230, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1194587247332330230, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1851827575078955488, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
@@ -6436,6 +6719,22 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2281648421522675098, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2929648814897895044, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2929648814897895044, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2929648814897895044, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2929648814897895044, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
@@ -6547,6 +6846,22 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 7094719950528393447, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7094719950528393447, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7094719950528393447, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7094719950528393447, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7273867951637074340, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -6604,6 +6919,54 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7524555189724414264, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8065609778241071565, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8065609778241071565, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8065609778241071565, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8065609778241071565, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8133741505402055540, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8133741505402055540, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8133741505402055540, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8133741505402055540, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8279158051032530146, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8279158051032530146, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8279158051032530146, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8279158051032530146, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}

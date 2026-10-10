@@ -8233,8 +8233,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a9a3228a30d6c04bb363dc876da21ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  episodeData: {fileID: 11400000, guid: e6d952f9d3478ab40b5e899b0917ea83, type: 2}
-  resultSceneName: ResultScene
+  currentEpisodeData: {fileID: 11400000, guid: e6d952f9d3478ab40b5e899b0917ea83, type: 2}
+  targetEpisodeData: {fileID: 0}
+  nextEpisodeNumber: 5
 --- !u!114 &2027501334
 MonoBehaviour:
   m_ObjectHideFlags: 0

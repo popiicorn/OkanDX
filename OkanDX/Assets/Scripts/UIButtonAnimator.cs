@@ -9,13 +9,13 @@ public class UIButtonAnimator : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 {
     [Header("アニメーション設定")]
     [Tooltip("押した時に縮むスケール倍率 (デフォルト: 0.85)")]
-    [SerializeField] private float pressScale = 0.85f;
+    [SerializeField] private float pressScale = 0.95f;
 
     [Tooltip("縮むまでの時間（秒）")]
     [SerializeField] private float pressDuration = 0.08f;
 
     [Tooltip("元に戻るまでの時間（秒）")]
-    [SerializeField] private float releaseDuration = 0.15f;
+    [SerializeField] private float releaseDuration = 0.05f;
 
     private Vector3 defaultScale;
 

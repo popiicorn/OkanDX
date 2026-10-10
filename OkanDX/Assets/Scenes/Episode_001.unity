@@ -214,10 +214,14 @@ MonoBehaviour:
     itemName: 
     description: 
     icon: {fileID: 0}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -228,6 +232,12 @@ MonoBehaviour:
   wrongItemMessage: "\u9375\u304C\u304B\u304B\u3063\u3066\u3044\u308B\u3002"
   successMessage: "\u9375\u3092\u4F7F\u3063\u3066\u958B\u3051\u305F\uFF01"
   afterUnlockedMessage: "\u3059\u3067\u306B\u958B\u3044\u3066\u3044\u308B\u3002"
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!1001 &268004482
@@ -491,10 +501,14 @@ MonoBehaviour:
     itemName: 
     description: 
     icon: {fileID: 0}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -507,6 +521,12 @@ MonoBehaviour:
   wrongItemMessage: 
   successMessage: 
   afterUnlockedMessage: 
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!1 &362371107
@@ -672,10 +692,14 @@ MonoBehaviour:
     itemName: 
     description: 
     icon: {fileID: 0}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
   itemPostAction: 0
   itemGetPanelColor: {r: 1, g: 0.9, b: 0.4, a: 1}
   changedSprite: {fileID: 0}
-  newObject: {fileID: 0}
+  hideObjects: []
+  newObjects: []
   inspectAfterGetMessage: 
   changedStateSprite: {fileID: 0}
   targetUIImage: {fileID: 0}
@@ -686,6 +710,12 @@ MonoBehaviour:
   wrongItemMessage: "\u9375\u304C\u304B\u304B\u3063\u3066\u3044\u308B\u3002"
   successMessage: "\u9375\u3092\u4F7F\u3063\u3066\u958B\u3051\u305F\uFF01"
   afterUnlockedMessage: "\u3059\u3067\u306B\u958B\u3044\u3066\u3044\u308B\u3002"
+  multiSprites: []
+  stepObjects: []
+  hidePreviousStepObject: 1
+  multiStateEndMessage: "\u3053\u308C\u4EE5\u4E0A\u306F\u52D5\u304B\u306A\u3044\u3088\u3046\u3060\u3002"
+  loopSprites: 0
+  disableStepObjectsIfActive: {fileID: 0}
   episodeData: {fileID: 0}
   resultSceneName: ResultScene
 --- !u!114 &576480296
@@ -781,6 +811,9 @@ MonoBehaviour:
     itemName: "\u30A4\u30C1\u30B4\u306E\u30B1\u30FC\u30AD"
     description: "\u30B1\u30FC\u30AD\u30B1\u30FC\u30AD\u30B1\u30FC\u30AD\u30B1\u30FC\u30AD\u30B1\u30FC\u30AD"
     icon: {fileID: 21300000, guid: b72117296c7b95040a5f7cd0e5f52c34, type: 3}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
 --- !u!114 &789964935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1144,6 +1177,9 @@ MonoBehaviour:
     itemName: "\u3061\u3044\u3055\u3044\u30D1\u30F3\u30C4"
     description: "\u304A\u7236\u3055\u3093\u306E\u30D1\u30F3\u30C4\u304A\u7236\u3055\u3093\u306E\u30D1\u30F3\u30C4\n\u304A\u7236\u3055\u3093\u306E\u30D1\u30F3\u30C4"
     icon: {fileID: 21300000, guid: d569629ba30bd6a40a0248b3479809ae, type: 3}
+    canInspect: 0
+    detailSprite: {fileID: 0}
+    detailMessage: 
 --- !u!1 &1153620866
 GameObject:
   m_ObjectHideFlags: 0
@@ -1492,6 +1528,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1476905843}
     m_Modifications:
+    - target: {fileID: 142151848875601470, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 142151848875601470, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 142151848875601470, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 142151848875601470, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 142151848875601470, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 142151848875601470, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 403274818004068324, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1506,6 +1566,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 403274818004068324, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1003802349521807345, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1851827575078955488, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
@@ -1617,6 +1681,30 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3699611394755718151, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3734346385976132969, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3734346385976132969, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3734346385976132969, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3734346385976132969, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3734346385976132969, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3734346385976132969, guid: 6118cd462e4e83c47bcb8f55b6a440a4, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
@@ -2074,8 +2162,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a9a3228a30d6c04bb363dc876da21ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  episodeData: {fileID: 11400000, guid: 75ca00dcc73cc304c8173482ccf25526, type: 2}
-  resultSceneName: ResultScene
+  currentEpisodeData: {fileID: 11400000, guid: 75ca00dcc73cc304c8173482ccf25526, type: 2}
+  targetEpisodeData: {fileID: 0}
+  nextEpisodeNumber: 2
 --- !u!1 &1657350774
 GameObject:
   m_ObjectHideFlags: 0
@@ -2136,7 +2225,7 @@ MonoBehaviour:
   m_text: "\u30A8\u30D4\u30BD\u30FC\u30C91"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e174ad731af4c43409724c85749afbe4, type: 2}
-  m_sharedMaterial: {fileID: -8527769064150189773, guid: e174ad731af4c43409724c85749afbe4, type: 2}
+  m_sharedMaterial: {fileID: 8983376597288854889, guid: e174ad731af4c43409724c85749afbe4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

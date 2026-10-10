@@ -19,6 +19,9 @@ public class GameManager : MonoBehaviour
     // ★EpisodeTitleUI等から参照用（CurrentEpisodeDataのエイリアス）
     public EpisodeData CurrentEpisode => CurrentEpisodeData;
 
+    // ★追加: クリア処理中/リザルト表示中かどうかのフラグ（タイトルUIの割り込み防止用）
+    public bool IsClearing { get; set; } = false;
+
     // Easy Save用のキー名
     private const string SAVE_KEY_CLEARED_EP = "ClearedEpisodeIndex";
 
@@ -58,14 +61,21 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // ★ "Episode_" または "MiniGame_" から始まるシーン、あるいは EpisodeData が存在するときにタイトルUIを自動生成
-        if (scene.name.StartsWith("Episode_") || scene.name.StartsWith("MiniGame_") || CurrentEpisodeData != null)
+        // ★ 新しいシーンがロードされたので、まず IsClearing を解除する！
+        bool wasClearing = IsClearing;
+        IsClearing = false;
+
+        // タイトル画面やエピソード選択画面、リザルト画面ではタイトルUIを出さない
+        if (scene.name == "Title" || scene.name == "EpisodeSelect" || scene.name.Contains("Result"))
         {
-            // タイトル画面や選択画面などの基本画面でなければ表示
-            if (scene.name != "Title" && scene.name != "EpisodeSelect")
-            {
-                SpawnEpisodeTitleUI();
-            }
+            return;
+        }
+
+        // ※もし「クリア直後のリザルト演出中」などで同じシーン内で表示を抑止したい場合は wasClearing を判定
+        // エピソードまたはミニゲームのプレイシーン開始時のみタイトルUIを自動生成
+        if (scene.name.StartsWith("Episode_") || scene.name.StartsWith("MiniGame_"))
+        {
+            SpawnEpisodeTitleUI();
         }
     }
 
@@ -103,6 +113,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void GoToTitle()
     {
+        IsClearing = false;
         SceneManager.LoadScene("Title");
     }
 
@@ -111,6 +122,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void GoToEpisodeSelect()
     {
+        IsClearing = false;
         SceneManager.LoadScene("EpisodeSelect");
     }
 
@@ -121,24 +133,23 @@ public class GameManager : MonoBehaviour
     {
         if (episodeData == null) return;
 
+        IsClearing = false; // ★ 新しいエピソードを開始するのでクリアフラグを解除
+
         CurrentEpisodeData = episodeData;
         CurrentEpisodeNumber = episodeData.episodeIndex;
 
         string sceneName = "";
 
-        // ★ nextSceneName が指定されていればそれを優先、無ければ型や番号から自動生成
         if (!string.IsNullOrEmpty(episodeData.nextSceneName))
         {
             sceneName = episodeData.nextSceneName;
         }
         else if (episodeData.episodeType == EpisodeType.MiniGame)
         {
-            // ミニゲーム用シーン名（例: "MiniGame_005" など）
             sceneName = $"MiniGame_{episodeData.episodeIndex:D3}";
         }
         else
         {
-            // 通常エピソード（例: "Episode_001" など）
             sceneName = $"Episode_{episodeData.episodeIndex:D3}";
         }
 
@@ -153,12 +164,10 @@ public class GameManager : MonoBehaviour
     {
         CurrentEpisodeNumber = episodeNumber;
 
-        // Resources/EpisodeData/ フォルダからデータを検索
         EpisodeData loadedData = GetEpisodeData(episodeNumber);
 
         if (loadedData != null)
         {
-            // ★ EpisodeData 経由でスタート（これで nextSceneName や MiniGame 判定が正しく反映される！）
             StartEpisode(loadedData);
         }
         else
@@ -172,19 +181,16 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public EpisodeData GetEpisodeData(int episodeNumber)
     {
-        // ① まず "EpisodeData_005" などの名前を探す
         string epPath = $"EpisodeData/EpisodeData_{episodeNumber:D3}";
         EpisodeData data = Resources.Load<EpisodeData>(epPath);
 
         if (data != null) return data;
 
-        // ② 見つからなければ "MiniGameData_005" や "MiniGameData_001" などの名前を探す
         string miniPath = $"EpisodeData/MiniGameData_{episodeNumber:D3}";
         data = Resources.Load<EpisodeData>(miniPath);
 
         if (data != null) return data;
 
-        // ③ それでも見つからない場合、Resources/EpisodeData/ 内の全アセットから episodeIndex が一致するものを探す
         EpisodeData[] allData = Resources.LoadAll<EpisodeData>("EpisodeData");
         foreach (var d in allData)
         {
@@ -202,6 +208,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void CompleteCurrentEpisode(EpisodeData episodeData = null)
     {
+        IsClearing = true; // ★ クリア処理が始まったのでフラグを立てる（UI割り込み防止）
+
         if (episodeData != null)
         {
             CurrentEpisodeData = episodeData;
@@ -236,7 +244,6 @@ public class GameManager : MonoBehaviour
     //  デバッグ用機能
     // ================================================
 
-    // Unityエディタのインスペクター上でコンポーネント名を右クリック ➔ "Reset Save Data" で実行可能
     [ContextMenu("Reset Save Data")]
     public void ResetSaveData()
     {

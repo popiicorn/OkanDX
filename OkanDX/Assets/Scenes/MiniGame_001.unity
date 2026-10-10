@@ -3425,6 +3425,7 @@ GameObject:
   - component: {fileID: 1800697798036113220}
   - component: {fileID: 823724693124439185}
   - component: {fileID: 3100607808485251181}
+  - component: {fileID: 5706326077293408826}
   m_Layer: 5
   m_Name: CloseButton
   m_TagString: Untagged
@@ -3432,6 +3433,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &5706326077293408826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5706326077293408825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a9a3228a30d6c04bb363dc876da21ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  episodeData: {fileID: 0}
+  skipResultAndGoNext: 0
+  resultSceneName: Episode_001
 --- !u!1 &5862092492709082888
 GameObject:
   m_ObjectHideFlags: 0
