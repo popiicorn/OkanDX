@@ -48,6 +48,41 @@ public class TPCatchMiniGame : MonoBehaviour
             parentCanvas = cartTransform.GetComponentInParent<Canvas>();
             if (cartRigidbody == null) cartRigidbody = cartTransform.GetComponent<Rigidbody2D>();
         }
+
+        // 初期状態ではまだゲームを開始せず（タイマー停止）、説明ダイアログを開く
+        PrepareMiniGame();
+    }
+
+    /// <summary>
+    /// ミニゲームの初期化と説明ダイアログの表示
+    /// </summary>
+    public void PrepareMiniGame()
+    {
+        isGameActive = false; // まだタイマーもカート操作もスポーンも行わない
+        currentTimer = gameTime;
+
+        if (timerText != null)
+        {
+            timerText.text = Mathf.CeilToInt(gameTime).ToString() + "秒";
+        }
+
+        // 説明ダイアログが存在する場合は開く
+        if (TPInstructionModalUI.Instance != null)
+        {
+            TPInstructionModalUI.Instance.Show(this);
+        }
+        else
+        {
+            // ダイアログが無い場合は直接スタート
+            StartMiniGame();
+        }
+    }
+
+    /// <summary>
+    /// 説明ダイアログが閉じられた後に呼ばれてゲームを実際にスタートする
+    /// </summary>
+    public void OnInstructionClosedAndStartGame()
+    {
         StartMiniGame();
     }
 
@@ -55,7 +90,7 @@ public class TPCatchMiniGame : MonoBehaviour
     {
         spawnedPapers.Clear();
         currentTimer = gameTime;
-        isGameActive = true;
+        isGameActive = true; // ここからゲーム＆カウントダウン開始！
 
         StartCoroutine(SpawnRoutine());
     }
@@ -208,7 +243,20 @@ public class TPCatchMiniGame : MonoBehaviour
         {
             if (paper != null && cartInnerArea != null)
             {
-                if (cartInnerArea.OverlapPoint(paper.transform.position))
+                Collider2D paperCol = paper.GetComponent<Collider2D>();
+                bool isInCart = false;
+
+                if (paperCol != null)
+                {
+                    // コライダー範囲（Bounds）が重なっているか判定
+                    isInCart = cartInnerArea.bounds.Intersects(paperCol.bounds);
+                }
+                else
+                {
+                    isInCart = cartInnerArea.OverlapPoint(paper.transform.position);
+                }
+
+                if (isInCart)
                 {
                     totalMoney += paper.PaperValue; // 各ペーパーが持つ個別金額を加算
                     totalCount++;
