@@ -8228,6 +8228,7 @@ MonoBehaviour:
   currentEpisodeData: {fileID: 11400000, guid: e6d952f9d3478ab40b5e899b0917ea83, type: 2}
   targetEpisodeData: {fileID: 0}
   nextEpisodeNumber: 5
+  resultSceneName: ResultScene
 --- !u!114 &2027501334
 MonoBehaviour:
   m_ObjectHideFlags: 0
