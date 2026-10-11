@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 891402491cbc7224d956fcc61d29dc1e, type: 3}
   m_Name: EpisodeData_004
   m_EditorClassIdentifier: 
+  stageOrder: 4
   episodeIndex: 4
   miniGameIndex: 1
   episodeTitle: "\u304A\u304B\u3093\u3068\u305B\u3093\u3079\u3044"

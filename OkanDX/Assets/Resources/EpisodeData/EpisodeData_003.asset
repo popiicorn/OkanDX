@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 891402491cbc7224d956fcc61d29dc1e, type: 3}
   m_Name: EpisodeData_003
   m_EditorClassIdentifier: 
+  stageOrder: 3
   episodeIndex: 3
+  miniGameIndex: 1
   episodeTitle: "\u304A\u304B\u3093\u3068\u30E1\u30FC\u30EB"
+  episodeType: 0
   clearSprite: {fileID: 21300000, guid: 830aa6f079eb3ba4585bf41736ae1a4a, type: 3}
   clearText: "\u7E26\u8AAD\u307F\u3063\u3066\u6697\u53F7\u307F\u305F\u3044\u3084\u308F"
   nextButtonText: "\u305F\u3057\u304B\u306B"

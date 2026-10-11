@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     [Header("進行データ")]
-    // クリア済みの最大エピソード番号（例: 0=未クリア、1=Ep1クリア→Ep2まで遊べる）
+    // クリア済みの最大ステージ進行順（例: 0=未クリア、1=ステージ1クリア）
     public int ClearedEpisodeIndex { get; private set; } = 0;
 
     // 現在プレイ中のエピソード番号
@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     // ★EpisodeTitleUI等から参照用（CurrentEpisodeDataのエイリアス）
     public EpisodeData CurrentEpisode => CurrentEpisodeData;
 
-    // ★追加: クリア処理中/リザルト表示中かどうかのフラグ（タイトルUIの割り込み防止用）
+    // ★クリア処理中/リザルト表示中かどうかのフラグ（タイトルUIの割り込み防止用）
     public bool IsClearing { get; set; } = false;
 
     // Easy Save用のキー名
@@ -71,7 +71,6 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // ※もし「クリア直後のリザルト演出中」などで同じシーン内で表示を抑止したい場合は wasClearing を判定
         // エピソードまたはミニゲームのプレイシーン開始時のみタイトルUIを自動生成
         if (scene.name.StartsWith("Episode_") || scene.name.StartsWith("MiniGame_"))
         {
@@ -133,7 +132,7 @@ public class GameManager : MonoBehaviour
     {
         if (episodeData == null) return;
 
-        IsClearing = false; // ★ 新しいエピソードを開始するのでクリアフラグを解除
+        IsClearing = false; // 新しいエピソードを開始するのでクリアフラグを解除
 
         CurrentEpisodeData = episodeData;
         CurrentEpisodeNumber = episodeData.episodeIndex;
@@ -158,7 +157,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 指定したエピソードを開始（エピソード番号指定）
+    /// 指定した番号のエピソードを開始（stageOrder ➔ episodeIndex の順で検索）
     /// </summary>
     public void StartEpisode(int episodeNumber)
     {
@@ -172,33 +171,44 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"[GameManager] エピソード番号 {episodeNumber} (または MiniGameData) の EpisodeData が見つかりませんでした。Resources/EpisodeData/ フォルダ内を確認してください。");
+            Debug.LogError($"[GameManager] 番号 {episodeNumber} の EpisodeData が見つかりませんでした。Resources/EpisodeData/ フォルダ内を確認してください。");
         }
     }
 
     /// <summary>
-    /// 指定したエピソード番号の EpisodeData を Resources から自動検索して取得する
+    /// 指定した進行順 (stageOrder) またはエピソード番号から EpisodeData を自動検索して取得する
     /// </summary>
-    public EpisodeData GetEpisodeData(int episodeNumber)
+    public EpisodeData GetEpisodeData(int number)
     {
-        string epPath = $"EpisodeData/EpisodeData_{episodeNumber:D3}";
-        EpisodeData data = Resources.Load<EpisodeData>(epPath);
-
-        if (data != null) return data;
-
-        string miniPath = $"EpisodeData/MiniGameData_{episodeNumber:D3}";
-        data = Resources.Load<EpisodeData>(miniPath);
-
-        if (data != null) return data;
-
+        // 全アセットを取得
         EpisodeData[] allData = Resources.LoadAll<EpisodeData>("EpisodeData");
+
+        // ① まず stageOrder（進行順）が一致するものを探す
         foreach (var d in allData)
         {
-            if (d != null && d.episodeIndex == episodeNumber)
+            if (d != null && d.stageOrder == number)
             {
                 return d;
             }
         }
+
+        // ② 見つからなければ従来の episodeIndex（エピソード番号）で探す（互換性確保）
+        foreach (var d in allData)
+        {
+            if (d != null && d.episodeIndex == number)
+            {
+                return d;
+            }
+        }
+
+        // ③ それでも見つからなければファイル名で直接ロードしてみる
+        string epPath = $"EpisodeData/EpisodeData_{number:D3}";
+        EpisodeData fileData = Resources.Load<EpisodeData>(epPath);
+        if (fileData != null) return fileData;
+
+        string miniPath = $"EpisodeData/MiniGameData_{number:D3}";
+        fileData = Resources.Load<EpisodeData>(miniPath);
+        if (fileData != null) return fileData;
 
         return null;
     }
@@ -208,7 +218,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void CompleteCurrentEpisode(EpisodeData episodeData = null)
     {
-        IsClearing = true; // ★ クリア処理が始まったのでフラグを立てる（UI割り込み防止）
+        IsClearing = true; // クリア処理が始まったのでフラグを立てる（UI割り込み防止）
 
         if (episodeData != null)
         {
@@ -216,11 +226,16 @@ public class GameManager : MonoBehaviour
             CurrentEpisodeNumber = episodeData.episodeIndex;
         }
 
-        // 初めてクリアしたエピソードの場合のみ記録を更新
-        if (CurrentEpisodeNumber > ClearedEpisodeIndex)
+        // 進行順（stageOrder）を判定用基準にする（無ければ episodeIndex）
+        int currentProgressIndex = (CurrentEpisodeData != null && CurrentEpisodeData.stageOrder > 0)
+            ? CurrentEpisodeData.stageOrder
+            : CurrentEpisodeNumber;
+
+        // 初めてクリアしたステージの場合のみ記録を更新
+        if (currentProgressIndex > ClearedEpisodeIndex)
         {
-            ClearedEpisodeIndex = CurrentEpisodeNumber;
-            SaveProgress(); // ★自動セーブを実行
+            ClearedEpisodeIndex = currentProgressIndex;
+            SaveProgress(); // 自動セーブを実行
         }
     }
 
@@ -231,13 +246,13 @@ public class GameManager : MonoBehaviour
     private void SaveProgress()
     {
         ES3.Save(SAVE_KEY_CLEARED_EP, ClearedEpisodeIndex);
-        Debug.Log($"[EasySave] 自動セーブ完了: クリア済みエピソード {ClearedEpisodeIndex}");
+        Debug.Log($"[EasySave] 自動セーブ完了: クリア済みステージ進行順 {ClearedEpisodeIndex}");
     }
 
     private void LoadProgress()
     {
         ClearedEpisodeIndex = ES3.Load(SAVE_KEY_CLEARED_EP, defaultValue: 0);
-        Debug.Log($"[EasySave] ロード完了: クリア済みエピソード {ClearedEpisodeIndex}");
+        Debug.Log($"[EasySave] ロード完了: クリア済みステージ進行順 {ClearedEpisodeIndex}");
     }
 
     // ================================================

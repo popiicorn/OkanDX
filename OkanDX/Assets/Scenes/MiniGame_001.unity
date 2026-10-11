@@ -3423,7 +3423,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!223 &4363630610993808461
 Canvas:
   m_ObjectHideFlags: 0
@@ -3523,7 +3523,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentEpisodeData: {fileID: 0}
   targetEpisodeData: {fileID: 0}
-  nextEpisodeNumber: 1
+  nextEpisodeNumber: 6
 --- !u!1 &5862092492709082888
 GameObject:
   m_ObjectHideFlags: 0

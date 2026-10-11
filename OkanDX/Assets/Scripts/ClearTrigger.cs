@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class ClearTrigger : MonoBehaviour, IPointerClickHandler
 {
@@ -13,6 +14,9 @@ public class ClearTrigger : MonoBehaviour, IPointerClickHandler
     [Tooltip("手動セットしない場合のエピソード番号（例: 1 にするとエピソード1へ）")]
     [SerializeField] private int nextEpisodeNumber = 1;
 
+    [Header("■ リザルト画面設定")]
+    [SerializeField] private string resultSceneName = "ResultScene";
+
     public void OnPointerClick(PointerEventData eventData)
     {
         if (GameManager.Instance == null)
@@ -21,7 +25,7 @@ public class ClearTrigger : MonoBehaviour, IPointerClickHandler
             return;
         }
 
-        // ① 現在のエピソードのクリア処理・セーブ
+        // ① クリア処理・自動セーブを実行
         if (currentEpisodeData != null)
         {
             GameManager.Instance.CompleteCurrentEpisode(currentEpisodeData);
@@ -31,16 +35,26 @@ public class ClearTrigger : MonoBehaviour, IPointerClickHandler
             GameManager.Instance.CompleteCurrentEpisode();
         }
 
-        // ② 次のエピソードの EpisodeData を GameManager にセットして遷移！
-        if (targetEpisodeData != null)
+        // ② ミニゲーム判定：ミニゲームならリザルトをスキップして直接次のステージへ！
+        bool isMiniGame = (currentEpisodeData != null && currentEpisodeData.episodeType == EpisodeType.MiniGame)
+                       || (GameManager.Instance.CurrentEpisodeData != null && GameManager.Instance.CurrentEpisodeData.episodeType == EpisodeType.MiniGame);
+
+        if (isMiniGame)
         {
-            // エピソードデータが直接アタッチされている場合
-            GameManager.Instance.StartEpisode(targetEpisodeData);
+            // --- ミニゲームの場合：リザルト画面を挟まず直接遷移 ---
+            if (targetEpisodeData != null)
+            {
+                GameManager.Instance.StartEpisode(targetEpisodeData);
+            }
+            else
+            {
+                GameManager.Instance.StartEpisode(nextEpisodeNumber);
+            }
         }
         else
         {
-            // エピソード番号指定（例: 1）で GameManager にロードさせて遷移
-            GameManager.Instance.StartEpisode(nextEpisodeNumber);
+            // --- 通常エピソードの場合：リザルト画面（ResultScene）へ遷移 ---
+            SceneManager.LoadScene(resultSceneName);
         }
     }
 }
