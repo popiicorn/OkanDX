@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 5897041792566980287}
   - component: {fileID: 7480946996624125443}
   m_Layer: 5
-  m_Name: PictureMatchGimmickPanel
+  m_Name: PictureMatchGimmickPanel_04_TV
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

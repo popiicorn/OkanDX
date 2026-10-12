@@ -14,7 +14,8 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
         ItemUse,                  // ④ 指定アイテム使用による状態変化・ギミック解除
         Okan,                     // ⑤ おかん（クリックでクリア＆自動セーブ）
         MultiStateChange,         // ⑥ 複数段階の画像切り替え（通常クリック用・既存処理）
-        ItemUseMultiStateChange   // ⑦ ★新規追加：指定アイテム使用時のみ画像切り替え（消費なし）
+        ItemUseMultiStateChange,  // ⑦ 指定アイテム使用時のみ画像切り替え（消費なし）
+        ItemUseAndGetItem         // ⑧ ★新規追加：指定アイテム使用で別のアイテムを獲得＆使用アイテム消費
     }
 
     public enum ItemPostAction
@@ -175,10 +176,15 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
                 OnMultiStateChangeClick();
                 break;
 
-            // ★ 新規追加：アイテム使用で複数段階画像切り替え
             case ObjectType.ItemUseMultiStateChange:
                 AnimateClick();
                 OnItemUseMultiStateChangeClick();
+                break;
+
+            // ★ 新規追加：指定アイテム使用で別のアイテムを獲得
+            case ObjectType.ItemUseAndGetItem:
+                AnimateClick();
+                OnItemUseAndGetItemClick();
                 break;
         }
     }
@@ -231,6 +237,65 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
         {
             AnimateClick();
             ShowMessage("これ以上持てないようだ。");
+        }
+    }
+
+    // ★ 新規追加メソッド：指定アイテム使用時のみアイテムを獲得
+    private void OnItemUseAndGetItemClick()
+    {
+        if (hasGottenItem)
+        {
+            ShowMessage(inspectAfterGetMessage);
+            return;
+        }
+
+        Item selected = InventoryManager.Instance != null ? InventoryManager.Instance.SelectedItem : null;
+
+        // 指定のアイテムを選択しているかチェック
+        if (selected != null && !string.IsNullOrEmpty(selected.id) && selected.id == requiredItemID)
+        {
+            if (itemData == null) return;
+
+            // 1. 獲得対象のアイテムをインベントリに追加
+            bool isAdded = InventoryManager.Instance.AddItem(itemData);
+
+            if (isAdded)
+            {
+                hasGottenItem = true;
+
+                // 2. 使ったアイテムを消費する（チェックが入っている場合）
+                if (consumeItemOnUse)
+                {
+                    InventoryManager.Instance.RemoveSelectedItem();
+                }
+
+                // 3. メッセージの組み立て（successMessageが入力されていればそれを優先）
+                string itemNameText = !string.IsNullOrEmpty(itemData.itemName) ? itemData.itemName : "アイテム";
+                string getMsg = !string.IsNullOrEmpty(successMessage) ? successMessage : $"「{itemNameText}」を手に入れた！";
+
+                transform.DOKill();
+                transform.localScale = Vector3.one;
+
+                // 4. アニメーションとメッセージ・後処理の実行
+                Sequence getSequence = DOTween.Sequence();
+                getSequence
+                    .Append(transform.DOScale(0.85f, 0.06f).SetEase(Ease.OutQuad))
+                    .Append(transform.DOScale(0f, 0.0f).SetEase(Ease.InQuad))
+                    .OnComplete(() =>
+                    {
+                        ShowMessage(getMsg, itemGetPanelColor);
+                        ApplyItemPostAction();
+                    });
+            }
+            else
+            {
+                ShowMessage("これ以上持てないようだ。");
+            }
+        }
+        else
+        {
+            // アイテムが違う、または選択していない場合
+            ShowMessage(wrongItemMessage);
         }
     }
 
@@ -299,7 +364,6 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
         Image targetImg = targetUIImage != null ? targetUIImage : imageComponent;
         if (targetImg == null) return;
 
-        // ループ判定を含めたインデックス調整
         if (currentSpriteIndex >= multiSprites.Length)
         {
             if (loopSprites)
@@ -313,41 +377,32 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
             }
         }
 
-        // ① 画像の反映
         if (multiSprites[currentSpriteIndex] != null)
         {
             targetImg.sprite = multiSprites[currentSpriteIndex];
         }
 
-        // ② ステップに対応するオブジェクトの表示・非表示切り替え
         UpdateStepObjects(currentSpriteIndex);
-
-        // 次のクリック用にインデックスをカウントアップ
         currentSpriteIndex++;
     }
 
-    // ★ リモコン使用時：未使用時・選択時・使用後でメッセージや画像を分岐
     private void OnItemUseMultiStateChangeClick()
     {
         Item selected = InventoryManager.Instance != null ? InventoryManager.Instance.SelectedItem : null;
 
-        // ① リモコンを選択している場合（画像を切り替える）
         if (selected != null && !string.IsNullOrEmpty(selected.id) && selected.id == requiredItemID)
         {
-            isStateChanged = true; // ★「一度でもリモコンを使った」フラグを立てる
+            isStateChanged = true;
             OnMultiStateChangeClick();
         }
         else
         {
-            // ② リモコンを選択していない場合
             if (isStateChanged)
             {
-                // ★ リモコン使用後のメッセージ（Multi State End Message）
                 ShowMessage(multiStateEndMessage);
             }
             else
             {
-                // ★ リモコン使用前のメッセージ（Wrong Item Message）
                 ShowMessage(wrongItemMessage);
             }
         }
@@ -357,13 +412,11 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
     {
         if (stepObjects == null || stepObjects.Length == 0) return;
 
-        // ★ オブジェクトC（disableStepObjectsIfActive）が表示されている場合は、AやBの自動切り替えを行わない
         if (disableStepObjectsIfActive != null && disableStepObjectsIfActive.activeSelf)
         {
             return;
         }
 
-        // 一旦すべてのステップオブジェクトを非表示（排他制御）
         if (hidePreviousStepObject)
         {
             foreach (var obj in stepObjects)
@@ -372,7 +425,6 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
             }
         }
 
-        // 現在のステップ（画像）に対応するオブジェクトのみを表示
         if (index < stepObjects.Length && stepObjects[index] != null)
         {
             stepObjects[index].SetActive(true);
