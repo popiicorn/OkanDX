@@ -93,8 +93,8 @@ MonoBehaviour:
   messagePanelTransform: {fileID: 4281071053114657149}
   panelImage: {fileID: 2613358577407846035}
   messageText: {fileID: 4148366006077090469}
-  examinePositionY: -250
-  itemGetPositionY: -250
+  examinePositionY: -275
+  itemGetPositionY: -275
   defaultPanelColor: {r: 1, g: 1, b: 1, a: 1}
   baseStartScale: 0.5
   targetScale: 1
@@ -168,7 +168,7 @@ MonoBehaviour:
   m_text: "\u3042\u3044\u3046\u3048\u304A\u3042\u3042\u3042\n\u304B\u304D\u304F\u3051\u3053"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e174ad731af4c43409724c85749afbe4, type: 2}
-  m_sharedMaterial: {fileID: -8527769064150189773, guid: e174ad731af4c43409724c85749afbe4, type: 2}
+  m_sharedMaterial: {fileID: 8983376597288854889, guid: e174ad731af4c43409724c85749afbe4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
