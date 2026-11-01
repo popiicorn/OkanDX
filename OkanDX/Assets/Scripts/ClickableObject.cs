@@ -46,6 +46,10 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
     [Header(" └ アイテム獲得時のウィンドウカラー")]
     [SerializeField] private Color itemGetPanelColor = new Color(1.0f, 0.9f, 0.4f);
 
+    [Header(" └ アイテム獲得メッセージの改行")]
+    [Tooltip("ON にすると「〇〇」を のあとで改行して「手に入れた！」を 2 行目に表示する")]
+    [SerializeField] private bool breakLineInGetMessage = false;
+
     [Header(" └ 画像切り替え用 (ChangeSprite)")]
     [SerializeField] private Sprite changedSprite;
 
@@ -217,8 +221,7 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
         {
             hasGottenItem = true;
 
-            string itemNameText = !string.IsNullOrEmpty(itemData.itemName) ? itemData.itemName : "アイテム";
-            string getMsg = $"「{itemNameText}」を手に入れた！";
+            string getMsg = BuildItemGetMessage();
 
             transform.DOKill();
             transform.localScale = Vector3.one;
@@ -270,8 +273,7 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
                 }
 
                 // 3. メッセージの組み立て（successMessageが入力されていればそれを優先）
-                string itemNameText = !string.IsNullOrEmpty(itemData.itemName) ? itemData.itemName : "アイテム";
-                string getMsg = !string.IsNullOrEmpty(successMessage) ? successMessage : $"「{itemNameText}」を手に入れた！";
+                string getMsg = !string.IsNullOrEmpty(successMessage) ? successMessage : BuildItemGetMessage();
 
                 transform.DOKill();
                 transform.localScale = Vector3.one;
@@ -498,6 +500,16 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
             }
             SceneManager.LoadScene(resultSceneName);
         }
+    }
+
+    /// <summary>
+    /// アイテム獲得メッセージを組み立てる（breakLineInGetMessage が ON なら「を」のあとで改行）
+    /// </summary>
+    private string BuildItemGetMessage()
+    {
+        string itemNameText = !string.IsNullOrEmpty(itemData.itemName) ? itemData.itemName : "アイテム";
+        string separator = breakLineInGetMessage ? "\n" : "";
+        return $"「{itemNameText}」を{separator}手に入れた！";
     }
 
     private void ShowMessage(string msg)
