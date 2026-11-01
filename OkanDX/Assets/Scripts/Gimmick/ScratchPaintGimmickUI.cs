@@ -66,6 +66,8 @@ public class ScratchPaintGimmickUI : MonoBehaviour
     [SerializeField] private string completeMessage = "なんかできたで！";
     [SerializeField] private float messageStartScale = 0.5f;
     [SerializeField] private float messagePopupDuration = 0.25f;
+    [Tooltip("画面クリックでメッセージが縮小して消えるまでの時間（秒）")]
+    [SerializeField] private float messageHideDuration = 0.15f;
 
     [Header("■ 完成時のシーン切り替え")]
     [Tooltip("完成時に非表示にするオブジェクト")]
@@ -88,6 +90,7 @@ public class ScratchPaintGimmickUI : MonoBehaviour
     private bool isCompleted = false;
     private bool isPainting = false;
     private bool isCursorShown = false;
+    private bool canCloseMessage = false;
     private Vector2 lastPaintPixel;
 
     /// <summary>
@@ -231,11 +234,13 @@ public class ScratchPaintGimmickUI : MonoBehaviour
 
         InitializeScratch();
 
+        // 完成メッセージは完成した瞬間だけ出す（開き直したときは出さない）
+        canCloseMessage = false;
         if (messageWindowObject != null)
         {
             messageWindowObject.transform.DOKill();
             messageWindowObject.transform.localScale = Vector3.one;
-            messageWindowObject.SetActive(isCompleted);
+            messageWindowObject.SetActive(false);
         }
 
         // ① オーバーレイのフェードイン
@@ -296,6 +301,7 @@ public class ScratchPaintGimmickUI : MonoBehaviour
     {
         isOpenRequested = false;
         isPainting = false;
+        canCloseMessage = false;
         SetPenCursorVisible(false);
 
         if (overlayCanvasGroup != null) overlayCanvasGroup.alpha = 0f;
@@ -314,7 +320,15 @@ public class ScratchPaintGimmickUI : MonoBehaviour
     // ================================================
     private void Update()
     {
-        if (!isOpenRequested || isCompleted || mainPanelTransform == null || !mainPanelTransform.gameObject.activeSelf) return;
+        if (!isOpenRequested || mainPanelTransform == null || !mainPanelTransform.gameObject.activeSelf) return;
+
+        // 完成メッセージ表示中は、画面のどこをクリックしても縮小して消す
+        if (canCloseMessage && Input.GetMouseButtonDown(0))
+        {
+            HideCompleteMessage();
+        }
+
+        if (isCompleted) return;
 
         Vector2 screenPos = Input.mousePosition;
         bool inArea = IsInCursorArea(screenPos);
@@ -505,7 +519,25 @@ public class ScratchPaintGimmickUI : MonoBehaviour
             messageTransform.DOScale(Vector3.one, messagePopupDuration)
                 .SetEase(Ease.OutBack)
                 .SetUpdate(true)
-                .SetLink(messageWindowObject);
+                .SetLink(messageWindowObject)
+                .OnComplete(() => canCloseMessage = true);
         }
+    }
+
+    // ----
+    // 完成メッセージを縮小して消す（MessageUI と同じ動き）
+    // ----
+    private void HideCompleteMessage()
+    {
+        canCloseMessage = false;
+        if (messageWindowObject == null || !messageWindowObject.activeSelf) return;
+
+        Transform messageTransform = messageWindowObject.transform;
+        messageTransform.DOKill();
+        messageTransform.DOScale(Vector3.one * messageStartScale, messageHideDuration)
+            .SetEase(Ease.InBack)
+            .SetUpdate(true)
+            .SetLink(messageWindowObject)
+            .OnComplete(() => messageWindowObject.SetActive(false));
     }
 }
