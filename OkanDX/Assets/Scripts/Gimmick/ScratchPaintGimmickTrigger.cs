@@ -22,6 +22,10 @@ public class ScratchPaintGimmickTrigger : MonoBehaviour, IPointerClickHandler
     [TextArea]
     [SerializeField] private string wrongItemMessage;
 
+    [Tooltip("塗り完成後に指定アイテム以外でクリックしたときのメッセージ（空なら wrongItemMessage を使う）")]
+    [TextArea]
+    [SerializeField] private string wrongItemMessageAfterCompleted;
+
     /// <summary>
     /// クリック時の処理
     /// </summary>
@@ -42,9 +46,15 @@ public class ScratchPaintGimmickTrigger : MonoBehaviour, IPointerClickHandler
             return;
         }
 
-        if (!string.IsNullOrEmpty(wrongItemMessage) && MessageUI.Instance != null)
+        string message = wrongItemMessage;
+        if (targetPanel != null && targetPanel.IsCompleted && !string.IsNullOrEmpty(wrongItemMessageAfterCompleted))
         {
-            MessageUI.Instance.ShowMessage(wrongItemMessage);
+            message = wrongItemMessageAfterCompleted;
+        }
+
+        if (!string.IsNullOrEmpty(message) && MessageUI.Instance != null)
+        {
+            MessageUI.Instance.ShowMessage(message);
         }
     }
 }
