@@ -551,6 +551,8 @@ MonoBehaviour:
   tooltipNameText: {fileID: 7361494742691577238}
   tooltipDescText: {fileID: 8441596558329468700}
   tooltipOffset: {x: 0, y: 190}
+  tooltipLayoutGroup: {fileID: 4660947061315038343}
+  singleLineExtraSpacing: 20
   baseStartScale: 0.5
   targetScale: 1
   showDuration: 0.15

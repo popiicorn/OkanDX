@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Serialization;
 using TMPro;
 using DG.Tweening;
 
@@ -21,6 +22,14 @@ public class InventoryManager : MonoBehaviour
     [Tooltip("アイテムスロットからの表示位置のズレ（X, Y）")]
     [SerializeField] private Vector2 tooltipOffset = new Vector2(0f, 100f);
 
+    [Header("ツールチップ 説明1行のときの文字位置")]
+    [Tooltip("名前と説明を並べている VerticalLayoutGroup（未設定なら説明テキストの親から自動取得）")]
+    [SerializeField] private VerticalLayoutGroup tooltipLayoutGroup;
+
+    [Tooltip("説明が1行（改行なし）のとき、説明文を下げる量。アイテム名と吹き出しの位置・サイズは変わらない")]
+    [FormerlySerializedAs("singleLineExtraTopPadding")]
+    [SerializeField] private float singleLineExtraSpacing = 25f;
+
     [Header("ツールチップ アニメーション設定")]
     [Tooltip("ポヨン演出の開始スケール（例: 0.5）")]
     [SerializeField] private float baseStartScale = 0.5f;
@@ -35,6 +44,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private float hideDuration = 0.1f;
 
     private int selectedIndex = -1; // -1 は未選択
+    private float tooltipBaseSpacing = 0f; // 説明2行のとき（元の設定）の名前と説明の間隔
 
     public Item SelectedItem => (selectedIndex >= 0 && selectedIndex < itemSlots.Count) ? itemSlots[selectedIndex].CurrentItem : null;
 
@@ -59,6 +69,15 @@ public class InventoryManager : MonoBehaviour
         {
             tooltipPanel.transform.localScale = Vector3.zero;
             tooltipPanel.SetActive(false);
+        }
+
+        if (tooltipLayoutGroup == null && tooltipDescText != null)
+        {
+            tooltipLayoutGroup = tooltipDescText.GetComponentInParent<VerticalLayoutGroup>(true);
+        }
+        if (tooltipLayoutGroup != null)
+        {
+            tooltipBaseSpacing = tooltipLayoutGroup.spacing;
         }
     }
 
@@ -150,6 +169,14 @@ public class InventoryManager : MonoBehaviour
 
         if (tooltipNameText != null) tooltipNameText.text = item.itemName;
         if (tooltipDescText != null) tooltipDescText.text = item.description;
+
+        // 説明が1行のときだけ、名前との間隔を広げて説明文を少し下げる（名前の位置と2行のときはそのまま）
+        if (tooltipLayoutGroup != null)
+        {
+            bool isSingleLine = string.IsNullOrEmpty(item.description) || !item.description.Contains("\n");
+            tooltipLayoutGroup.spacing = tooltipBaseSpacing + (isSingleLine ? singleLineExtraSpacing : 0f);
+            LayoutRebuilder.MarkLayoutForRebuild((RectTransform)tooltipLayoutGroup.transform);
+        }
 
         // 設定したオフセット分ズラした位置に移動
         tooltipPanel.transform.position = slotWorldPos + (Vector3)tooltipOffset;
