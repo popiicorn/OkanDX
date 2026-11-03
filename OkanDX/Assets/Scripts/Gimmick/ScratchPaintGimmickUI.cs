@@ -75,6 +75,10 @@ public class ScratchPaintGimmickUI : MonoBehaviour
     [Tooltip("完成時に表示するオブジェクト")]
     [SerializeField] private GameObject[] showObjectsOnComplete;
 
+    [Header("■ 完成時に消費するアイテム")]
+    [Tooltip("完成時にこのアイテムを選択中ならアイテム欄から消す（空なら消さない）")]
+    [SerializeField] private string consumeItemIDOnComplete = "";
+
     // ================================================
     // 内部状態
     // ================================================
@@ -507,6 +511,8 @@ public class ScratchPaintGimmickUI : MonoBehaviour
             }
         }
 
+        ConsumeItemOnComplete();
+
         // 完成メッセージをポヨンと表示（閉じるまで出したまま）
         if (messageText != null) messageText.text = completeMessage;
 
@@ -521,6 +527,24 @@ public class ScratchPaintGimmickUI : MonoBehaviour
                 .SetUpdate(true)
                 .SetLink(messageWindowObject)
                 .OnComplete(() => canCloseMessage = true);
+        }
+    }
+
+    // ----
+    // 完成時に、選択中の指定アイテムをアイテム欄から消す
+    // ----
+    private void ConsumeItemOnComplete()
+    {
+        if (string.IsNullOrEmpty(consumeItemIDOnComplete) || InventoryManager.Instance == null) return;
+
+        Item selected = InventoryManager.Instance.SelectedItem;
+        if (selected != null && selected.id == consumeItemIDOnComplete)
+        {
+            InventoryManager.Instance.RemoveSelectedItem();
+        }
+        else
+        {
+            Debug.LogWarning($"[ScratchPaintGimmickUI] 完成時に {consumeItemIDOnComplete} が選択されていないため消費できませんでした。");
         }
     }
 
