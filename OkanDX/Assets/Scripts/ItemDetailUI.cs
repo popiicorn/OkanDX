@@ -25,6 +25,11 @@ public class ItemDetailUI : MonoBehaviour
     [SerializeField] private float popupDuration = 0.25f;
     [SerializeField] private float hideDuration = 0.15f;
 
+    /// <summary>
+    /// 現在（または最後に）詳細表示しているアイテム
+    /// </summary>
+    public Item CurrentItem { get; private set; }
+
     private void Awake()
     {
         if (Instance == null)
@@ -48,6 +53,9 @@ public class ItemDetailUI : MonoBehaviour
     public void OpenDetail(Item item)
     {
         if (item == null || !item.canInspect) return;
+
+        // 表示前に記録しておく（ItemDetailPickupGimmick 等が OnEnable で参照する）
+        CurrentItem = item;
 
         // 画像とテキストの設定
         if (detailImage != null && item.detailSprite != null)
