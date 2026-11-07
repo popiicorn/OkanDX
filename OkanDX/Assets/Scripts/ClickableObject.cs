@@ -149,6 +149,16 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
 
     private void ExecuteClickAction()
     {
+        // 同じオブジェクトのギミック（IClickInterceptor）が先にクリックを処理した場合は、通常の処理をしない
+        foreach (var interceptor in GetComponents<IClickInterceptor>())
+        {
+            if (interceptor.TryInterceptClick())
+            {
+                AnimateClick();
+                return;
+            }
+        }
+
         switch (objectType)
         {
             case ObjectType.Examine:

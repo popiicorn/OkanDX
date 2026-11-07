@@ -20,6 +20,9 @@ public class BallPhysicsBody : MonoBehaviour
     [Range(0f, 1f)]
     [SerializeField] private float bounciness = 0.55f;
 
+    [Tooltip("シーソー（SeesawTilt）に乗ったときにかかる重さ")]
+    [SerializeField] private float weight = 1f;
+
     [Tooltip("離したときに引き継ぐ勢いの上限（1 秒あたりのピクセル）")]
     [SerializeField] private float maxReleaseSpeed = 1200f;
 
@@ -48,8 +51,11 @@ public class BallPhysicsBody : MonoBehaviour
     /// <summary>跳ねやすさ</summary>
     public float Bounciness => bounciness;
 
-    /// <summary>重さ（大きいボールほど重い）</summary>
+    /// <summary>ボール同士がぶつかるときの重さ（大きいボールほど重い）</summary>
     public float Mass => Radius * Radius;
+
+    /// <summary>シーソーにかかる重さ</summary>
+    public float Weight => weight;
 
     /// <summary>ドラッグ中か</summary>
     public bool IsDragging => draggable != null && draggable.IsDragging;
@@ -123,6 +129,19 @@ public class BallPhysicsBody : MonoBehaviour
 
         Velocity = Vector2.Lerp(Velocity, dragVelocity, Mathf.Clamp01(DRAG_VELOCITY_SMOOTHING * deltaTime));
         Position = current;
+    }
+
+    /// <summary>
+    /// 指定した位置に移動させ、止まった状態にする（そこから落ち始める）
+    /// </summary>
+    public void Teleport(Vector2 position)
+    {
+        if (rectTransform == null) Initialize();
+
+        Position = position;
+        Velocity = Vector2.zero;
+        Spin = 0f;
+        rectTransform.localPosition = new Vector3(position.x, position.y, rectTransform.localPosition.z);
     }
 
     // ================================================

@@ -5,6 +5,7 @@ using UnityEngine;
 /// ボールが落ちて跳ね、転がって止まる範囲を管理するギミック。
 /// 床やキャラクターの形を折れ線（surfaces）で指定し、左右の壁・ボール同士の衝突も計算する。
 /// 座標はボールの親（View）の中の座標で、画面の解像度が変わっても動きは変わらない。
+/// 線に followTarget を指定すると、そのオブジェクトの移動・回転・拡大に合わせて線も動く。
 /// 折れ線は Scene ビューで緑色の線として確認できる。
 /// </summary>
 public class BallPhysicsArea : MonoBehaviour
@@ -15,15 +16,19 @@ public class BallPhysicsArea : MonoBehaviour
         [Tooltip("分かりやすい名前（動作には影響しない）")]
         public string name;
 
-        [Tooltip("線の頂点（左から順に並べる）")]
+        [Tooltip("線の頂点（左から順に並べる）。followTarget があればその中心からの座標、なければ View の中の座標")]
         public List<Vector2> points = new List<Vector2>();
 
-        [Tooltip("指定すると、このオブジェクトが動いた分だけ線も一緒に動く（空なら動かない）")]
+        [Tooltip("指定すると、このオブジェクトの移動・回転・拡大に合わせて線も一緒に動く（空なら動かない）")]
         public RectTransform followTarget;
 
-        [System.NonSerialized] public Vector2 baseTargetPosition;
-        [System.NonSerialized] public Vector2 offset;
-        [System.NonSerialized] public Vector2 velocity;
+        // 計算用：View の中での現在の頂点と、その速さ
+        [System.NonSerialized] public Vector2[] currentPoints = new Vector2[0];
+        [System.NonSerialized] public Vector2[] pointVelocities = new Vector2[0];
+        [System.NonSerialized] public bool hasPreviousPoints;
+
+        // 計算用：followTarget に付いているシーソー（なければ null）
+        [System.NonSerialized] public SeesawTilt seesaw;
     }
 
     // ================================================
@@ -60,6 +65,9 @@ public class BallPhysicsArea : MonoBehaviour
     [Tooltip("動く線の上でボールが揺さぶられる強さ（大きいほど、線の動きにボールがついていく）")]
     [SerializeField] private float surfaceGrip = 30f;
 
+    [Tooltip("線からこの距離まで浮いていても、シーソー（SeesawTilt）に重さがかかっているとみなす")]
+    [SerializeField] private float seesawContactMargin = 12f;
+
     // 1 回の計算で進める時間（小さいほど、すり抜けにくい）
     private const float FIXED_STEP = 1f / 240f;
 
@@ -80,16 +88,16 @@ public class BallPhysicsArea : MonoBehaviour
     }
 
     /// <summary>
-    /// 線が追いかけるオブジェクトの基準位置を記録する
+    /// 線の現在位置とシーソーを読み直す（線の速さは 0 から数え直す）
     /// </summary>
     public void Initialize()
     {
         foreach (var surface in surfaces)
         {
-            surface.offset = Vector2.zero;
-            surface.velocity = Vector2.zero;
-            if (surface.followTarget != null) surface.baseTargetPosition = surface.followTarget.anchoredPosition;
+            surface.hasPreviousPoints = false;
+            surface.seesaw = surface.followTarget != null ? surface.followTarget.GetComponent<SeesawTilt>() : null;
         }
+        UpdateSurfacePoints(0f);
     }
 
     // ================================================
@@ -105,7 +113,7 @@ public class BallPhysicsArea : MonoBehaviour
     /// </summary>
     public void Simulate(float deltaTime)
     {
-        UpdateSurfaceOffsets(deltaTime);
+        UpdateSurfacePoints(deltaTime);
 
         accumulatedTime += Mathf.Min(deltaTime, MAX_FRAME_TIME);
 
@@ -117,23 +125,54 @@ public class BallPhysicsArea : MonoBehaviour
 
         foreach (var ball in balls)
         {
-            if (ball != null) ball.ApplyToTransform();
+            if (IsActive(ball)) ball.ApplyToTransform();
         }
     }
 
     // ----
-    // 追いかけるオブジェクトの動きに合わせて線をずらし、線の速さを求める
+    // 追いかけるオブジェクトに合わせて線の頂点を置き直し、頂点ごとの速さを求める
     // ----
-    private void UpdateSurfaceOffsets(float deltaTime)
+    private void UpdateSurfacePoints(float deltaTime)
     {
         foreach (var surface in surfaces)
         {
-            if (surface.followTarget == null) continue;
+            int count = surface.points.Count;
+            if (surface.currentPoints.Length != count)
+            {
+                surface.currentPoints = new Vector2[count];
+                surface.pointVelocities = new Vector2[count];
+                surface.hasPreviousPoints = false;
+            }
 
-            Vector2 offset = surface.followTarget.anchoredPosition - surface.baseTargetPosition;
-            surface.velocity = deltaTime > 0f ? (offset - surface.offset) / deltaTime : Vector2.zero;
-            surface.offset = offset;
+            for (int i = 0; i < count; i++)
+            {
+                Vector2 point = ToAreaSpace(surface, surface.points[i]);
+                surface.pointVelocities[i] = surface.hasPreviousPoints && deltaTime > 0f
+                    ? (point - surface.currentPoints[i]) / deltaTime
+                    : Vector2.zero;
+                surface.currentPoints[i] = point;
+            }
+            surface.hasPreviousPoints = true;
         }
+    }
+
+    // ----
+    // 線の頂点を View の中の座標に変換する
+    // ----
+    private Vector2 ToAreaSpace(Surface surface, Vector2 point)
+    {
+        if (surface.followTarget == null) return point;
+
+        Transform space = transform.parent != null ? transform.parent : transform;
+        return space.InverseTransformPoint(surface.followTarget.TransformPoint(point));
+    }
+
+    // ----
+    // 計算の対象か（非表示のボールや、BallPhysicsBody を無効にしたボールは除く）
+    // ----
+    private static bool IsActive(BallPhysicsBody ball)
+    {
+        return ball != null && ball.isActiveAndEnabled;
     }
 
     // ----
@@ -143,7 +182,7 @@ public class BallPhysicsArea : MonoBehaviour
     {
         foreach (var ball in balls)
         {
-            if (ball == null) continue;
+            if (!IsActive(ball)) continue;
 
             if (ball.IsDragging)
             {
@@ -163,8 +202,13 @@ public class BallPhysicsArea : MonoBehaviour
         {
             for (int j = i + 1; j < balls.Count; j++)
             {
-                if (balls[i] != null && balls[j] != null) ResolveBalls(balls[i], balls[j]);
+                if (IsActive(balls[i]) && IsActive(balls[j])) ResolveBalls(balls[i], balls[j]);
             }
+        }
+
+        foreach (var surface in surfaces)
+        {
+            if (surface.seesaw != null) surface.seesaw.Step(deltaTime);
         }
     }
 
@@ -176,46 +220,91 @@ public class BallPhysicsArea : MonoBehaviour
     // ----
     private void ResolveSurfaces(BallPhysicsBody ball, float deltaTime)
     {
-        Surface contactSurface = null;
+        bool hasContact = false;
         Vector2 contactNormal = Vector2.up;
+        Vector2 contactVelocity = Vector2.zero;
 
         foreach (var surface in surfaces)
         {
-            for (int i = 0; i + 1 < surface.points.Count; i++)
+            for (int i = 0; i + 1 < surface.currentPoints.Length; i++)
             {
-                Vector2 start = surface.points[i] + surface.offset;
-                Vector2 end = surface.points[i + 1] + surface.offset;
-
-                if (ResolveSegment(ball, start, end, surface.velocity, out Vector2 normal))
+                if (ResolveSegment(ball, surface, i, out Vector2 normal, out Vector2 surfaceVelocity))
                 {
-                    contactSurface = surface;
+                    hasContact = true;
                     contactNormal = normal;
+                    contactVelocity = surfaceVelocity;
                 }
             }
+
+            if (surface.seesaw != null) AddSeesawLoad(surface, ball);
         }
 
-        if (contactSurface != null) ApplyRolling(ball, contactNormal, contactSurface.velocity, deltaTime);
+        if (hasContact) ApplyRolling(ball, contactNormal, contactVelocity, deltaTime);
     }
 
     // ----
-    // 線分 1 本との衝突：めり込みを戻して跳ね返す
+    // シーソーに、乗っているボールの重さを伝える（触れている点と回転の中心の横の距離で傾きが決まる）
+    // 揺れで小さく弾んでいる間も重さがかかるよう、少し浮いていても乗っているとみなす
     // ----
-    private bool ResolveSegment(BallPhysicsBody ball, Vector2 start, Vector2 end, Vector2 surfaceVelocity, out Vector2 normal)
+    private void AddSeesawLoad(Surface surface, BallPhysicsBody ball)
     {
-        Vector2 closest = ClosestPointOnSegment(ball.Position, start, end);
+        float distance = FindNearestPoint(surface, ball.Position, out Vector2 nearestPoint);
+        if (distance >= ball.Radius + seesawContactMargin) return;
+
+        Transform space = transform.parent != null ? transform.parent : transform;
+        surface.seesaw.AddLoad(nearestPoint.x - surface.seesaw.GetPivotPosition(space).x, ball.Weight);
+    }
+
+    // ----
+    // 線の上で、指定位置に一番近い点と、その距離を求める
+    // ----
+    private static float FindNearestPoint(Surface surface, Vector2 position, out Vector2 nearestPoint)
+    {
+        float nearestDistance = float.MaxValue;
+        nearestPoint = position;
+
+        for (int i = 0; i + 1 < surface.currentPoints.Length; i++)
+        {
+            Vector2 start = surface.currentPoints[i];
+            Vector2 end = surface.currentPoints[i + 1];
+            Vector2 point = Vector2.Lerp(start, end, ClosestRatioOnSegment(position, start, end));
+            float distance = (position - point).magnitude;
+
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;
+                nearestPoint = point;
+            }
+        }
+        return nearestDistance;
+    }
+
+    // ----
+    // 線分 1 本（index 番目の頂点から次の頂点まで）との衝突：めり込みを戻して跳ね返す
+    // ----
+    private bool ResolveSegment(BallPhysicsBody ball, Surface surface, int index, out Vector2 normal, out Vector2 surfaceVelocity)
+    {
+        Vector2 start = surface.currentPoints[index];
+        Vector2 end = surface.currentPoints[index + 1];
+        float ratio = ClosestRatioOnSegment(ball.Position, start, end);
+        Vector2 closest = Vector2.Lerp(start, end, ratio);
         Vector2 offset = ball.Position - closest;
         float distance = offset.magnitude;
 
+        // 当たった場所の線の速さ（回転していると場所ごとに違う）
+        surfaceVelocity = Vector2.Lerp(surface.pointVelocities[index], surface.pointVelocities[index + 1], ratio);
         normal = distance > MIN_DISTANCE ? offset / distance : Vector2.up;
         if (distance >= ball.Radius) return false;
 
         ball.Position = closest + normal * ball.Radius;
 
-        // 線が動いているときは、線から見た速さで跳ね返す（線に押されたボールが弾む）
+        // 線が動いているときは、線から見た速さで押し返す。
+        // 跳ねるかどうかはボール自身が落ちてきた勢いで決める（線の揺れだけでは弾み続けない）
         float normalSpeed = Vector2.Dot(ball.Velocity - surfaceVelocity, normal);
         if (normalSpeed < 0f)
         {
-            float bounce = -normalSpeed >= minBounceSpeed ? ball.Bounciness : 0f;
+            float fallingSpeed = -Vector2.Dot(ball.Velocity, normal);
+            float bounce = fallingSpeed >= minBounceSpeed ? ball.Bounciness : 0f;
             ball.Velocity -= normal * ((1f + bounce) * normalSpeed);
         }
         return true;
@@ -239,16 +328,15 @@ public class BallPhysicsArea : MonoBehaviour
     }
 
     // ----
-    // 線分上で、指定位置に一番近い点を求める
+    // 線分上で、指定位置に一番近い点の位置（0: 始点 〜 1: 終点）を求める
     // ----
-    private static Vector2 ClosestPointOnSegment(Vector2 point, Vector2 start, Vector2 end)
+    private static float ClosestRatioOnSegment(Vector2 point, Vector2 start, Vector2 end)
     {
         Vector2 segment = end - start;
         float lengthSquared = segment.sqrMagnitude;
-        if (lengthSquared <= 0f) return start;
+        if (lengthSquared <= 0f) return 0f;
 
-        float ratio = Mathf.Clamp01(Vector2.Dot(point - start, segment) / lengthSquared);
-        return start + segment * ratio;
+        return Mathf.Clamp01(Vector2.Dot(point - start, segment) / lengthSquared);
     }
 
     // ================================================
@@ -318,6 +406,63 @@ public class BallPhysicsArea : MonoBehaviour
     }
 
     // ================================================
+    // 乗っているボールの数
+    // ================================================
+    /// <summary>
+    /// target を followTarget にした線の上に乗っているボールの数を返す。
+    /// 線に直接触れているボールと、その上に積み重なっているボールを数える。
+    /// ドラッグ中のボールと、ほかの線（床など）に触れているボールは数えない。
+    /// </summary>
+    /// <param name="target">乗せる先のオブジェクト（線の followTarget）</param>
+    /// <param name="contactMargin">この距離まで浮いていても触れているとみなす</param>
+    public int CountBallsOn(RectTransform target, float contactMargin)
+    {
+        int count = balls.Count;
+        var candidates = new List<BallPhysicsBody>(count);
+        var queue = new Queue<BallPhysicsBody>();
+        var counted = new HashSet<BallPhysicsBody>();
+
+        // 対象になるボールを集め、target の線に直接触れているものを起点にする
+        foreach (var ball in balls)
+        {
+            if (!IsActive(ball) || ball.IsDragging) continue;
+
+            bool touchesTarget = false;
+            bool touchesOther = false;
+            foreach (var surface in surfaces)
+            {
+                if (FindNearestPoint(surface, ball.Position, out _) > ball.Radius + contactMargin) continue;
+
+                if (target != null && surface.followTarget == target) touchesTarget = true;
+                else touchesOther = true;
+            }
+
+            if (touchesOther) continue;
+
+            candidates.Add(ball);
+            if (touchesTarget && counted.Add(ball)) queue.Enqueue(ball);
+        }
+
+        // 乗っているボールに触れているボールも、乗っているとみなす（積み重ね）
+        while (queue.Count > 0)
+        {
+            BallPhysicsBody lower = queue.Dequeue();
+            foreach (var upper in candidates)
+            {
+                if (counted.Contains(upper)) continue;
+
+                float limit = lower.Radius + upper.Radius + contactMargin;
+                if ((upper.Position - lower.Position).sqrMagnitude > limit * limit) continue;
+
+                counted.Add(upper);
+                queue.Enqueue(upper);
+            }
+        }
+
+        return counted.Count;
+    }
+
+    // ================================================
     // エディタ表示
     // ================================================
     private void OnDrawGizmos()
@@ -330,8 +475,8 @@ public class BallPhysicsArea : MonoBehaviour
             for (int i = 0; i + 1 < surface.points.Count; i++)
             {
                 Gizmos.DrawLine(
-                    space.TransformPoint(surface.points[i] + surface.offset),
-                    space.TransformPoint(surface.points[i + 1] + surface.offset));
+                    space.TransformPoint(ToAreaSpace(surface, surface.points[i])),
+                    space.TransformPoint(ToAreaSpace(surface, surface.points[i + 1])));
             }
         }
     }
