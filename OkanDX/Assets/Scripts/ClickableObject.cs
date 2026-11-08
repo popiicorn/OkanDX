@@ -29,6 +29,9 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
     [Header("■ 基本設定")]
     [SerializeField] private ObjectType objectType = ObjectType.Examine;
 
+    [Tooltip("指定すると、クリックしたときに自分の代わりにこれらのオブジェクトがポヨンと動く（見えないクリック範囲用。非表示のものは無視される）")]
+    [SerializeField] private Transform[] clickAnimationTargets;
+
     // -------------------------------------------------------------
     // 【調べる】タイプ用の設定
     // -------------------------------------------------------------
@@ -205,12 +208,29 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
 
     private void AnimateClick()
     {
-        transform.DOKill();
-        transform.localScale = Vector3.one;
-
-        transform.DOScale(0.9f, 0.06f).OnComplete(() =>
+        if (clickAnimationTargets != null && clickAnimationTargets.Length > 0)
         {
-            transform.DOScale(1f, 0.15f).SetEase(Ease.OutBack);
+            foreach (var target in clickAnimationTargets)
+            {
+                if (target != null && target.gameObject.activeInHierarchy) PlayClickScale(target);
+            }
+            return;
+        }
+
+        PlayClickScale(transform);
+    }
+
+    // ----
+    // 少し縮んでから戻る、クリックのポヨン演出
+    // ----
+    private static void PlayClickScale(Transform target)
+    {
+        target.DOKill();
+        target.localScale = Vector3.one;
+
+        target.DOScale(0.9f, 0.06f).OnComplete(() =>
+        {
+            target.DOScale(1f, 0.15f).SetEase(Ease.OutBack);
         });
     }
 
