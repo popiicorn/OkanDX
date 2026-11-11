@@ -113,6 +113,27 @@ public class InventoryManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 指定した ID のアイテムを 1 つ削除する（見つかったら true）
+    /// </summary>
+    public bool RemoveItemByID(string itemID)
+    {
+        if (string.IsNullOrEmpty(itemID)) return false;
+
+        for (int i = 0; i < itemSlots.Count; i++)
+        {
+            Item current = itemSlots[i].CurrentItem;
+            if (current == null || current.id != itemID) continue;
+
+            itemSlots[i].ClearSlot();
+            DeselectAll();
+            ReorganizeSlots(); // 左詰めに整理
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
     /// スロットをクリックしたときの選択切り替え処理
     /// </summary>
     public void OnSelectSlot(int index)

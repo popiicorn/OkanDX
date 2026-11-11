@@ -27,6 +27,9 @@ public class ItemDetailPickupGimmick : MonoBehaviour
         [Tooltip("ON: 獲得メッセージを「〇〇」を\\n手に入れた！ と改行して表示する")]
         public bool breakLineInGetMessage = false;
 
+        [Tooltip("ON: 獲得したとき、詳細を表示していたアイテム（detailItemID）を持ち物から消し、メッセージを閉じたら詳細パネルも閉じる")]
+        public bool removeDetailItem = false;
+
         [HideInInspector] public bool hasPicked = false;
     }
 
@@ -54,6 +57,9 @@ public class ItemDetailPickupGimmick : MonoBehaviour
     private bool canCloseMessage = false;
     private bool isPicking = false;
 
+    // 詳細を表示していたアイテムを消したので、メッセージを閉じたら詳細パネルも閉じる
+    private bool closeDetailAfterMessage = false;
+
     // ================================================
     // 初期化
     // ================================================
@@ -78,6 +84,7 @@ public class ItemDetailPickupGimmick : MonoBehaviour
     private void OnDisable()
     {
         isPicking = false;
+        closeDetailAfterMessage = false;
         HideMessageImmediate();
     }
 
@@ -137,6 +144,9 @@ public class ItemDetailPickupGimmick : MonoBehaviour
         if (isPicking || entry.hasPicked) return;
         if (InventoryManager.Instance == null || entry.giveItem == null) return;
 
+        // 詳細を表示していたアイテムを消す場合は、先に消して空きを作る
+        bool removedDetailItem = entry.removeDetailItem && InventoryManager.Instance.RemoveItemByID(entry.detailItemID);
+
         if (!InventoryManager.Instance.AddItem(entry.giveItem))
         {
             ShowMessage(inventoryFullMessage);
@@ -144,6 +154,7 @@ public class ItemDetailPickupGimmick : MonoBehaviour
         }
 
         entry.hasPicked = true;
+        closeDetailAfterMessage = removedDetailItem;
         isPicking = true;
 
         // ClickableObject のアイテム獲得と同じく、少し縮んでから消える
@@ -210,7 +221,22 @@ public class ItemDetailPickupGimmick : MonoBehaviour
             .SetEase(Ease.InBack)
             .SetUpdate(true)
             .SetLink(messageWindowObject)
-            .OnComplete(() => messageWindowObject.SetActive(false));
+            .OnComplete(() =>
+            {
+                messageWindowObject.SetActive(false);
+                CloseDetailIfNeeded();
+            });
+    }
+
+    // ----
+    // 詳細を表示していたアイテムを消した後なら、詳細パネルを閉じる
+    // ----
+    private void CloseDetailIfNeeded()
+    {
+        if (!closeDetailAfterMessage) return;
+
+        closeDetailAfterMessage = false;
+        if (ItemDetailUI.Instance != null) ItemDetailUI.Instance.CloseDetail();
     }
 
     // ----
