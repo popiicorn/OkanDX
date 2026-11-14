@@ -1,0 +1,18 @@
+Font: 07NikumaruFont  Style: Regular
+Point Size: 105   Padding: 2   SP/PD Ratio: 1.9%
+
+Characters included: 492/498
+Missing characters: 6
+Excluded characters: 0
+
+Characters missing from font file:
+----------------------------------------
+ID: 12310	Hex: 3016	Char [〖]
+ID: 12311	Hex: 3017	Char [〗]
+ID: 12312	Hex: 3018	Char [〘]
+ID: 12313	Hex: 3019	Char [〙]
+ID: 12314	Hex: 301A	Char [〚]
+ID: 12315	Hex: 301B	Char [〛]
+
+Characters excluded from packing:
+----------------------------------------

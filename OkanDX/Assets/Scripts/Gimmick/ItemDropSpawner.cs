@@ -48,6 +48,10 @@ public class ItemDropSpawner : MonoBehaviour, IClickInterceptor
         {
             if (entry.ball == null) continue;
 
+            // すでに表示されている（出てきた後の）ボールはそのまま動かす
+            //（同じボールを登録した別の ItemDropSpawner が後から表示されたときに止めないため）
+            if (entry.ball.gameObject.activeInHierarchy) continue;
+
             entry.ball.enabled = false;
 
             var draggable = entry.ball.GetComponent<DraggableUIObject>();

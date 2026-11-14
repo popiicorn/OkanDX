@@ -93,6 +93,17 @@ public class ItemDetailUI : MonoBehaviour
     }
 
     /// <summary>
+    /// 表示中の拡大画像を差し替える（ItemDetailPickupGimmick で獲得後の絵に変えるときなど）
+    /// </summary>
+    public void SetDetailSprite(Sprite sprite)
+    {
+        if (detailImage != null && sprite != null)
+        {
+            detailImage.sprite = sprite;
+        }
+    }
+
+    /// <summary>
     /// 詳細画面を閉じる（縮小＋フェードアウト）
     /// </summary>
     public void CloseDetail()

@@ -176,6 +176,14 @@ public class BallPhysicsArea : MonoBehaviour
     }
 
     // ----
+    // 線が有効か（followTarget のオブジェクトが非表示なら、その線は無いものとして扱う）
+    // ----
+    private static bool IsSurfaceActive(Surface surface)
+    {
+        return surface.followTarget == null || surface.followTarget.gameObject.activeInHierarchy;
+    }
+
+    // ----
     // 1 ステップ分の計算
     // ----
     private void Step(float deltaTime)
@@ -208,7 +216,7 @@ public class BallPhysicsArea : MonoBehaviour
 
         foreach (var surface in surfaces)
         {
-            if (surface.seesaw != null) surface.seesaw.Step(deltaTime);
+            if (surface.seesaw != null && IsSurfaceActive(surface)) surface.seesaw.Step(deltaTime);
         }
     }
 
@@ -226,6 +234,7 @@ public class BallPhysicsArea : MonoBehaviour
 
         foreach (var surface in surfaces)
         {
+            if (!IsSurfaceActive(surface)) continue;
             for (int i = 0; i + 1 < surface.currentPoints.Length; i++)
             {
                 if (ResolveSegment(ball, surface, i, out Vector2 normal, out Vector2 surfaceVelocity))
@@ -431,6 +440,7 @@ public class BallPhysicsArea : MonoBehaviour
             bool touchesOther = false;
             foreach (var surface in surfaces)
             {
+                if (!IsSurfaceActive(surface)) continue;
                 if (FindNearestPoint(surface, ball.Position, out _) > ball.Radius + contactMargin) continue;
 
                 if (target != null && surface.followTarget == target) touchesTarget = true;
