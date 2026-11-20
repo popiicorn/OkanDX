@@ -79,6 +79,9 @@ public class BallPhysicsArea : MonoBehaviour
 
     private float accumulatedTime = 0f;
 
+    /// <summary>重力の強さ</summary>
+    public float Gravity => gravity;
+
     // ================================================
     // 初期化
     // ================================================
@@ -412,6 +415,25 @@ public class BallPhysicsArea : MonoBehaviour
         float impulse = -(1f + bounce) * approachSpeed / totalInverseMass;
         first.Velocity += normal * (impulse * firstInverseMass);
         second.Velocity -= normal * (impulse * secondInverseMass);
+    }
+
+    // ================================================
+    // 跳ね上げ
+    // ================================================
+    /// <summary>
+    /// 表示中のボールを全部、上に跳ね上げる（ドラッグ中のボールは除く）。
+    /// 上向きの速さは minUpSpeed〜maxUpSpeed、横向きの速さは -maxSideSpeed〜maxSideSpeed の間でランダムに決める。
+    /// </summary>
+    public void BounceAll(float minUpSpeed, float maxUpSpeed, float maxSideSpeed)
+    {
+        foreach (var ball in balls)
+        {
+            if (!IsActive(ball) || ball.IsDragging) continue;
+
+            float up = Random.Range(Mathf.Min(minUpSpeed, maxUpSpeed), Mathf.Max(minUpSpeed, maxUpSpeed));
+            float side = Random.Range(-maxSideSpeed, maxSideSpeed);
+            ball.Velocity = new Vector2(ball.Velocity.x + side, up);
+        }
     }
 
     // ================================================
