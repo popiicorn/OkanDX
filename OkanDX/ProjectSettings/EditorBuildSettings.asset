@@ -39,6 +39,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Episode_007.unity
     guid: 7c76678e6f3d79b4fb94ae5413176afc
   - enabled: 1
+    path: Assets/Scenes/Episode_008.unity
+    guid: 342129bb7087d6746a684e8e431d1bf8
+  - enabled: 1
     path: Assets/Scenes/MiniGame_001.unity
     guid: 571a26c99563ac3429734dd30162e4e1
   m_configObjects:

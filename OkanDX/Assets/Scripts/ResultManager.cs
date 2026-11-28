@@ -44,8 +44,13 @@ public class ResultManager : MonoBehaviour
     {
         if (GameManager.Instance == null) return;
 
-        int nextEpisodeNumber = GameManager.Instance.CurrentEpisodeNumber + 1;
-        GameManager.Instance.StartEpisode(nextEpisodeNumber);
+        // 進行順（stageOrder）の次へ進む（stageOrder が無いときはエピソード番号の次）
+        EpisodeData current = GameManager.Instance.CurrentEpisodeData;
+        int currentNumber = (current != null && current.stageOrder > 0)
+            ? current.stageOrder
+            : GameManager.Instance.CurrentEpisodeNumber;
+
+        GameManager.Instance.StartEpisode(currentNumber + 1);
     }
 
     /// <summary>
